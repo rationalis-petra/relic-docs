@@ -1,0 +1,89 @@
+#+html_head: <link rel="stylesheet" href="doc-style.css" type="text/css"/>
+#+title: Relic Cheatsheet 
+#+options: num:nil toc:nil
+
+
+* Literals
+Integers: 0, 1, -1, 64, etc.
++ default to type I64
++ use =is= or inference to change this default
+
+Strings: "hello,world!"
++ currently no special characters (\n etc.)
++ live for as long as their parent expression or definition
+
+* Structs  
+#+begin_src relic
+;; Struct type (structural/anonymous)
+(def Point Struct
+  [.x I64]
+  [.y I64] [.z I64])
+
+(def point struct [.x 3] [.y 4] [.z 5])
+
+(i64.+ point.x point.y)
+#+end_src
+
+* Enums
+#+begin_src relic
+(def Maybe Enum [:none] [:some I64])
+
+(def m (Maybe:some 3))
+
+(def n Maybe:none)
+
+(match m [(:some x) x] [(:none) 0])
+(match n [(:some x) x] [(:none) 0])
+#+end_src
+
+* Modules
+#+begin_src relic
+#+end_src
+
+* Traits/Instances
+#+begin_src relic
+(def Addable Trait [A] 
+  [.zero A] 
+  [.add Proc [A A] A])
+
+;; Not working! (check what is regular/expected syntax?)
+;; seems to be a bug in application!
+(def addable-i64 instance (Addable I64)
+  [.zero 0]
+  [.add i64.+])
+#+end_src
+
+* Dynamic
+#+begin_src relic
+(def dvar dynamic 10) ;; new dynamic variable
+
+(use dvar) ;; => 10
+
+(def get-dvar proc [] (use dvar))
+
+(bind [x 3] (get-dvar)) ;; => 3
+
+(use dvar) ;; => 10
+#+end_src
+
+* Labels & Branching
+Conditional
+#+begin_src relic
+(if e1 e2 e3)
+#+end_src
+
+Labels
+#+begin_src relic
+(labels
+ [] )
+#+end_src
+
+* Foreign Function Interface (FFI)
+
+#+begin_src relic
+(reinterpret-relic <type> <body>)
+(reinterpret-native <type> <body>)
+
+(convert-relic <type> <body>)
+(convert-native <type> <body>)
+#+end_src

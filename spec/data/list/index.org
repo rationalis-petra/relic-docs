@@ -1,0 +1,34 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Data.List
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ List :: Kind [Type] Type
+#+begin_src relic
+(def List Family [A] Named List Struct
+  [.data Address]
+  [.len U64]
+  [.capacity U64]
+  [.gpa Allocator])
+#+end_src
+  
+
+* Macros
++ list :: A basic macro for creating literal lists. Use as ~(list elt1 elt2 elt3)~.
+  For example, ~(list 1 2 3 4 5)~ will generate a list containing the elements
+  1-5. The list macro uses the =mk-list= function, and thus allocates memory
+  with =current-allocator=.
+
+* Functions
++ mk-list :: All [A] (Proc [U64 U64] (List A))
++ free-list :: All [A] (Proc [(List A)] Unit)
++ elt :: All [A] (Proc [U64 (List A)] A)
++ eset :: All [A] (Proc [U64 A (List A)] Unit)
++ each :: All [A] (Proc [(Proc [A] Unit) (List A)] Unit)
++ map :: All [A B] (Proc [(Proc [A] B) (List A)] (List B))
+
+
++ push :: All [A] (Proc [A (Dynamic List A)] Unit)
++ pop :: All [A] (Proc [(Dynamic List A)] A)

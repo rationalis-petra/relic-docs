@@ -1,0 +1,38 @@
+#+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+#+title: Data
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+The Data Module contains
+
++ Memory :: The memory module stores data-structures for handling memory,
+  primarily various kinds of allocators. Note that each of these allocators
+  require first initializing with a separate, backing allocator. For some
+  'prebuilt' allocators that use the platform's memory allocation facilities as
+  a backing, see =platform.memory=
+
++ [[file:list/index.org][List]] :: The list module is used for dynamic, resizable lists of elements
+  stored contiguously in memory, analagous to C++'s =vector= and Java's =ArrayList=.
+
++ Maybe :: The maybe module is used to represent a generic container that my
+  hold a value, or may hold nothing.
+
++ Either :: The either module is used to represent a generic container that
+  can hold one of two alternatives.
+
++ Pair :: The pair module is used to reprsent a generic container that holds 
+  exactly two values of differing types.
+
++ Pointer :: The pointer module is used to wrap around the ~Address~ type and
+  uses the type system to help enforce that loads and stores must all load/store
+  the same type.
+
++ [[file:string/index.org][String]] :: The string type wraps around a
+
++ Text :: The text type is a richer version of the string, notably, it supports
+  mutation and dynamically resizing the string. =string-view= can be used on a
+  text object to acquire a string for use in functions which require one. 
+  
+
+  

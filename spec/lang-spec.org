@@ -1,0 +1,98 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Relic Specification
+#+options: num:nil toc:nil
+
+
+* Scope
+Scope of this document
+
+* Context
+Context in which the semantics of the language is defined 
+
+* Basic Concepts
+
+* Expressions
+** Procedures and Applications
+#+begin_src relic
+(def ty Proc (I64) I64)
+#+end_src
+
+#+begin_src relic
+(ann fact ty)
+(def fact proc [n]
+  if (> n 0)
+     (* n (fact (- n 1)))
+     1)
+#+end_src
+
+** Structures and Projections
+#+begin_src relic
+(def Point Struct
+  [.x I64]
+  [.y I64])
+#+end_src
+
+#+begin_src relic
+(def my-point struct Point
+  [.x 3]
+  [.y 12])
+#+end_src
+
+#+begin_src relic
+(my-point.x)
+(.x my-point)
+#+end_src
+
+** Enumerations and Recursors
+
+#+begin_src relic
+(def Result Enum
+  (:error (String))
+  (:ok (Int)))
+#+end_src
+
+#+begin_src relic
+(Result:error "bad")
+
+(Result:ok 23)
+#+end_src
+
+** Resets and Shifts
+
+#+begin_src relic
+(with-reset [reset-point-name]
+  expr
+  (handle [cont val expr]))
+
+(reset-to reset-point val)
+#+end_src
+
+continuations: a handle receives a cont-point, which is like a jump_buf from C.
+Can beused only once to jump down the stack with =(resume-once cont-point)=. To
+enable continuations that can be resumed multiple times, the stack needs to be
+copied with =capture-cont <cont-point> <allocator>=. This produces a cont which
+must at some point be freed. 
+
+* Pipeline
+Entry and exit
+On entry, a new subregion is allocated via the current region allocator.
+
+** Parsing
+
+
+** Abstraction
+In the abstraction phase, concrete syntax are traversed, starting with the
+outermost layer. Atoms are converted to their corresponding abstract literals
+or variables (in the case of symbols). For nodes, the head of the node is inspected,
+if it is a symbol that maps to a macro, then the macro is run and the procedure
+is repeated on the output. If it is a term former, then memory is allocated out
+of the current region allocator.
+
+** Typechecking
+In the typechecking phase, the abstract syntax tree is traversed, starting with the
+outermost layer. Any type literals in code are evaluated at compile-time. This
+means that the 'codegen' and 'eval' steps occur . 
+
+** Codegen
+
+** Evaluation

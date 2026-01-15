@@ -1,0 +1,20 @@
+#+html_head: <link rel="stylesheet" href="doc-style.css" type="text/css"/>
+#+title: Relic Homepage 
+#+options: num:nil toc:nil
+
+[[file:tutorial/programmer-0.org][Tutorial]] • [[file:spec/index.org][Spec]] • [[file:cheatsheet.org][Cheatsheet]] • [[file:internals/index.org][Internals]]
+
+
+Relic is a language designed for the at-home hobby programmer. It has the
+following design goals:
+1. Provide a powerful tool which enables rapid development and
+   iteration. Further, it should be possible to easily develop domain-specific
+   tools to assist an individual programmer.
+2. Enable a broad range of styles, to suit the taste of the individual
+   programmer. This includes powerful introspection and metaprogramming
+   facilities.
+3. Encompass a broad range of potential performance vs abstraction
+   profiles. Relic should enable all kinds of projects, such as embedded
+   development, performant programs such as games, or highly abstract programs
+   with complex type constraints or even dynamic types.
+

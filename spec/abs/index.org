@@ -1,0 +1,11 @@
+#+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+#+title: Abstraction
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
++ [[file:memory/index.org][Memory]] ::
+
++ [[file:numeric/index.org][Numeric]] ::
+
++ [[file:show/index.org][Show]] ::

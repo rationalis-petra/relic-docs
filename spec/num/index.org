@@ -1,0 +1,18 @@
+#+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+#+title: Num
+#+options: num:nil toc:nil
+
++ Bool ::
++ Byte ::
++ Integer ::
++ Rational ::
+
++ Int8 ::
++ Int16 ::
++ Int32 ::
++ Int64 ::
+
++ UInt8 ::
++ UInt16 ::
++ UInt32 ::
++ UInt64 ::

@@ -1,0 +1,51 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: System.Time
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types 
++ DateTime :: DateTime represents an absolute time, as represented by the
+  gregorian calendar, 
+
+  #+begin_src relic
+  ;; TODO: determine public API for datetime
+  #+end_src
+
++ Seconds :: Simple time type with broad accuracy, used 
+
+  #+begin_src relic
+  Distinct Named Seconds F64
+  #+end_src
+
++ Timer :: An opaque type
+
+  #+begin_src relic
+  Opaque Timer
+  #+end_src
+
++ PreciseTime :: A time returned by functions with accuracies designed for profiling. 
+
+  #+begin_src relic
+  Struct [.seconds U64] [.picoseconds U64]
+  #+end_src
+
+* Functions 
++ localtime :: Now is the 'basic' time function, which is what you will want most of the
+  time. All other time functions largely differ in details relevant only to
+  performance profiling and similar concerns,  
+
+  #+begin_src relic
+  Proc [] DateTime
+  #+end_src
++ start-timer :: Create a new timer, which will begin counting how long has passed
+
+  #+begin_src relic 
+  Proc [] Timer
+  #+end_src
+
++ time-elapsed :: Return the time elapsed (in seconds) since the timer was started.
+  
+  #+begin_src relic
+  Proc [Timer] Seconds
+  #+end_src

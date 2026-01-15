@@ -1,0 +1,59 @@
+
+
+:root {
+    --fg-primary: #a8a7ab;
+    --bg-primary: #212025;
+
+    --fg-muted: #929096;
+    --bg-muted: #393740;
+
+    --fg-secondary: #83accc;
+    --bg-secondary: #1e2b40;
+
+    --fg-warning: #FFFF00;
+    --fg-error: #FF0000;
+}
+
+.outline-2 {
+    margin-top: 5em;
+}
+
+.outline-2, #postamble {
+    border-top: 0.01em solid #9995;
+}
+
+.content {
+    padding: 0.5em 0em 1em 0em;
+    background-color: var(--bg-primary);
+}
+
+.content div {
+    margin: 0 1em 0 1em;
+}
+
+.content div div {
+    margin: 0 0 1em 0;
+}
+
+html {
+    background-color: var(--bg-primary);
+    color: var(--fg-primary);
+}
+
+a {
+    color: var(--fg-secondary);
+}
+
+pre {
+    background-color: var(--bg-muted);
+    font-family: JuliaMono;
+    font-size: 12px;
+}
+
+table {
+    margin: auto;
+}
+
+#postamble {
+    text-align: center;
+}

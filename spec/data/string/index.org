@@ -1,0 +1,13 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Data.String
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types 
++ String :: 
+#+begin_src relic
+(def String Named String Struct
+  [.memsize U64]
+  [.bytes Address])
+#+end_src

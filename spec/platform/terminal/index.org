@@ -1,0 +1,15 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: System.Terminal
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Functions 
++ read-codepoint ::
+  Read the next input character available in the standard input stream, as a unicode codepoint
+
++ write-codepoint ::
+  Write the next character available to the standard output stream, as a unicode codepoint.
+
++ write-string :: Proc [String] Unit
+  Write a UTF-8 encoded string to the standard output stream.

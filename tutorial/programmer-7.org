@@ -1,0 +1,138 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Tutorial #7: Types
+#+options: num:nil toc:nil
+
+[[file:programmer-6.org][Prev]] [[file:../index.org][Up]] [[file:programmer-8.org][Next]]
+
+Relic has three 'levels' of typechecking, which can be set at the level of the
+module or package. They are:
++ Dynamic :: All typechecking is done dynamically. If a symbol is annotated with
+  a type, then trying to assign it a value with a different type produces a
+  warning (but not an error). Trying to use it at runtime as if it had a
+  different type is an error.
++ Optional :: Typechecking is only done at compile time on symbols which have been annotated.
++ Static :: Typechecking is always done at compile time. If no annotation is
+  present, the system will attempt to infer the type.
+
+#+begin_src relic
+(ann my-name String)
+(def my-name "Alice")
+#+end_src
+
+#+begin_src relic
+(ann add Fn (Int Int) Int)
+(def add fn [x y] + x y)
+
+
+;; Will fail! - proc implicitly sequences actions
+(def add proc [x y] + x y)
+;; ok :)
+(def add proc [x y] (+ x y))
+#+end_src
+
+Relic has subtyping, which follows the rules you would expect:
+#+begin_src relic
+(ann get-x Fn (Struct (x Int)) x)
+(def get-x fn [s] s.x)
+
+;; subtyping!
+(get-x (struct (x 3) (y "hi")))
+#+end_src
+
+Relic has System-F like types
+#+begin_src relic
+(ann id All [A] Fn [A] A)
+(def id fn [x] x)
+#+end_src
+
+Relic can also infer, given sufficient annotation within a term, e.g. 
+#+begin_src relic
+(def id-2 all [A] fn ([x A]) x) ;; infers as All [A] Fn [A] A
+#+end_src
+
+Finally, there is typing of delimited continuations, which have the form
+#+begin_src relic
+(ann eff Delimit Bool Int)
+(def eff (raise true 2))
+
+()
+#+end_src
+
+http://lambda-the-ultimate.org/node/606
+
+
+Example: input.
+
+Desire: connect the value provided to the function with 
+the output type
+
+
+#+begin_src relic
+(variant NTerm A
+  (:fail : NTerm A)
+  (:amb : A -> A -> NTerm A))
+
+ 
+(control (fail 'bad')) : Eff NTerm Int
+
+(control (amb 1 2)) : Eff NTerm Int
+
+
+List Int
+(handle (list (control (:amb 1 2)))
+  (fn rec [v k] match v
+    (:fail -> (list))
+    (:choose v1 v2 -> append (handle (k v1) rec) (handle (k v2) rec))
+;; type rules
+;; handle e f : e has type "Eff <Fam> <Val>"
+;; f has type (All [A] Fn [(Fam A) (Fn [A] Eff Fam Val)] Val) 
+;; expression has type Val
+#+end_src
+
+Ideally, we can stack effects
+
+#+begin_src relic
+(variant NTerm A
+  (:fail : NTerm A)
+  (:amb : A -> A -> NTerm A))
+
+ 
+(control-tag :nterm (fail 'bad')) : Eff' {(Pair :nterm NTerm) (Pair :exception Exception)} Int
+
+(control (amb 1 2)) : Eff NTerm Int
+
+
+List Int
+(handle (list (control (:amb 1 2)))
+  (fn rec [v k] match v
+    (:fail -> (list))
+    (:choose v1 v2 -> append (handle (k v1) rec) (handle (k v2) rec))
+;; type rules
+;; handle e f : e has type "Eff <Fam> <Val>"
+;; f has type (All [A] Fn [(Fam A) (Fn [A] Eff Fam Val)] Val) 
+;; expression has type Val
+#+end_src
+
+#+begin_src relic
+(def )
+#+end_src
+
+
+#+begin_src relic
+(def or! macro fn (l r)
+  `(handle
+     (seq
+       (handle ,l (fn rec (r k)
+          if r
+           (seq
+             (control :true)
+             (handle (k :unit) rec))
+           (control :false)))
+       (handle ,r)
+          if r
+           (seq
+             (control :true)
+             (handle (k :unit) rec))
+           (control :false))))
+     
+#+end_src

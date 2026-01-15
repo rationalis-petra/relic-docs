@@ -1,0 +1,32 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Abstraction.Numeric
+#+options: num:nil toc:nil
+
+* Traits
+#+begin_src relic
+(def Num Trait [A] 
+  [.+ Proc [A A] A]
+  [.- Proc [A A] A]
+  [.* Proc [A A] A]
+  [./ Proc [A A] A]
+  [.zero A]
+  [.one A]
+#+end_src
+
+* Functions
++ + :: All [A] (Proc {(Instance 3 [.+ (Proc [A A] A)] [.- (Proc [A A] A)] [.* (Proc [A A] A)] [./ (Proc [A A] A)] [.zero A] [.one A])} [A A] A)
++  - :: All [A] (Proc {(Instance 3 [.+ (Proc [A A] A)] [.- (Proc [A A] A)] [.* (Proc [A A] A)] [./ (Proc [A A] A)] [.zero A] [.one A])} [A A] A)
++ * :: All [A] (Proc {(Instance 3 [.+ (Proc [A A] A)] [.- (Proc [A A] A)] [.* (Proc [A A] A)] [./ (Proc [A A] A)] [.zero A] [.one A])} [A A] A)
++ / :: All [A] (Proc {(Instance 3 [.+ (Proc [A A] A)] [.- (Proc [A A] A)] [.* (Proc [A A] A)] [./ (Proc [A A] A)] [.zero A] [.one A])} [A A] A)
+
+* Instances
++ i64-num :: Instance 3 [.+ (Proc [I64 I64] I64)] [.- (Proc [I64 I64] I64)] [.* (Proc [I64 I64] I64)] [./ (Proc [I64 I64] I64)] [.zero I64] [.one I64]
++ u64-num :: Instance 3 [.+ (Proc [U64 U64] U64)] [.- (Proc [U64 U64] U64)] [.* (Proc [U64 U64] U64)] [./ (Proc [U64 U64] U64)] [.zero U64] [.one U64]
++ i32-num :: Instance 3 [.+ (Proc [I32 I32] I32)] [.- (Proc [I32 I32] I32)] [.* (Proc [I32 I32] I32)] [./ (Proc [I32 I32] I32)] [.zero I32] [.one I32]
++ u32-num :: Instance 3 [.+ (Proc [U32 U32] U32)] [.- (Proc [U32 U32] U32)] [.* (Proc [U32 U32] U32)] [./ (Proc [U32 U32] U32)] [.zero U32] [.one U32]
++ i16-num :: Instance 3 [.+ (Proc [I16 I16] I16)] [.- (Proc [I16 I16] I16)] [.* (Proc [I16 I16] I16)] [./ (Proc [I16 I16] I16)] [.zero I16] [.one I16]
++ u16-num :: Instance 3 [.+ (Proc [U16 U16] U16)] [.- (Proc [U16 U16] U16)] [.* (Proc [U16 U16] U16)] [./ (Proc [U16 U16] U16)] [.zero U16] [.one U16]
++ i8-num :: Instance 3 [.+ (Proc [I8 I8] I8)] [.- (Proc [I8 I8] I8)] [.* (Proc [I8 I8] I8)] [./ (Proc [I8 I8] I8)] [.zero I8] [.one I8]
++ u8-num :: Instance 3 [.+ (Proc [U8 U8] U8)] [.- (Proc [U8 U8] U8)] [.* (Proc [U8 U8] U8)] [./ (Proc [U8 U8] U8)] [.zero U8] [.one U8]
++ f64-num :: Instance 3 [.+ (Proc [F64 F64] F64)] [.- (Proc [F64 F64] F64)] [.* (Proc [F64 F64] F64)] [./ (Proc [F64 F64] F64)] [.zero F64] [.one F64]
++ f32-num :: Instance 3 [.+ (Proc [F32 F32] F32)] [.- (Proc [F32 F32] F32)] [.* (Proc [F32 F32] F32)] [./ (Proc [F32 F32] F32)] [.zero F32] [.one F32]

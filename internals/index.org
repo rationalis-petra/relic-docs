@@ -1,0 +1,13 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Relic Internal Manual
+#+options: num:nil toc:nil
+
+This is a manual for hacking on and understanding the Tera/Pico implementation
+of the Relic compiler. 
+
+The 
+
+
++ [[file:bootstrapping.org][Bootstrapping]] 
++ [[file:structures/index.org][Data Structures]]
+

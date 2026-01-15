@@ -1,0 +1,20 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Relic Spec - Libraries
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
++ [[file:core/index.org][Core]] :: Fundamental parts of the language. Includes native types, type
+  constructors, reflection utilities etc.
+
++ [[file:lang/index.org][Lang]] :: Dialects available in base Relic.
+
++ [[file:abs/index.org][Abs]] :: Abstractions. 
+
++ [[file:num/index.org][Num]] :: Numbers and Booleans. 
+
++ [[file:data/index.org][Data]] :: Data-structures and their interfaces.
+
++ [[file:platform/index.org][Platform]] :: Contains a wide variety of libraries for interfacing with the
+  underlying platform, including input/output, memory management, windowing,
+  machine word size + architecture and more.

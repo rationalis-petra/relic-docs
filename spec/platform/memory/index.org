@@ -1,0 +1,33 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: System.Memory
+#+options: num:nil toc:nil
+
+* Types
+
+
+* Values
++ std-allocator :: 
+
++ temp-allocator ::
+
++ region-allocator ::
+
+* Functions
++ paged-allocate :: Request virtual memory from the platform, of a given size
+  and with some set of permissions (read, write, execute). You may get back more
+  memory than you requested, as systems often have a (relatively large)
+  pagesize, and can only map memory in multiples of this pagesize.
+
++ free :: Free memory which was allocated with page_allocate
+
++ alloc :: Utility function, shallow wrapper over (free (use std-allocator)) ::
+
++ free ::
+
++ temp-alloc ::
+
++ temp-free ::
+
++ region-alloc ::
+
++ region-free ::

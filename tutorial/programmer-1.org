@@ -1,0 +1,87 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Tutorial #1: Your First Project 
+#+options: num:nil toc:nil
+
+[[file:programmer-0.org][Prev]] [[file:../index.org][Up]] [[file:programmer-2.org][Next]]
+
+
+* A Project
+Now that we have the basics out of the way, it's time to create a new project! 
+From the menu items at the top, click Project → New. You'll need to select (or
+create) a directory for your project. 
+
+By default, viper will create two new files:
+
+#+begin_src ascii
+<projname>
+┣━ <projname>.rls
+┗━ src
+   ┗━ main.rl 
+#+end_src
+
+** Modules, Packages and Systems 
+Typically, Relic code is organized into three levels: Modules, Packages and Systems.
+
+If we look at the file 'main.rl', we can see the first level: Modules.
+
+#+begin_src relic
+(module main
+  (export main))
+
+(def main proc []
+  (write-line "Hello from Relic!"))
+#+end_src
+
+Modules can be nested inside each other, so you can have a module "geometry"
+with an internal module "square", for example. Modules can in turn be collected
+into packages. Unlike Modules, Packages cannot be nested inside each other. A
+package is intended to represent a the code of a complete work, such as a
+library or application.
+
+Finally, there are systems. While modules and packages are built into the
+language, systems are not. Instead, systems are used to build packages, so a
+system is a description of how to build a package. Systems allow you to inject
+compile-time parameters, such as whether a build is debug or release, or whether
+to build a specific feature or use a specific library.
+
+A system is defined in a "Relic System" file, with extension =.rls=. You can see
+that 
+
+#+begin_src relic
+(def <projname> system
+  :package "<projname>"
+  :dependencies (list "base")
+  :src "src"
+  :entry "main/main")
+#+end_src
+
+
+** Conditionals
+
+#+begin_src relic
+(if (< 2 3)
+  (write-line "two is less than three")
+  (write-line "three is less than two??"))
+#+end_src
+
+
+
+** Comparison
+
+*** Exercise: FizzBuzz
+Below is a code snippet you can copy into your 'main.rl' file to complete fizzbuzz.
+
+#+begin_src relic
+(module main
+  (import core.parse)
+  (export main))
+
+(def main proc []
+  (let! input (read-line))
+  (match (run-parser lexing.num input)
+    (:ok num -> print (fizz-buzz num)
+    (:err err -> print err))))
+
+(def fizz-buzz fn [num]
+  <your code here>)
+#+end_src

@@ -1,0 +1,38 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Core.Reflect
+#+options: num:nil toc:nil
+
+The Core.Reflect module allows us to manipulate parts of the runtime, such as
+adding new definitions into modules, dynamically constructing terms and types or
+tuning garbage collection parameters.
+
+* Syntax and Types
++ mk-symbol :: =Fn [String] Symbol=
+
++ unique-symbol :: =Fn [String] Symbol=
+
+* Terms and Types
+
++ build-type :: =Fn [(f Type-Former) (Type-Former-Args f)] Type=
+
++ build-term :: =Fn [(f Term-Former) (Term-Former-Args f)] Term=
+
++ validate-term :: =Fn [Term ValidationParams] (Maybe ValidationError)=
+
+* Packages
+
++ make-package :: =Fn (String) Package=
+
++ package-context :: =Fn (Package) Context=
+
++ add-module :: =Fn (Module String Package) Unit=
+
++ remove-module :: =Fn (String Package) Unit=
+
+* Modules
+
++ make-module :: =Fn () Module=
+
++ lookup-def :: =Fn (Module) (Maybe Int)=
+
++ module-context :: =Fn (Module) Context=

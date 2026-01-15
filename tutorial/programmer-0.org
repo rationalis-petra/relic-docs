@@ -1,0 +1,68 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Tutorial #0: Hi, Relic!
+#+options: num:nil toc:nil
+
+
+Prev [[file:../index.org][Up]] [[file:programmer-1.org][Next]]
+
+* About this Tutorial
+This tutorial is intended to be an introduction to the for developers who have
+already programmed in at least one standard "popular" language such as python,
+C/C++, Java etc. No prior experience is assumed with the many "weird" languages
+Relic draws from (lisp, forth, prolog etc.).
+
+
+* Intro & Installation
+The Relic language is currently early in development and can only be used Via a
+command line REPL. This tutorial covers the usage of both the language and its'
+REPL.
+
+Currently, installation is very manual. You'll need
++ A modern common lisp implementation (e.g. sbcl) with Quicklisp.
++ SDL2 installed on your system.
+
+You can now run the following in your lisp implementation
+#+begin_src lisp
+(ql:quickload :relic)
+(relic:make-executable)
+#+end_src
+
+This should produce an executable named =relic=, which you can invoke from the
+command-line.
+
+* Read, Eval, Print, Loop!
+Once Viper is open, you'll want to start programming right away, so go ahead and
+click the [img] 'Playground' button. You can now start typing code in the
+left-hand box. We'll start with the venerable 'Hello World'. 
+
+#+begin_src relic
+(write-line "Hello, World!")
+#+end_src
+
+Click 'Run' and you should now see "Hello, World!" display on the right-hand
+side. Nice! Unless you've programmed in a LISP before, the way we do this
+function call may strike you as strange - in Relic, instead of writing function
+calls as, e.g. =add(2, 3)=, we write them =(add 2 3)=. This applies to operators
+also - instead of =2 + 3= we write =(+ 2 3)=. This style can be confusing at
+first, but it also empowers a feature of Relic we will meet later: metaprogramming. 
+
+With this knowledge in hand, we can try evaluating some other expressions, e.g. 
+
+#+begin_src relic
+(* 2 3)
+(- 3 (* 4 5))
+(< 2 3)
+#+end_src
+
+Try some of your own!
+
+** Definitions
+#+begin_src relic
+(def your-name "Bob")
+#+end_src
+
+#+begin_src relic
+(write-line (append "Hi, " your-name))
+#+end_src
+
+

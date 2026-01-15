@@ -1,0 +1,28 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Platform.Filesystem
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
+
++ File :: Opaque Handle
+
++ FileError :: 
+  #+begin_src relic
+  Enum :does-not-exist :permission-denied
+  #+end_src
+
++ Mode :: 
+  #+begin_src relic
+  Enum :read :write :read-write
+  #+end_src
+
+* Functions
+
++ open-file :: Proc [String (Enum 64 :read :write :read-write)] (Enum 64 [:ok File] [:err (Enum 64 :DoesNotExist :PermissionDenied)])
++ close-file :: Proc [File] Unit
++ read-byte :: Proc [File] U8
++ read-chunk :: Proc [File (Maybe U64)] (List U8)
++ write-byte :: Proc [File U8] Unit
++ write-chunk :: Proc [File (List U8)] Units

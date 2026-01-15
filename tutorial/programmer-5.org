@@ -1,0 +1,7 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Tutorial #5: Logic Programming
+#+options: num:nil toc:nil
+
+[[file:programmer-4.org][Prev]] [[file:../index.org][Up]] [[file:programmer-6.org][Next]]
+
+* 

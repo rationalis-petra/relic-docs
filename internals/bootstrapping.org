@@ -1,0 +1,30 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Bootstrapping
+#+options: num:nil toc:nil
+
+The Relic compiler is pseudo self-hosted; it is written in a strict subset of
+itself, meaning the compiler can be bootstrapped from a relatively simple
+C interpreter. This 'micro-language' supports the following:
+
++ Variants  (match/:<sym>)
++ Structs   (struct/.field)
++ Objects   (object/;message)
++ Functions (fn [x y ..] e)/app
++ Concatenative Programming [e1 e2 e3]
++ Sequencing (seq)
++ Jumping (with-jumps/jump-to)
+
+Base Package
++ Core/Lang (with the above term formers)
++ Core/Reflect (all)
++ System/Console (all)
+
+
+* Bootstrap Process
+The bootstrap process works as follows: 
++ 1. The Pico compiler is compiled (located in =pico/=) 
++ 2. This interpreter is used to load script =bootstrap.vs=.
++ 3. The bootstrap script loads the compiler into the =pico= interpreter
+     instance. 
++ 4. The script invokes =vsdf.project-to-image= on the "relic" system.
+

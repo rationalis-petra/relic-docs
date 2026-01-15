@@ -1,0 +1,26 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: System.Foreign
+#+options: num:nil toc:nil
+
+#+begin_src relic
+(def CPrimSort Enum
+  :char
+  :short
+  :int 
+  :long
+  :long-long)
+
+(def Signed Enum :signed :unsigned :unspecified)
+
+(def Prim Struct [.sort PrimSort] [.signed Signed])
+
+(def CType Enum
+  [:void]
+  [:prim CPrim]
+  [:ptr (Ptr CType)]
+  [:incomplete Symbol]
+  [:function (AMap Symbol (Ptr CType))]
+  [:struct (Optional Symbol) (AMap Symbol (Ptr CType))]
+  [:union (Optional Symbol) (AMap Symbol (Ptr CType))]
+  [:enum (Optional Symbol)  (AMap Symbol B64)])
+#+end_src

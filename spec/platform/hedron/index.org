@@ -1,0 +1,102 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: System.Hedron
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ Surface :: Type
++ ShaderModule :: Type
++ Pipeline :: Type
++ InputRate :: Type
++ BindingDescription :: Type
++ IndexFormat :: Type
++ InputFormat :: Type
++ DecriptorType :: Type
++ StageType :: Type
++ DescriptorBinding :: Type
++ AttributeDescription :: Type
+
+** Data
++ BufferSort :: Type
++ Buffer :: Type
++ Image :: Type
++ ImageFormat :: Type
+
+** Command Buffers
++ PipelineStage :: Type
+
++ CommandPool :: Type
++ CommandBuffer :: Type
++ CommandBufferUsage :: Type
+
+** Synchronisation
++ Semaphore :: Type
++ Fence :: Type
+
+* Functions
++ create-window-surface :: Proc [Window] Surface
++ resize-window-surface :: Proc [Surface (Pair U32 U32)] Unit
++ destroy-window-surface :: Proc [Surface] Unit
++ num-swapchain-images :: Proc [Surface] U32
++ create-shader-module :: Proc [(List U8)] ShaderModule
++ destroy-shader-module :: Proc [ShaderModule] Unit
+
++ create-pipeline ::
+  #+begin_src relic
+  Proc [(List (Struct [.type (Enum :uniform-buffer)] [.stage-type (Enum :vertex-shader)]))
+        (List (Struct [.binding U32] [.stride U32] [.input-rate (Enum :vertex :instance)]))
+        (List (Struct [.binding U32] [.location U32] [.format (Enum :float-1 :float-2 :float-3)] [.offset U32]))
+        (List ShaderModule)
+        Surface] Pipeline
+  #+end_src
+
++ destroy-pipeline :: Proc [Pipeline] Unit
+
+  
+** Data and Buffers  
++ create-buffer ::
+#+begin_src relic
+Proc [InputRate U64] Buffer
+#+end_src
+  Creates a buffer on the device, 
+  - buffer-type : indicate HOW data is to be fed into shaders, with
+    vertex indicating that it stores vertices, index indicating that it is
+    indexing /into/ the vertex buffer, Uniform indicates that this is global
+    for a single invocation.
+
++ destroy-buffer :: Proc [Buffer] Unit
++ set-buffer-data :: Proc [Buffer Address] Unit
+
++ create-image :: Proc []  
+
+** Commands  
++ create-command-pool :: Proc [] CommandPool
++ destroy-command-pool :: Proc [CommandPool] Unit
++ create-command-buffer :: Proc [CommandPool] CommandBuffer
++ free-command-buffer :: Proc [CommandPool CommandBuffer] Unit
+
++ queue-submit :: Proc [CommandBuffer (Maybe Fence) (List (Pair PipelineStage Semaphore)) (List Semaphore)] Unit
++ queue-present :: Proc [Surface Semaphore U32] Unit
++ command-begin :: Proc [CommandBuffer CommandBufferUsage] Unit
++ command-end :: Proc [CommandBuffer] Unit
++ reset-command-buffer :: Proc [CommandBuffer] Unit
++ command-begin-renderpass :: Proc [CommandBuffer Surface U32] Unit
++ command-end-renderpass :: Proc [CommandBuffer] Unit
++ command-bind-pipeline :: Proc [CommandBuffer Pipeline] Unit
++ command-bind-vertex-buffer :: Proc [CommandBuffer Buffer] Unit
++ command-bind-index-buffer :: Proc [CommandBuffer Buffer (Enum ::u16 ::u32)] Unit
++ command-set-surface :: Proc [CommandBuffer Surface] Unit
++ command-draw :: Proc [CommandBuffer U32 U32 U32 U32] Unit
++ command-draw-indexed :: Proc [CommandBuffer U32 U32 U32 I32 U32] Unit
+
+** Syncrhonisation  
++ create-semaphore :: Proc [] Semaphore
++ destroy-semaphore :: Proc [Semaphore] Unit
++ create-fence :: Proc [] Fence
++ destroy-fence :: Proc [Fence] Unit
++ wait-for-fence :: Proc [Fence] Unit
++ reset-fence :: Proc [Fence] Unit
++ wait-for-device :: Proc [] Unit
++ acquire-next-image :: Proc [Surface Semaphore] (Enum [::image U32] ::resized)
+

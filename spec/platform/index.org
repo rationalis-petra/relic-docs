@@ -1,0 +1,23 @@
+#+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+#+title: Platform
+#+options: num:nil toc:nil
+ 
+[[file:../index.org][up]]
+
++ [[file:memory/index.org][Memory]] :: Garbage collection and Manual Memory management.
+
++ [[file:time/index.org][Time]] :: The Profiling module.
+
++ [[file:thread/index.org][Thread]] :: The system threading library. 
+
++ [[file:terminal/index.org][Terminal]] :: Standard Input and output streams. 
+
++ [[file:filesystem/index.org][Filesystem]] :: For reading/writing files and traversing the filesystem.
+
++ [[file:display/index.org][Display]] :: Interface to system window manager.  
+
++ [[file:foreign/index.org][Foreign]] :: Call functions and use types specified by other ABIs.
+
++ [[file:hedron/index.org][Hedron]] :: Interface to heterogenous compute, particularly graphics card(s).
+
+

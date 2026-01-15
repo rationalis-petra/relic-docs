@@ -1,0 +1,19 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Abstraction.Memory
+#+options: num:nil toc:nil
+
+* Types
++ AllocTable ::
+  #+begin_src relic
+  (Family [A] 
+    [.alloc   Proc [(Ptr A) U64] Address]
+    [.realloc Proc [(Ptr A) Address U64] Address]
+    [.free    Proc [(Ptr A) Address] Unit])
+  #+end_src
+
++ Allocator ::
+  #+begin_src relic
+  (Sealed [A] 
+    [.vtable  (Ptr (AllocTable A))]
+    [.context (Ptr A)])
+  #+end_src

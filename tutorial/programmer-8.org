@@ -1,0 +1,5 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Tutorial #8: Sample Application
+#+options: num:nil toc:nil
+
+[[file:programmer-7.org][Prev]] [[file:../index.org][Up]] Next
