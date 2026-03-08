@@ -35,6 +35,15 @@
     margin: 0 0 1em 0;
 }
 
+.info {
+    border-color: var(--fg-primary);
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: var(--bg-secondary);
+}
+
 html {
     background-color: var(--bg-primary);
     color: var(--fg-primary);

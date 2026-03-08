@@ -2,12 +2,20 @@
 #+title: Relic Internal Manual
 #+options: num:nil toc:nil
 
-This is a manual for hacking on and understanding the Tera/Pico implementation
+This is a manual for hacking on and understanding the Pico implementation
 of the Relic compiler. 
 
 The 
 
+* Building 
 
+* Architecture
 + [[file:bootstrapping.org][Bootstrapping]] 
 + [[file:structures/index.org][Data Structures]]
 
+* Parsing
+
+* Analysis
+
+* Codegen 
++ [[file:codegen/x86.org][x86 backend]]

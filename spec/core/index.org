@@ -3,8 +3,111 @@
 #+options: num:nil toc:nil
 
 
-+ [[file:reflect/index.org][Reflect]] :: =Module=. 
+* Types
 
-+ [[file:types/index.org][Types]] :: =Module=. 
- 
-+ [[file:terms/index.org][Terms]] :: =Module=. 
+* Syntactic Terms/Formers
++ def :: Define a new value. Can only be used as a toplevel term in a module.
+
++ declare :: Declare that a value has certain properties. Canonly be used as a
+  toplevel term in a module.
+
++ import :: Can only be used in scripts.
+
++ proc :: Create a new procedure (function). 
+
++ all :: Create a new universally quantified behaviour.
+
++ apply :: explicitly apply a function to some value(s).
+
++ seal :: Create a new term that will seal away a type from a value.  
+
++ unseal :: 
+
++ macro :: Convert a procedure into a macro.
+
++ . ::
+
++ dynamic ::
+
++ use ::
+
++ modify ::
+
++ bind ::
+
++ instance ::
+
++ sturct ::
+
++ : ::
+
++ match ::
+
++ if ::
+
++ cond ::
+
++ labels ::
+
++ go-to ::
+
++ with-reset ::
+
++ reset-to ::
+
++ set ::
+
++ let ::
+
+** Type Casting and Manipulation
++ is ::
+
++ into ::
+
++ out-of ::
+
++ name ::
+
++ widen ::
+
++ narrow ::
+
++ unname ::
+
++ size-of ::
+
++ align-of ::
+
++ offset-of ::
+
+
+** Type formers
++ Proc ::
++ Struct ::
++ Enum ::
++ Reset ::
++ Dynamic ::
++ Named ::
++ Distinct ::
++ Opaque ::
++ Trait ::
++ All ::
++ Sealed ::
++ Family ::
++ LiftCType ::
+
++ Type ::
++ Unit ::
++ Bool ::
++ Address ::
++ I64 ::
++ I32 ::
++ I16 ::
++ I8 ::
++ U64 ::
++ U32 ::
++ U16 ::
++ U8 ::
++ F32 ::
++ F64 ::
+

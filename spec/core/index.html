@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-05-22 Wed 16:18 -->
+<!-- 2026-03-08 Sun 15:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Core</title>
-<meta name="author" content="Connor Redfern" />
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -198,17 +198,186 @@
 <body>
 <div id="content" class="content">
 <h1 class="title">Core</h1>
+<div id="outline-container-org72d9d7c" class="outline-2">
+<h2 id="org72d9d7c">Types</h2>
+</div>
+
+<div id="outline-container-org06b4f3f" class="outline-2">
+<h2 id="org06b4f3f">Syntactic Terms/Formers</h2>
+<div class="outline-text-2" id="text-org06b4f3f">
 <dl class="org-dl">
-<dt><a href="reflect/index.html">Reflect</a></dt><dd><code>Module</code>.</dd>
+<dt>def</dt><dd>Define a new value. Can only be used as a toplevel term in a module.</dd>
 
-<dt><a href="types/index.html">Types</a></dt><dd><code>Module</code>.</dd>
+<dt>declare</dt><dd>Declare that a value has certain properties. Canonly be used as a
+toplevel term in a module.</dd>
 
-<dt><a href="terms/index.html">Terms</a></dt><dd><code>Module</code>.</dd>
+<dt>import</dt><dd>Can only be used in scripts.</dd>
+
+<dt>proc</dt><dd>Create a new procedure (function).</dd>
+
+<dt>all</dt><dd>Create a new universally quantified behaviour.</dd>
+
+<dt>apply</dt><dd>explicitly apply a function to some value(s).</dd>
+
+<dt>seal</dt><dd>Create a new term that will seal away a type from a value.</dd>
+
+<dt>unseal</dt><dd></dd>
+
+
+<dt>macro</dt><dd>Convert a procedure into a macro.</dd>
+
+<dt>.</dt><dd></dd>
+
+
+<dt>dynamic</dt><dd></dd>
+
+
+<dt>use</dt><dd></dd>
+
+
+<dt>modify</dt><dd></dd>
+
+
+<dt>bind</dt><dd></dd>
+
+
+<dt>instance</dt><dd></dd>
+
+
+<dt>sturct</dt><dd></dd>
+
+
+<dt>:</dt><dd></dd>
+
+
+<dt>match</dt><dd></dd>
+
+
+<dt>if</dt><dd></dd>
+
+
+<dt>cond</dt><dd></dd>
+
+
+<dt>labels</dt><dd></dd>
+
+
+<dt>go-to</dt><dd></dd>
+
+
+<dt>with-reset</dt><dd></dd>
+
+
+<dt>reset-to</dt><dd></dd>
+
+
+<dt>set</dt><dd></dd>
+
+
+<dt>let</dt><dd></dd>
 </dl>
 </div>
+<div id="outline-container-org1ed088c" class="outline-3">
+<h3 id="org1ed088c">Type Casting and Manipulation</h3>
+<div class="outline-text-3" id="text-org1ed088c">
+<dl class="org-dl">
+<dt>is</dt><dd></dd>
+
+
+<dt>into</dt><dd></dd>
+
+
+<dt>out-of</dt><dd></dd>
+
+
+<dt>name</dt><dd></dd>
+
+
+<dt>widen</dt><dd></dd>
+
+
+<dt>narrow</dt><dd></dd>
+
+
+<dt>unname</dt><dd></dd>
+
+
+<dt>size-of</dt><dd></dd>
+
+
+<dt>align-of</dt><dd></dd>
+
+
+<dt>offset-of</dt><dd></dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-orgbdd8184" class="outline-3">
+<h3 id="orgbdd8184">Type formers</h3>
+<div class="outline-text-3" id="text-orgbdd8184">
+<dl class="org-dl">
+<dt>Proc</dt><dd></dd>
+
+<dt>Struct</dt><dd></dd>
+
+<dt>Enum</dt><dd></dd>
+
+<dt>Reset</dt><dd></dd>
+
+<dt>Dynamic</dt><dd></dd>
+
+<dt>Named</dt><dd></dd>
+
+<dt>Distinct</dt><dd></dd>
+
+<dt>Opaque</dt><dd></dd>
+
+<dt>Trait</dt><dd></dd>
+
+<dt>All</dt><dd></dd>
+
+<dt>Sealed</dt><dd></dd>
+
+<dt>Family</dt><dd></dd>
+
+<dt>LiftCType</dt><dd></dd>
+
+
+<dt>Type</dt><dd></dd>
+
+<dt>Unit</dt><dd></dd>
+
+<dt>Bool</dt><dd></dd>
+
+<dt>Address</dt><dd></dd>
+
+<dt>I64</dt><dd></dd>
+
+<dt>I32</dt><dd></dd>
+
+<dt>I16</dt><dd></dd>
+
+<dt>I8</dt><dd></dd>
+
+<dt>U64</dt><dd></dd>
+
+<dt>U32</dt><dd></dd>
+
+<dt>U16</dt><dd></dd>
+
+<dt>U8</dt><dd></dd>
+
+<dt>F32</dt><dd></dd>
+
+<dt>F64</dt><dd></dd>
+</dl>
+</div>
+</div>
+</div>
+</div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2024-05-22 Wed 16:18</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-03-08 Sun 15:49</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

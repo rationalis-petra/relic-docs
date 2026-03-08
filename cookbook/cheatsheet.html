@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:52 -->
+<!-- 2026-02-22 Sun 10:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Relic Spec - Libraries</title>
+<title>Relic Cheatsheet</title>
 <meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -194,49 +194,175 @@
   .org-svg { }
 </style>
 <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+<script>
+  window.MathJax = {
+    tex: {
+      ams: {
+        multlineWidth: '85%'
+      },
+      tags: 'ams',
+      tagSide: 'right',
+      tagIndent: '.8em'
+    },
+    chtml: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    svg: {
+      scale: 1.0,
+      displayAlign: 'center',
+      displayIndent: '0em'
+    },
+    output: {
+      font: 'mathjax-modern',
+      displayOverflow: 'overflow'
+    }
+  };
+</script>
+
+<script
+  id="MathJax-script"
+  async
+  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+</script>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Relic Spec - Libraries</h1>
+<h1 class="title">Relic Cheatsheet</h1>
+<div id="outline-container-org36a507f" class="outline-2">
+<h2 id="org36a507f">Literals</h2>
+<div class="outline-text-2" id="text-org36a507f">
 <p>
-<a href="../index.html">up</a>
+Integers: 0, 1, -1, 64, etc.
 </p>
+<ul class="org-ul">
+<li>default to type I64</li>
+<li>use <code>is</code> or inference to change this default</li>
+</ul>
 
-<dl class="org-dl">
-<dt><a href="core/index.html">Core</a></dt><dd>Fundamental parts of the language. Includes native types, type
-constructors, reflection utilities etc.</dd>
+<p>
+Strings: "hello,world!"
+</p>
+<ul class="org-ul">
+<li>currently no special characters (\n etc.)</li>
+<li>live for as long as their parent expression or definition</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orge3929f5" class="outline-2">
+<h2 id="orge3929f5">Structs</h2>
+<div class="outline-text-2" id="text-orge3929f5">
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Struct type (structural/anonymous)
+</span>(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Point</span> <span style="color: #9d81ba;">Struct</span>
+  [<span style="color: #7CF083;">.x</span> <span style="color: #62D2DB;">I64</span>]
+  [<span style="color: #7CF083;">.y</span> <span style="color: #62D2DB;">I64</span>] [<span style="color: #7CF083;">.z</span> <span style="color: #62D2DB;">I64</span>])
 
-<dt><a href="extra/index.html">Extra</a></dt><dd>Language sugar such as <code>loop</code> and <code>when</code>.</dd>
+(<span style="color: #9d81ba;">def</span> point <span style="color: #9d81ba;">struct</span> [<span style="color: #7CF083;">.x</span> <span style="color: #0D9C94;">3</span>] [<span style="color: #7CF083;">.y</span> <span style="color: #0D9C94;">4</span>] [<span style="color: #7CF083;">.z</span> <span style="color: #0D9C94;">5</span>])
 
-<dt><a href="abs/index.html">Abs</a></dt><dd>Abstractions. The modules in this module define and provide
-implementations for various traits, such as <code>Num</code> and <code>Show</code>.</dd>
+(i64<span style="color: #7CF083;">.</span>+ point<span style="color: #7CF083;">.x</span> point<span style="color: #7CF083;">.y</span>)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org50edc5b" class="outline-2">
+<h2 id="org50edc5b">Enums</h2>
+<div class="outline-text-2" id="text-org50edc5b">
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Maybe</span> <span style="color: #9d81ba;">Enum</span> [<span style="color: #7CF083;">:none</span>] [<span style="color: #7CF083;">:some</span> <span style="color: #62D2DB;">I64</span>])
 
-<dt><a href="num/index.html">Num</a></dt><dd>Numbers and Booleans.</dd>
+(<span style="color: #9d81ba;">def</span> m (<span style="color: #62D2DB;">Maybe</span><span style="color: #7CF083;">:some</span> <span style="color: #0D9C94;">3</span>))
 
-<dt><a href="data/index.html">Data</a></dt><dd>Data-structures and their interfaces.</dd>
+(<span style="color: #9d81ba;">def</span> n <span style="color: #62D2DB;">Maybe</span><span style="color: #7CF083;">:none</span>)
 
-<dt><a href="platform/index.html">Platform</a></dt><dd>Contains a wide variety of libraries for interfacing with the
-underlying platform, including input/output, memory management, windowing,
-machine word size + architecture and more.</dd>
-</dl>
+(<span style="color: #9d81ba;">match</span> m [(<span style="color: #7CF083;">:some</span> x) x] [(<span style="color: #7CF083;">:none</span>) <span style="color: #0D9C94;">0</span>])
+(<span style="color: #9d81ba;">match</span> n [(<span style="color: #7CF083;">:some</span> x) x] [(<span style="color: #7CF083;">:none</span>) <span style="color: #0D9C94;">0</span>])
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org975c64c" class="outline-2">
+<h2 id="org975c64c">Modules</h2>
+<div class="outline-text-2" id="text-org975c64c">
+<div class="org-src-container">
+<pre class="src src-relic">
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org746ffbe" class="outline-2">
+<h2 id="org746ffbe">Traits/Instances</h2>
+<div class="outline-text-2" id="text-org746ffbe">
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Addable</span> <span style="color: #62D2DB;">Trait</span> [<span style="color: #62D2DB;">A</span>] 
+  [<span style="color: #7CF083;">.zero</span> <span style="color: #62D2DB;">A</span>] 
+  [<span style="color: #7CF083;">.add</span> <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">A</span> <span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">A</span>])
 
+<span style="color: #454459;">;; </span><span style="color: #454459;">Not working! (check what is regular/expected syntax?)
+</span><span style="color: #454459;">;; </span><span style="color: #454459;">seems to be a bug in application!
+</span>(<span style="color: #9d81ba;">def</span> addable-i64 instance (<span style="color: #62D2DB;">Addable</span> <span style="color: #62D2DB;">I64</span>)
+  [<span style="color: #7CF083;">.zero</span> <span style="color: #0D9C94;">0</span>]
+  [<span style="color: #7CF083;">.add</span> i64<span style="color: #7CF083;">.</span>+])
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org4151d47" class="outline-2">
+<h2 id="org4151d47">Dynamic</h2>
+<div class="outline-text-2" id="text-org4151d47">
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> dvar <span style="color: #9d81ba;">dynamic</span> <span style="color: #0D9C94;">10</span>) <span style="color: #454459;">;; </span><span style="color: #454459;">new dynamic variable
+</span>
+(<span style="color: #9d81ba;">use</span> dvar) <span style="color: #454459;">;; </span><span style="color: #454459;">=&gt; 10
+</span>
+(<span style="color: #9d81ba;">def</span> get-dvar <span style="color: #9d81ba;">proc</span> [] (<span style="color: #9d81ba;">use</span> dvar))
 
-<dl class="org-dl">
-<dt><a href="meta/index.html">Meta</a></dt><dd>Metaprogramming</dd>
+(<span style="color: #9d81ba;">bind</span> [x <span style="color: #0D9C94;">3</span>] (get-dvar)) <span style="color: #454459;">;; </span><span style="color: #454459;">=&gt; 3
+</span>
+(<span style="color: #9d81ba;">use</span> dvar) <span style="color: #454459;">;; </span><span style="color: #454459;">=&gt; 10</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org3f11526" class="outline-2">
+<h2 id="org3f11526">Labels &amp; Branching</h2>
+<div class="outline-text-2" id="text-org3f11526">
+<p>
+Conditional
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">if</span> e1 e2 e3)
+</pre>
+</div>
 
-<dt><a href="debug/index.html">Debug</a></dt><dd>Debug Assistants.</dd>
+<p>
+Labels
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">labels</span>
+ [] )
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1a6595d" class="outline-2">
+<h2 id="org1a6595d">Foreign Function Interface (FFI)</h2>
+<div class="outline-text-2" id="text-org1a6595d">
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">reinterpret-relic</span> &lt;type&gt; &lt;body&gt;)
+(reinterpret-native &lt;type&gt; &lt;body&gt;)
 
-<dt><a href="dev/index.html">Dev</a></dt><dd>Reserved Module for Implementors.</dd>
-
-<dt><a href="foreign/index.html">Foreign</a></dt><dd>Foreign Function Interface</dd>
-
-<dt><a href="user/index.html">User</a></dt><dd>The User module does not (by itself) have any special definitions, but
-it does import other modules. It is the module the repl starts in.</dd>
-</dl>
+(<span style="color: #9d81ba;">convert-relic</span> &lt;type&gt; &lt;body&gt;)
+(<span style="color: #9d81ba;">convert-native</span> &lt;type&gt; &lt;body&gt;)
+</pre>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-08 Sun 15:52</p>
+<p class="date">Created: 2026-02-22 Sun 10:34</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

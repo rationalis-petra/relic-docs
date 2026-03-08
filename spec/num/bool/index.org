@@ -1,0 +1,20 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Num.Bool
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ Boolean :: Kind 
+
+* Functions
++ mk-list :: All [A] (Proc [U64 U64] (List A))
++ free-list :: All [A] (Proc [(List A)] Unit)
++ elt :: All [A] (Proc [U64 (List A)] A)
++ eset :: All [A] (Proc [U64 A (List A)] Unit)
++ each :: All [A] (Proc [(Proc [A] Unit) (List A)] Unit)
++ map :: All [A B] (Proc [(Proc [A] B) (List A)] (List B))
+
+
++ push :: All [A] (Proc [A (Dynamic List A)] Unit)
++ pop :: All [A] (Proc [(Dynamic List A)] A)

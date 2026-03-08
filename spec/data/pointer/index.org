@@ -1,0 +1,40 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Data.Pointer
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ List :: Kind [Type] Type
+#+begin_src relic
+(def Ptr Named Ptr Family [A] Address)
+#+end_src
+  
+
+* Functions
++ null :: All [A] (Ptr A)
+  Null will create a new null pointer of type =A=. Note that because it takes no
+  arguments, it is more likely you will need to provide the type of
+  the pointer, e.g. =(null {I64})=
+
++ get :: All [A] Proc [(Ptr A) A]
+  Get the value at the address pointed to by the pointer.
+
++ set :: All [A] Proc [(Ptr A)] 
+  Set the value at the address pointed to by the pointer.
+
++ new :: All [A] Proc [A] (Ptr A) 
+  Create a new pointer, pointing to the value provided to the procedure. The
+  memory for this pointer is allocated from =current-allocator=.
+
++ delete :: All [A] Proc [(Ptr A)] Unit
+  Release the memory associated with the pointer, 
+  memory for this pointer assumed have to be allocated from the
+  =current-allocator=, which is used to free the memory.
+
++ local :: All [A] Proc [A] (Ptr A) 
+  Create a new pointer, pointing to the value provided to the procedure. The
+  memory for this pointer is allocated from the stack, so it does not need to be
+  deleted. Take care not to return a local =Ptr= from the function which created
+  it, as the memory is no longer valid when the function returns.
+

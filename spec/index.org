@@ -7,9 +7,10 @@
 + [[file:core/index.org][Core]] :: Fundamental parts of the language. Includes native types, type
   constructors, reflection utilities etc.
 
-+ [[file:lang/index.org][Lang]] :: Dialects available in base Relic.
++ [[file:extra/index.org][Extra]] :: Language sugar such as =loop= and =when=.
 
-+ [[file:abs/index.org][Abs]] :: Abstractions. 
++ [[file:abs/index.org][Abs]] :: Abstractions. The modules in this module define and provide
+  implementations for various traits, such as =Num= and =Show=.
 
 + [[file:num/index.org][Num]] :: Numbers and Booleans. 
 
@@ -18,3 +19,15 @@
 + [[file:platform/index.org][Platform]] :: Contains a wide variety of libraries for interfacing with the
   underlying platform, including input/output, memory management, windowing,
   machine word size + architecture and more.
+
+
++ [[file:meta/index.org][Meta]] :: Metaprogramming
+
++ [[file:debug/index.org][Debug]] :: Debug Assistants. 
+
++ [[file:dev/index.org][Dev]] :: Reserved Module for Implementors.
+
++ [[file:foreign/index.org][Foreign]] :: Foreign Function Interface
+
++ [[file:user/index.org][User]] :: The User module does not (by itself) have any special definitions, but
+  it does import other modules. It is the module the repl starts in.

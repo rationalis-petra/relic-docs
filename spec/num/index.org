@@ -2,17 +2,12 @@
 #+title: Num
 #+options: num:nil toc:nil
 
-+ Bool ::
-+ Byte ::
-+ Integer ::
-+ Rational ::
++ [[file:bool/index.org][Bool]] :: Boolean Module  
 
-+ Int8 ::
-+ Int16 ::
-+ Int32 ::
-+ Int64 ::
++ [[file:sint/index.org][(I8 I16 I32 I64)]] :: There are modules for 8, 16, 32 and 64-bit signed
+  integers.
 
-+ UInt8 ::
-+ UInt16 ::
-+ UInt32 ::
-+ UInt64 ::
++ [[file:uint/index.org][(U8 U16 U32 U64)]] :: There are modules for 8, 16, 32 and 64-bit unsigned
+  integers.
+
++ [[file:float/index.org][(F32 F64)]] :: Floating point numbers.

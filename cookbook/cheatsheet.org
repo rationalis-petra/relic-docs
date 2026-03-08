@@ -1,4 +1,4 @@
-#+html_head: <link rel="stylesheet" href="doc-style.css" type="text/css"/>
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
 #+title: Relic Cheatsheet 
 #+options: num:nil toc:nil
 

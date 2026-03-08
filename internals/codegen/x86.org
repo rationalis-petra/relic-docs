@@ -1,0 +1,27 @@
+#+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+#+title: X86 Code Generation
+#+options: num:nil toc:nil
+
+
+* Implementation of Features
+
+** Dynamic Values
+Dynamic values 
+
+*** Dynamic
+Global dynamic variables must always have a value, so memory is allocated for
+each one upon creation. A pointer to this memory, it's "default value" along
+with other information such as size is then pushed onto a global array
+=dynamic_var_metadata=. The entire creation process is handled by the
+=mk_dynamic_var= function, located in "pico/values". This function returns the
+index of the global 
+
+*** Local
+
+*** Bind
+
+*** Use
+
+** References
+
+

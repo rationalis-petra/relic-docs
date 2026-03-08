@@ -3,11 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-04-15 Tue 20:25 -->
+<!-- 2026-02-22 Sun 20:28 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Relic Homepage</title>
-<meta name="author" content="Connor Redfern" />
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
   #content { max-width: 60em; margin: auto; }
@@ -199,7 +199,7 @@
 <div id="content" class="content">
 <h1 class="title">Relic Homepage</h1>
 <p>
-<a href="tutorial/programmer-0.html">Tutorial</a> • <a href="spec/index.html">Spec</a> • <a href="cheatsheet.html">Cheatsheet</a> • <a href="internals/index.html">Internals</a>
+<a href="tutorial/programmer-0.html">Tutorial</a> • <a href="cookbook/index.html">Cookbook</a> • <a href="discussions/index.html">Discussions</a> • <a href="spec/index.html">Spec</a>  • <a href="internals/index.html">Internals</a>
 </p>
 
 
@@ -208,21 +208,25 @@ Relic is a language designed for the at-home hobby programmer. It has the
 following design goals:
 </p>
 <ol class="org-ol">
-<li>Provide a powerful tool which enables rapid development and
-iteration. Further, it should be possible to easily develop domain-specific
-tools to assist an individual programmer.</li>
-<li>Enable a broad range of styles, to suit the taste of the individual
-programmer. This includes powerful introspection and metaprogramming
-facilities.</li>
-<li>Encompass a broad range of potential performance vs abstraction
-profiles. Relic should enable all kinds of projects, such as embedded
-development, performant programs such as games, or highly abstract programs
-with complex type constraints or even dynamic types.</li>
+<li>Enable a broad range of abstraction levels. To suit the needs of a specific
+problem, it should be possible to write programs that are much more
+high-level and ignore some details (such as scripts) and programs which</li>
+<li>Expose the capabilities of the host platform. It can be frustrating to have
+to reach out to another language for capabilities of the device your program
+runs on, such as a specific performance threshold, the ability to create
+windows, or access the network or even to access other computation devices
+such as graphics cards. It should be possible to write your desired program
+for your target platform in relic without having to reach for a library in
+another langauge.</li>
+<li>Provide a powerful tool which is itself tool-friendly and tool-aware. This
+means that it should be design such that it easy to design a build-system,
+IDE, debugger etc. for. Furthermore, it should be possible for programmers to
+themselves write programs which integrate well with these tools.</li>
 </ol>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2025-04-15 Tue 20:25</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-02-22 Sun 20:28</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

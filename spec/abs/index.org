@@ -4,8 +4,8 @@
 
 [[file:../index.org][up]]
 
-+ [[file:memory/index.org][Memory]] ::
++ [[file:num/index.org][Num]] ::
 
-+ [[file:numeric/index.org][Numeric]] ::
++ [[file:org/index.org][Ord]] ::
 
 + [[file:show/index.org][Show]] ::

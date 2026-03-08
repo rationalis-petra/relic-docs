@@ -1,0 +1,10 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Num.Float
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ Boolean :: Kind 
+
+* Functions

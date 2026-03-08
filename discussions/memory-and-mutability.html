@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2026-02-22 Sun 21:31 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Discussion: Memory and Mutability</title>
+<meta name="author" content="Connor Fynn Redfern" />
+<meta name="generator" content="Org Mode" />
+<style type="text/css">
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">Discussion: Memory and Mutability</h1>
+<div id="outline-container-org45e668e" class="outline-2">
+<h2 id="org45e668e">Relic, Memory and Mutability</h2>
+<div class="outline-text-2" id="text-org45e668e">
+<p>
+Two fundamental divides in the design of programming languages are how they
+handle memory and mutation. 
+</p>
+</div>
+</div>
+<div id="outline-container-orge3dfb42" class="outline-2">
+<h2 id="orge3dfb42">In The Beginning: C</h2>
+</div>
+
+
+
+
+<div id="outline-container-org1532ca1" class="outline-2">
+<h2 id="org1532ca1">And Then: Garbage Collection</h2>
+</div>
+
+<div id="outline-container-orgb40c1bd" class="outline-2">
+<h2 id="orgb40c1bd">An Alterantive: Borrow Checking</h2>
+<div class="outline-text-2" id="text-orgb40c1bd">
+</div>
+<div id="outline-container-orgba2cbdd" class="outline-3">
+<h3 id="orgba2cbdd">Criticisms of Borrow Checking</h3>
+<div class="outline-text-3" id="text-orgba2cbdd">
+<ul class="org-ul">
+<li>Borrow-checking encourages programmers to focus more on satisfying the borrow
+checker rather than managing memory. This can lead to architectures which
+avoid sharing data by making use of many deep copies, and which constantly
+allocate and deallocate data for each function-call. This is safe, but
+sacrifices performance (an advantage manual memory management supposed</li>
+<li>Borrow-checking encourages design patterns where programmers effectively
+re-implement manual memory, e.g. by storing indexes into large arrays
+instead of pointers. These can have the same issues (use-after free,
+double-free, leaks etc.) but the extra indirection hurts the ability of, e.g.
+sanitisation tools to detect these issues. While this is still superior from a
+security point-of-view, it can still cause similar issues (crashes/unusual
+bugs due to unintentional memory re-use).</li>
+<li>The borrow checker adds significant mental overhead,</li>
+</ul>
+
+
+<p>
+Interoperating Safe and Unsafe Rust can make code more bug-prone than other
+unsafe languages, particularly modern ones such as zig, odin etc. This is
+because the compiler decides where to place allocations and frees based on a
+number of aliasing and borrowing rules, which must be followed in unsafe code.
+This can make the contracts of lifetimes etc. between unsafe and safe functions
+significany more complex than a language where the developer has control of all
+memory allocation
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge6db543" class="outline-2">
+<h2 id="orge6db543">Relic's Approach</h2>
+<div class="outline-text-2" id="text-orge6db543">
+<p>
+When analysing the design of the memory management system, we must consider
+the three design goals of relic:
+</p>
+<ol class="org-ol">
+<li>Relic should be expose the capabilities of the host platform. In particular,
+to unlock both the full performance potential of the host device and the
+ability to write certain programs (such as drivers or language runtimes with garbage
+collectors), manual memory management and mutation are a must.</li>
+<li>Relic should enable a broad range of styles. This means that we should offer
+abstractions that let a programmer opt-in to automatic memory management.</li>
+<li>Relic should be aware of and freindly to tooling. This means that it should be
+easy to write bug-detection software (such as sanitisers) which can track
+memory and detect bugs at runtime.</li>
+</ol>
+</div>
+<div id="outline-container-org7f40d23" class="outline-3">
+<h3 id="org7f40d23">Embracing Unsafety: the Address</h3>
+<div class="outline-text-3" id="text-org7f40d23">
+<p>
+Having determined (from point 1) that we require manual memory management, we
+look at other languages which offer it and find that they have pointers.
+Pointers, are simply a thin wrapper over the concept of an address, i.e. a
+number which points to a location in memory. So, Relic has an address type
+together with two fundamental operations: load and store.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">ann</span> <span style="color: #62D2DB;">Address</span> <span style="color: #9d81ba;">Type</span>)
+
+(<span style="color: #9d81ba;">ann</span> load <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">Address</span>] <span style="color: #62D2DB;">A</span>)
+(<span style="color: #9d81ba;">ann</span> store <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">Address</span> <span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Unit</span>)
+</pre>
+</div>
+
+<p>
+It may seem odd, coming from other languages, to have load and store be
+functions, but doing the advantage that tools or tests may substitute the
+implementation of load and store for one which perform certain diagnostics or
+checks, such as whether the address is NULL or whether it lies within an 
+expected region of memory. Additionally, when not testing, the compiler can
+avoid paying a performance overhead by simply inlining the calls, leaving us
+with the same machine code that could have been generated by, for example, a C
+program.
+</p>
+
+<p>
+Assuming that we have access to a 'malloc' and 'free' from the platform, we now
+have a nearly complete set of capabilities. While it may appear that this design
+will face issues with type-safety, as having an untyped address may make it easy
+to mix-up what type is supposed to be stored at what address, we can actually
+reproduce a Pointer API with a module. The code below demonstrates a module
+which implements a simple API. While it does not handle error conditions such as
+an allocation failure, it does completely prevent uninitialized memory issues.
+Additionally, one may in principle similarly add some checks to the pointer
+funcitons when running in debug/test mode.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> pointer
+ (<span style="color: #9d81ba;">import</span> (core :<span style="color: #9d81ba;">all</span>))
+ (<span style="color: #9d81ba;">export</span> :<span style="color: #9d81ba;">all</span>))
+
+(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Pointer</span> <span style="color: #9d81ba;">Family</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Opaque</span> <span style="color: #62D2DB;">Address</span>)
+
+(<span style="color: #9d81ba;">ann</span> get <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">A</span>)
+(<span style="color: #9d81ba;">def</span> get <span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [ptr] (load {<span style="color: #62D2DB;">A</span>} (<span style="color: #9d81ba;">out-of</span> (<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>) ptr)))
+
+(<span style="color: #9d81ba;">ann</span> set <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>) <span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Unit</span>)
+(<span style="color: #9d81ba;">def</span> get <span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [val ptr] (store {<span style="color: #62D2DB;">A</span>} (<span style="color: #9d81ba;">out-of</span> (<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>) ptr) val))
+
+
+(<span style="color: #9d81ba;">ann</span> new <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">A</span>] (<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>))
+(<span style="color: #9d81ba;">def</span> new <span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [ptr] (load {<span style="color: #62D2DB;">A</span>} (<span style="color: #9d81ba;">out-of</span> (<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>) ptr)))
+
+(<span style="color: #9d81ba;">ann</span> delete <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">Unit</span>)
+(<span style="color: #9d81ba;">def</span> delete <span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [ptr] (free (<span style="color: #9d81ba;">out-of</span> (<span style="color: #62D2DB;">Pointer</span> <span style="color: #62D2DB;">A</span>))))
+</pre>
+</div>
+
+<p>
+You may note that there are some things the above API cannot handle, however,
+such as NULL pointers or the ability to index values in a contiguous array of
+memory. We could add a specific <code>NULL</code> address, and the ability to add/subbtrat numbers
+to/from addresses, but all of these capabilities can be achieved with a much
+simpler API - a pair of functions which can wrap a number as an address, or
+unwrap an address to get a number. Given that addresses are implemented as
+numbers, both of these 'functions' are effectively no-ops which serve primarily
+to perform type-casting.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">address-to-num</span> <span style="color: #7CF083;">::</span> <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">Address</span>] <span style="color: #62D2DB;">U64</span>)
+(<span style="color: #9d81ba;">num-to-address</span> <span style="color: #7CF083;">::</span> <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">U64</span>] <span style="color: #62D2DB;">Address</span>)
+</pre>
+</div>
+
+<p>
+Thus, with one core type and 4 functions, we can replicate all the needed
+functions of pointers in Relic. This gives us a final pointer/memory API with
+only 1 type and 5 functions.  
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #62D2DB;">Address</span> <span style="color: #9d81ba;">Type</span>)
+
+(<span style="color: #9d81ba;">ann</span> load <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">Address</span>] <span style="color: #62D2DB;">A</span>)
+(<span style="color: #9d81ba;">ann</span> store <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">Address</span> <span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Unit</span>)
+(<span style="color: #9d81ba;">ann</span> <span style="color: #9d81ba;">address-to-num</span> <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">Address</span>] <span style="color: #62D2DB;">U64</span>)
+(<span style="color: #9d81ba;">ann</span> <span style="color: #9d81ba;">num-to-address</span> <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">U64</span>] <span style="color: #62D2DB;">Address</span>)
+</pre>
+</div>
+</div>
+<div id="outline-container-org8806f77" class="outline-4">
+<h4 id="org8806f77">What was left Behind</h4>
+<div class="outline-text-4" id="text-org8806f77">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-02-22 Sun 21:31</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

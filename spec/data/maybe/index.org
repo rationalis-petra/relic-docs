@@ -1,0 +1,18 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Data.Maybe
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ List :: Kind [Type] Type
+#+begin_src relic
+(def Maybe  Named Maybe Family [A] Enum
+  [:some A]
+  :none)
+#+end_src
+  
+
+* Macros
+
+* Functions

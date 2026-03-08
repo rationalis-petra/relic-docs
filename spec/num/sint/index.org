@@ -1,0 +1,33 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Num.(I8 I16 I32 I64)
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
+Modules: The 
+
+* Types
+
+* Functions
++ (- a b) :: return a - b, i.e. b subtracted from a
++ (+ a b) :: return a + b, i.e. b added to a
++ (* a b) :: return a * b, i.e. a multiplied by b
++ (/ a b) :: return a / b, i.e. a divided by b.
++ (mod a b) :: return a mod b, i.e. the remainder left after dividing a by b.
+
++ (< a b) :: return true iff a < b
++ (<= a b) :: return true iff a <= b
++ (> a b) :: return true iff a > b
++ (>= a b) :: return true iff a >= b
++ (= a b) :: check signed integers for equality
++ (!= a b) :: check signed integers for inequality
+
++ (and a b) :: Bitwise and
++ (or a b) :: Bitwise or
++ (shl a b) :: 
++ (shr a b) ::
++ (byte-swap a b) :: Swap the byte order of the integer. Can be used if, e.g. changing
+  the endianness of an integer for serialization/deserialization.
+
++ (to-string a) :: 
