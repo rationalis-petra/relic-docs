@@ -7,27 +7,158 @@
 
 * Syntactic Terms/Formers
 + def :: Define a new value. Can only be used as a toplevel term in a module.
+  When defining procedures with =proc=, the procedure may refer to its own name
+  recursively. 
+
+  Format: =(def <name> <value>)= 
+
+  Sample usage:
+#+begin_src relic
+(def x 10)
+(def sum-to proc [x] if (< x 1) x (+ x (sum-to (- x 1)))))
+#+end_src
 
 + declare :: Declare that a value has certain properties. Canonly be used as a
   toplevel term in a module.
 
-+ import :: Can only be used in scripts.
++ import :: Used to import names into the current module. Can only be used in
+  scripts, but uses the same format as module imports.
 
-+ proc :: Create a new procedure (function). 
+  Format: =(import <import-clause>*)=
 
-+ all :: Create a new universally quantified behaviour.
+  Sample usage:
+#+begin_src relic 
+(import
+  (data.list :all)
 
-+ apply :: explicitly apply a function to some value(s).
+  (data.string :as str)
 
-+ seal :: Create a new term that will seal away a type from a value.  
+  (data.pointer :only (new delete))
+
+  platform.terminal)
+#+end_src
+
+** Create and Consume Values
++ proc :: Create a new procedure (function). Procedures are anonymous functions
+  whose return value is the value their body evaluates to. Procedures cannot
+  capture values from greater lexical contexts.
+
+  Procedures have two argument lists, the reglar argument list, denoted by
+  brackets ('[' and ']'), and the implicit argument list, denoted by braces ('{'
+  and '}'). The implicit argument list can only take arguments that have a trait
+  type.   
+
+  Note that impicit arguments are most useful when used in conjunction with the
+  =all= term former.
+
+  Format: =(proc {(<arg> <Type>)*}? [<<arg> | (<arg> <Type>)>*] <body>)=
+
+  Sample usage:
+#+begin_src relic 
+;; write a string to the console  
+(proc [x] (write-string x))
+
+;; do 3 + 7
+((proc [x] (+ x 7)) 3)
+
+;; square an integer
+(proc [(x I64)] (* x x))
+
+;; square any value implementing the num trait 
+(all [A] proc {(num (Num A))} [(x A)] (num.* x x))
+#+end_src
+
++ all :: Create a new universally quantified value. When used in cojunction with
+  the =proc= term former, the resultant value behaves as a single procedure,
+  which requires all arguments be instantiated to run.
+
+ Format: =(all [<arg>*] ,<body>)= 
+ 
+  Sample usage:
+#+begin_src relic 
+(all [A] memory.alloc (size-of A))
+
+(all [A] proc [(x A)] x)
+#+end_src
+
++ macro :: Convert a procedure into a macro. Macros can only be formed from
+  procedures with type =Proc [Syntax] (Either String Syntax)=
+
+ Format: =(macro ,<proc>)= 
+ 
+  Sample usage:
+#+begin_src relic 
+(all [A] memory.alloc (size-of A))
+
+(all [A] proc [(x A)] x)
+#+end_src
+
++ apply :: explicitly apply a function to some value(s). Using apply to
+  apply a procedure =p= to arguments =a b c= is the same as =(p a b c)=,
+  however, if =p= is not a procedure but is rather a macro or term-former, then
+  then =apply= will produce a type error.
+
++ array :: Create a new array value, i.e. collection of values of the same type
+  laid out contiguously in memory. Arrays may be multidimensional. 
+
+ Format: =(array {n m ...}? [[a b c] [d e f] ...])= 
+ 
+  Sample usage:
+#+begin_src relic 
+;; 1D array, with dimension
+(array {4} [3 7 1 9])
+
+;; 1D array, without dimension
+(array [#a #b #c])
+
+;; 2D array, leftmost number in dimension is size of outermost array
+(array {3 2} [[1 2] [3 4] [5 6]])
+#+end_src
+
++ struct :: Create a new structured value, heterogenously associating names with values
+
+ Format: =(struct <Type>? [.name val] [.name val] ...)= 
+  
+  Sample usage:
+#+begin_src relic 
+(struct [.x 37] [.y 10] [.z 32])
+
+(def Range Struct [.start F32] [.end F32])
+(struct Range [.start 1.5] [.end 7.34])
+#+end_src
+
++ . :: Projector - project a value out of a structure. May 
+
+ Format: =(val.field)= or =(.field val)=
+
+  Sample usage:
+#+begin_src relic 
+(.x (struct [.x 37] [.y 10]))
+
+(point.x)
+#+end_src
+
++ : :: 
+
++ match ::
+
++ seal :: Create a new term that will seal away a type from a value. 
+
+ Format: =(seal type [T1 T2 ...] {i1 i2 ...}? ,<body>)=
+
+#+begin_src relic
+(def Mon Sealed [A] Struct
+  [.val A]
+  [.stringify Proc [A] String])
+
+(seal Mon [I64] struct
+  [.val 10]
+  [.stringify i64.to-string])
+#+end_src
 
 + unseal :: 
 
-+ macro :: Convert a procedure into a macro.
-
-+ . ::
-
-+ dynamic ::
++ dynamic :: 
 
 + use ::
 
@@ -37,11 +168,7 @@
 
 + instance ::
 
-+ sturct ::
-
-+ : ::
-
-+ match ::
+** Binding and Control Flow
 
 + if ::
 
@@ -83,6 +210,7 @@
 
 ** Type formers
 + Proc ::
++ Array ::
 + Struct ::
 + Enum ::
 + Reset ::
@@ -96,8 +224,8 @@
 + Family ::
 + LiftCType ::
 
-+ Type ::
-+ Unit ::
++ Type :: 
++ Unit :: 
 + Bool ::
 + Address ::
 + I64 ::

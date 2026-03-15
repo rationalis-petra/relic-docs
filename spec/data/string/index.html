@@ -3,11 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-12-07 Sun 16:39 -->
+<!-- 2026-03-14 Sat 11:03 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.String</title>
-<meta name="author" content="Connor Redfern" />
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
   #content { max-width: 60em; margin: auto; }
@@ -201,24 +201,35 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org9e4d363" class="outline-2">
-<h2 id="org9e4d363">Types</h2>
-<div class="outline-text-2" id="text-org9e4d363">
+<div id="outline-container-org9e773f9" class="outline-2">
+<h2 id="org9e773f9">Types</h2>
+<div class="outline-text-2" id="text-org9e773f9">
 <dl class="org-dl">
-<dt>String</dt><dd></dd>
+<dt>String</dt><dd>Type
+The String type stores string data as a pair of a list of UTF-8 bytes with a
+null-terminator at the end and a length. This means they can be easily
+converted into a c-style string, but makes certain operations that depend on
+length more efficient.</dd>
 </dl>
-<div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #b5bd68;">def</span> <span style="color: #81a2be;">String</span> <span style="color: #b294bb;">Named</span> <span style="color: #81a2be;">String</span> <span style="color: #b294bb;">Struct</span>
-  [<span style="color: #f0c674;">.memsize</span> <span style="color: #81a2be;">U64</span>]
-  [<span style="color: #f0c674;">.bytes</span> <span style="color: #81a2be;">Address</span>])
-</pre>
 </div>
+</div>
+<div id="outline-container-orge4aa78f" class="outline-2">
+<h2 id="orge4aa78f">Functions</h2>
+<div class="outline-text-2" id="text-orge4aa78f">
+<dl class="org-dl">
+<dt>nth-byte</dt><dd>Proc [U64 String] U8
+Get the nth byte of the underlying memory of the string</dd>
+
+<dt>from-ascii</dt><dd>Proc [(List U8)] String
+Converts a list of ASCII bytes into a string. Note that the bytes are assumed
+to NOT be null-terminated, so a null-terminator is pushed onto the end of the string.</dd>
+</dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2025-12-07 Sun 16:39</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-03-14 Sat 11:03</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

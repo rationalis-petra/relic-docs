@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-08 Sun 15:49 -->
+<!-- 2026-04-13 Mon 22:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Core</title>
@@ -198,35 +198,246 @@
 <body>
 <div id="content" class="content">
 <h1 class="title">Core</h1>
-<div id="outline-container-org72d9d7c" class="outline-2">
-<h2 id="org72d9d7c">Types</h2>
+<div id="outline-container-org519e516" class="outline-2">
+<h2 id="org519e516">Types</h2>
 </div>
 
-<div id="outline-container-org06b4f3f" class="outline-2">
-<h2 id="org06b4f3f">Syntactic Terms/Formers</h2>
-<div class="outline-text-2" id="text-org06b4f3f">
+<div id="outline-container-org77c79d8" class="outline-2">
+<h2 id="org77c79d8">Syntactic Terms/Formers</h2>
+<div class="outline-text-2" id="text-org77c79d8">
 <dl class="org-dl">
-<dt>def</dt><dd>Define a new value. Can only be used as a toplevel term in a module.</dd>
+<dt>def</dt><dd><p>
+Define a new value. Can only be used as a toplevel term in a module.
+When defining procedures with <code>proc</code>, the procedure may refer to its own name
+recursively. 
+</p>
 
+<p>
+Format: <code>(def &lt;name&gt; &lt;value&gt;)</code> 
+</p>
+
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> x <span style="color: #0D9C94;">10</span>)
+(<span style="color: #9d81ba;">def</span> sum-to <span style="color: #9d81ba;">proc</span> [x] <span style="color: #9d81ba;">if</span> (&lt; x <span style="color: #0D9C94;">1</span>) x (+ x (sum-to (- x <span style="color: #0D9C94;">1</span>)))))
+</pre>
+</div>
+
+<dl class="org-dl">
 <dt>declare</dt><dd>Declare that a value has certain properties. Canonly be used as a
 toplevel term in a module.</dd>
 
-<dt>import</dt><dd>Can only be used in scripts.</dd>
+<dt>import</dt><dd><p>
+Used to import names into the current module. Can only be used in
+scripts, but uses the same format as module imports.
+</p>
 
-<dt>proc</dt><dd>Create a new procedure (function).</dd>
+<p>
+Format: <code>(import &lt;import-clause&gt;*)</code>
+</p>
 
-<dt>all</dt><dd>Create a new universally quantified behaviour.</dd>
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">import</span>
+  (data<span style="color: #7CF083;">.list</span> :<span style="color: #9d81ba;">all</span>)
 
-<dt>apply</dt><dd>explicitly apply a function to some value(s).</dd>
+  (data<span style="color: #7CF083;">.string</span> <span style="color: #7CF083;">:as</span> str)
 
-<dt>seal</dt><dd>Create a new term that will seal away a type from a value.</dd>
+  (data<span style="color: #7CF083;">.pointer</span> <span style="color: #7CF083;">:only</span> (new delete))
 
+  platform<span style="color: #7CF083;">.terminal</span>)
+</pre>
+</div>
+</div>
+<div id="outline-container-org2e14827" class="outline-3">
+<h3 id="org2e14827">Create and Consume Values</h3>
+<div class="outline-text-3" id="text-org2e14827">
+<dl class="org-dl">
+<dt>proc</dt><dd><p>
+Create a new procedure (function). Procedures are anonymous functions
+whose return value is the value their body evaluates to. Procedures cannot
+capture values from greater lexical contexts.
+</p>
+
+<p>
+Procedures have two argument lists, the reglar argument list, denoted by
+brackets ('[' and ']'), and the implicit argument list, denoted by braces ('{'
+and '}'). The implicit argument list can only take arguments that have a trait
+type.   
+</p>
+
+<p>
+Note that impicit arguments are most useful when used in conjunction with the
+<code>all</code> term former.
+</p>
+
+<p>
+Format: <code>(proc {(&lt;arg&gt; &lt;Type&gt;)*}? [&lt;&lt;arg&gt; | (&lt;arg&gt; &lt;Type&gt;)&gt;*] &lt;body&gt;)</code>
+</p>
+
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">write a string to the console  
+</span>(<span style="color: #9d81ba;">proc</span> [x] (write-string x))
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">do 3 + 7
+</span>((<span style="color: #9d81ba;">proc</span> [x] (+ x <span style="color: #0D9C94;">7</span>)) <span style="color: #0D9C94;">3</span>)
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">square an integer
+</span>(<span style="color: #9d81ba;">proc</span> [(x <span style="color: #62D2DB;">I64</span>)] (* x x))
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">square any value implementing the num trait 
+</span>(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> {(num (<span style="color: #62D2DB;">Num</span> <span style="color: #62D2DB;">A</span>))} [(x <span style="color: #62D2DB;">A</span>)] (num<span style="color: #7CF083;">.</span>* x x))
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>all</dt><dd><p>
+Create a new universally quantified value. When used in cojunction with
+the <code>proc</code> term former, the resultant value behaves as a single procedure,
+which requires all arguments be instantiated to run.
+</p>
+
+<p>
+Format: <code>(all [&lt;arg&gt;*] ,&lt;body&gt;)</code> 
+</p>
+
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] memory<span style="color: #7CF083;">.alloc</span> (size-of <span style="color: #62D2DB;">A</span>))
+
+(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [(x <span style="color: #62D2DB;">A</span>)] x)
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>macro</dt><dd><p>
+Convert a procedure into a macro. Macros can only be formed from
+procedures with type <code>Proc [Syntax] (Either String Syntax)</code>
+</p>
+
+<p>
+Format: <code>(macro ,&lt;proc&gt;)</code> 
+</p>
+
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] memory<span style="color: #7CF083;">.alloc</span> (size-of <span style="color: #62D2DB;">A</span>))
+
+(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [(x <span style="color: #62D2DB;">A</span>)] x)
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>apply</dt><dd>explicitly apply a function to some value(s). Using apply to
+apply a procedure <code>p</code> to arguments <code>a b c</code> is the same as <code>(p a b c)</code>,
+however, if <code>p</code> is not a procedure but is rather a macro or term-former, then
+then <code>apply</code> will produce a type error.</dd>
+
+<dt>array</dt><dd><p>
+Create a new array value, i.e. collection of values of the same type
+laid out contiguously in memory. Arrays may be multidimensional. 
+</p>
+
+<p>
+Format: <code>(array {n m ...}? [[a b c] [d e f] ...])</code> 
+</p>
+
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">1D array, with dimension
+</span>(array {<span style="color: #0D9C94;">4</span>} [<span style="color: #0D9C94;">3</span> <span style="color: #0D9C94;">7</span> <span style="color: #0D9C94;">1</span> <span style="color: #0D9C94;">9</span>])
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">1D array, without dimension
+</span>(array [#a #b #c])
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">2D array, leftmost number in dimension is size of outermost array
+</span>(array {<span style="color: #0D9C94;">3</span> <span style="color: #0D9C94;">2</span>} [[<span style="color: #0D9C94;">1</span> <span style="color: #0D9C94;">2</span>] [<span style="color: #0D9C94;">3</span> <span style="color: #0D9C94;">4</span>] [<span style="color: #0D9C94;">5</span> <span style="color: #0D9C94;">6</span>]])
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>struct</dt><dd><p>
+Create a new structured value, heterogenously associating names with values
+</p>
+
+<p>
+Format: <code>(struct &lt;Type&gt;? [.name val] [.name val] ...)</code> 
+</p>
+
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">struct</span> [<span style="color: #7CF083;">.x</span> <span style="color: #0D9C94;">37</span>] [<span style="color: #7CF083;">.y</span> <span style="color: #0D9C94;">10</span>] [<span style="color: #7CF083;">.z</span> <span style="color: #0D9C94;">32</span>])
+
+(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Range</span> <span style="color: #9d81ba;">Struct</span> [<span style="color: #7CF083;">.start</span> <span style="color: #62D2DB;">F32</span>] [<span style="color: #7CF083;">.end</span> <span style="color: #62D2DB;">F32</span>])
+(<span style="color: #9d81ba;">struct</span> <span style="color: #62D2DB;">Range</span> [<span style="color: #7CF083;">.start</span> <span style="color: #0D9C94;">1</span>.<span style="color: #0D9C94;">5</span>] [<span style="color: #7CF083;">.end</span> <span style="color: #0D9C94;">7</span>.<span style="color: #0D9C94;">34</span>])
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>.</dt><dd><p>
+Projector - project a value out of a structure. May 
+</p>
+
+<p>
+Format: <code>(val.field)</code> or <code>(.field val)</code>
+</p>
+
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #7CF083;">.x</span> (<span style="color: #9d81ba;">struct</span> [<span style="color: #7CF083;">.x</span> <span style="color: #0D9C94;">37</span>] [<span style="color: #7CF083;">.y</span> <span style="color: #0D9C94;">10</span>]))
+
+(point<span style="color: #7CF083;">.x</span>)
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>seal</dt><dd><p>
+Create a new term that will seal away a type from a value. 
+</p>
+
+<p>
+Format: <code>(seal type [T1 T2 ...] {i1 i2 ...}? ,&lt;body&gt;)</code>
+</p></dd>
+</dl>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Mon</span> <span style="color: #9d81ba;">Sealed</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Struct</span>
+  [<span style="color: #7CF083;">.val</span> <span style="color: #62D2DB;">A</span>]
+  [<span style="color: #7CF083;">.stringify</span> <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">String</span>])
+
+(<span style="color: #9d81ba;">seal</span> <span style="color: #62D2DB;">Mon</span> [<span style="color: #62D2DB;">I64</span>] <span style="color: #9d81ba;">struct</span>
+  [<span style="color: #7CF083;">.val</span> <span style="color: #0D9C94;">10</span>]
+  [<span style="color: #7CF083;">.stringify</span> i64<span style="color: #7CF083;">.to-string</span>])
+</pre>
+</div>
+
+<dl class="org-dl">
 <dt>unseal</dt><dd></dd>
-
-
-<dt>macro</dt><dd>Convert a procedure into a macro.</dd>
-
-<dt>.</dt><dd></dd>
 
 
 <dt>dynamic</dt><dd></dd>
@@ -242,11 +453,13 @@ toplevel term in a module.</dd>
 
 
 <dt>instance</dt><dd></dd>
-
-
-<dt>sturct</dt><dd></dd>
-
-
+</dl>
+</div>
+</div>
+<div id="outline-container-org36df56a" class="outline-3">
+<h3 id="org36df56a">Binding and Control Flow</h3>
+<div class="outline-text-3" id="text-org36df56a">
+<dl class="org-dl">
 <dt>:</dt><dd></dd>
 
 
@@ -277,9 +490,10 @@ toplevel term in a module.</dd>
 <dt>let</dt><dd></dd>
 </dl>
 </div>
-<div id="outline-container-org1ed088c" class="outline-3">
-<h3 id="org1ed088c">Type Casting and Manipulation</h3>
-<div class="outline-text-3" id="text-org1ed088c">
+</div>
+<div id="outline-container-orgc961bc5" class="outline-3">
+<h3 id="orgc961bc5">Type Casting and Manipulation</h3>
+<div class="outline-text-3" id="text-orgc961bc5">
 <dl class="org-dl">
 <dt>is</dt><dd></dd>
 
@@ -312,11 +526,13 @@ toplevel term in a module.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgbdd8184" class="outline-3">
-<h3 id="orgbdd8184">Type formers</h3>
-<div class="outline-text-3" id="text-orgbdd8184">
+<div id="outline-container-org9d50e61" class="outline-3">
+<h3 id="org9d50e61">Type formers</h3>
+<div class="outline-text-3" id="text-org9d50e61">
 <dl class="org-dl">
 <dt>Proc</dt><dd></dd>
+
+<dt>Array</dt><dd></dd>
 
 <dt>Struct</dt><dd></dd>
 
@@ -377,7 +593,7 @@ toplevel term in a module.</dd>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-08 Sun 15:49</p>
+<p class="date">Created: 2026-04-13 Mon 22:35</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

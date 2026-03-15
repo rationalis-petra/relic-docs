@@ -1,5 +1,5 @@
 #+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
-#+title: Tutorial #3: Variants and Producers
+#+title: Tutorial #3: Variants
 #+options: num:nil toc:nil
 
 [[file:programmer-2.org][Prev]]  [[file:../index.org][Up]]  [[file:programmer-4.org][Next]]

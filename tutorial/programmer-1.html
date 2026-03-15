@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-05-27 Mon 19:04 -->
+<!-- 2026-04-04 Sat 22:22 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #1: Your First Project</title>
-<meta name="author" content="Connor Redfern" />
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -201,33 +201,27 @@
 <p>
 <a href="programmer-0.html">Prev</a> <a href="../index.html">Up</a> <a href="programmer-2.html">Next</a>
 </p>
-
-
-<div id="outline-container-org4d467bb" class="outline-2">
-<h2 id="org4d467bb">A Project</h2>
-<div class="outline-text-2" id="text-org4d467bb">
+<div id="outline-container-orga728051" class="outline-2">
+<h2 id="orga728051">A Project</h2>
+<div class="outline-text-2" id="text-orga728051">
 <p>
 Now that we have the basics out of the way, it's time to create a new project! 
-From the menu items at the top, click Project → New. You'll need to select (or
-create) a directory for your project. 
-</p>
-
-<p>
-By default, viper will create two new files:
+The Pico Relic compiler comes with the a built-in build system called Atlas.
+Atlas is very flexible with how you structure your files, so we will use a very
+basic layout, which is outlined below. 
 </p>
 
 <div class="org-src-container">
 <pre class="src src-ascii">&lt;projname&gt;
-┣━ &lt;projname&gt;.rls
+┣━ atlas 
 ┗━ src
    ┗━ main.rl 
 </pre>
 </div>
 </div>
-
-<div id="outline-container-org6a9a744" class="outline-3">
-<h3 id="org6a9a744">Modules, Packages and Systems</h3>
-<div class="outline-text-3" id="text-org6a9a744">
+<div id="outline-container-org9699954" class="outline-3">
+<h3 id="org9699954">Modules, Packages and Systems</h3>
+<div class="outline-text-3" id="text-org9699954">
 <p>
 Typically, Relic code is organized into three levels: Modules, Packages and Systems.
 </p>
@@ -237,11 +231,11 @@ If we look at the file 'main.rl', we can see the first level: Modules.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">module</span> main
-  <span style="color: #8abeb7;">(</span><span style="color: #b5bd68;">export</span> main<span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> main
+  (<span style="color: #9d81ba;">export</span> main))
 
-<span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> main <span style="color: #b5bd68;">proc</span> <span style="color: #8abeb7;">[]</span>
-  <span style="color: #8abeb7;">(</span>write-line <span style="color: #8abeb7;">"Hello from Relic!"</span><span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
+(<span style="color: #9d81ba;">def</span> main <span style="color: #9d81ba;">proc</span> []
+  (write-line <span style="color: #f5c791;">"Hello from Relic!"</span>))
 </pre>
 </div>
 
@@ -267,55 +261,50 @@ that
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> &lt;projname&gt; system
-  <span style="color: #de935f;">:package</span> <span style="color: #8abeb7;">"&lt;projname&gt;"</span>
-  <span style="color: #de935f;">:dependencies</span> <span style="color: #8abeb7;">(</span>list <span style="color: #8abeb7;">"base"</span><span style="color: #8abeb7;">)</span>
-  <span style="color: #de935f;">:src</span> <span style="color: #8abeb7;">"src"</span>
-  <span style="color: #de935f;">:entry</span> <span style="color: #8abeb7;">"main/main"</span><span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> &lt;projname&gt; system
+  <span style="color: #7CF083;">:package</span> <span style="color: #f5c791;">"&lt;projname&gt;"</span>
+  <span style="color: #7CF083;">:dependencies</span> (list <span style="color: #f5c791;">"base"</span>)
+  <span style="color: #7CF083;">:src</span> <span style="color: #f5c791;">"src"</span>
+  <span style="color: #7CF083;">:entry</span> <span style="color: #f5c791;">"main/main"</span>)
 </pre>
 </div>
 </div>
 </div>
-
-
-<div id="outline-container-orgfb5e86d" class="outline-3">
-<h3 id="orgfb5e86d">Conditionals</h3>
-<div class="outline-text-3" id="text-orgfb5e86d">
+<div id="outline-container-orge37268f" class="outline-3">
+<h3 id="orge37268f">Conditionals</h3>
+<div class="outline-text-3" id="text-orge37268f">
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">if</span> <span style="color: #8abeb7;">(</span>&lt; <span style="color: #81a2be;">2</span> <span style="color: #81a2be;">3</span><span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span>write-line <span style="color: #8abeb7;">"two is less than three"</span><span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span>write-line <span style="color: #8abeb7;">"three is less than two??"</span><span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(<span style="color: #9d81ba;">if</span> (&lt; <span style="color: #0D9C94;">2</span> <span style="color: #0D9C94;">3</span>)
+  (write-line <span style="color: #f5c791;">"two is less than three"</span>)
+  (write-line <span style="color: #f5c791;">"three is less than two??"</span>))
 </pre>
 </div>
 </div>
 </div>
-
-
-
-<div id="outline-container-org39e7efb" class="outline-3">
-<h3 id="org39e7efb">Comparison</h3>
-<div class="outline-text-3" id="text-org39e7efb">
+<div id="outline-container-orgc0fa010" class="outline-3">
+<h3 id="orgc0fa010">Comparison</h3>
+<div class="outline-text-3" id="text-orgc0fa010">
 </div>
-<div id="outline-container-orgf5e7548" class="outline-4">
-<h4 id="orgf5e7548">Exercise: FizzBuzz</h4>
-<div class="outline-text-4" id="text-orgf5e7548">
+<div id="outline-container-org0cc06b0" class="outline-4">
+<h4 id="org0cc06b0">Exercise: FizzBuzz</h4>
+<div class="outline-text-4" id="text-org0cc06b0">
 <p>
 Below is a code snippet you can copy into your 'main.rl' file to complete fizzbuzz.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">module</span> main
-  <span style="color: #8abeb7;">(</span><span style="color: #b5bd68;">import</span> core.parse<span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span><span style="color: #b5bd68;">export</span> main<span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> main
+  (<span style="color: #9d81ba;">import</span> core<span style="color: #7CF083;">.parse</span>)
+  (<span style="color: #9d81ba;">export</span> main))
 
-<span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> main <span style="color: #b5bd68;">proc</span> <span style="color: #8abeb7;">[]</span>
-  <span style="color: #8abeb7;">(</span><span style="color: #b5bd68;">let!</span> input <span style="color: #f0c674;">(</span>read-line<span style="color: #f0c674;">)</span><span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span><span style="color: #b5bd68;">match</span> <span style="color: #f0c674;">(</span>run-parser lexing.num input<span style="color: #f0c674;">)</span>
-    <span style="color: #f0c674;">(</span><span style="color: #de935f;">:ok</span> num -&gt; print <span style="color: #b5bd68;">(</span>fizz-buzz num<span style="color: #b5bd68;">)</span>
-    <span style="color: #b5bd68;">(</span><span style="color: #de935f;">:err</span> err -&gt; print err<span style="color: #b5bd68;">)</span><span style="color: #f0c674;">)</span><span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
+(<span style="color: #9d81ba;">def</span> main <span style="color: #9d81ba;">proc</span> []
+  (<span style="color: #9d81ba;">let</span>! input (read-line))
+  (<span style="color: #9d81ba;">match</span> (run-parser lexing<span style="color: #7CF083;">.num</span> input)
+    (<span style="color: #7CF083;">:ok</span> num -&gt; print (fizz-buzz num)
+    (<span style="color: #7CF083;">:err</span> err -&gt; print err))))
 
-<span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> fizz-buzz <span style="color: #b5bd68;">fn</span> <span style="color: #8abeb7;">[</span>num<span style="color: #8abeb7;">]</span>
-  &lt;your code here&gt;<span style="color: #c5c8c6;">)</span>
+(<span style="color: #9d81ba;">def</span> fizz-buzz fn [num]
+  &lt;your code here&gt;)
 </pre>
 </div>
 </div>
@@ -324,8 +313,8 @@ Below is a code snippet you can copy into your 'main.rl' file to complete fizzbu
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2024-05-27 Mon 19:04</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-04-04 Sat 22:22</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

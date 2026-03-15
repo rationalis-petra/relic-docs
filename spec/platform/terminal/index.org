@@ -5,11 +5,16 @@
 [[file:../index.org][up]]
 
 * Functions 
-+ read-codepoint ::
-  Read the next input character available in the standard input stream, as a unicode codepoint
++ read-codepoint :: Proc [] U8
+  Read the next input character available in the standard input stream, as a
+  unicode codepoint. Will block if it needs to wait for input.
 
-+ write-codepoint ::
++ write-codepoint :: Proc [U8] Unit
   Write the next character available to the standard output stream, as a unicode codepoint.
 
 + write-string :: Proc [String] Unit
   Write a UTF-8 encoded string to the standard output stream.
+
++ write-line :: Proc [String] Unit
+  Write a UTF-8 encoded string to the standard output stream, followed by a
+  newline. Equivalent to =proc [str] (seq (write-string str) (write-string "\n"))=

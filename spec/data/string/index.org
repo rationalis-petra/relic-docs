@@ -5,9 +5,18 @@
 [[file:../index.org][up]]
 
 * Types 
-+ String :: 
-#+begin_src relic
-(def String Named String Struct
-  [.memsize U64]
-  [.bytes Address])
-#+end_src
++ String :: Type
+  The String type stores string data as a pair of a list of UTF-8 bytes with a
+  null-terminator at the end and a length. This means they can be easily
+  converted into a c-style string, but makes certain operations that depend on
+  length more efficient.
+
+* Functions 
++ nth-byte :: Proc [U64 String] U8
+  Get the nth byte of the underlying memory of the string
+
++ from-ascii :: Proc [(List U8)] String
+  Converts a list of ASCII bytes into a string, allocating new memory for the
+  string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
+  null-terminator is pushed onto the end of the string.
+

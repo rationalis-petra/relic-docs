@@ -5,6 +5,11 @@
 
 Prev [[file:../index.org][Up]] [[file:programmer-1.org][Next]]
 
+* IMPORTANT
+At current, this tutorial is very much a work in progress. For a much better
+introduction to the basics of relic, it is recommended you chedkout the readme
+of the [[https://github.com/rationalis-petra/pico][pico compiler]]. 
+
 * About this Tutorial
 This tutorial is intended to be an introduction to the for developers who have
 already programmed in at least one standard "popular" language such as python,
@@ -13,38 +18,34 @@ Relic draws from (lisp, forth, prolog etc.).
 
 
 * Intro & Installation
-The Relic language is currently early in development and can only be used Via a
-command line REPL. This tutorial covers the usage of both the language and its'
-REPL.
+Pico (the Relic compiler) is available on Windows or Linux as an AMD64
+executable. To install, download the [[https://github.com/rationalis-petra/pico/releases/latest][latest release]], unzip the file, navigate to
+the folder corresponding to your OS and run the installer executable.
 
-Currently, installation is very manual. You'll need
-+ A modern common lisp implementation (e.g. sbcl) with Quicklisp.
-+ SDL2 installed on your system.
-
-You can now run the following in your lisp implementation
-#+begin_src lisp
-(ql:quickload :relic)
-(relic:make-executable)
-#+end_src
-
-This should produce an executable named =relic=, which you can invoke from the
-command-line.
+Now, you should be able to start the compiler by running either =relic= or
+=pico= from a command-line. =relic help= will  
 
 * Read, Eval, Print, Loop!
-Once Viper is open, you'll want to start programming right away, so go ahead and
-click the [img] 'Playground' button. You can now start typing code in the
-left-hand box. We'll start with the venerable 'Hello World'. 
+To begin with, this first tutorial will use the REPL (Read-Eval-Print-Loop). You
+can get here by running =relic repl=, although I recommend running in
+interactive mode with =relic repl -i=. Once the REPL is running, you can type in
+Relic expressions and hit enter to have them evaluated. We'll start with a
+simple one: writing to the terminal.
 
 #+begin_src relic
 (write-line "Hello, World!")
 #+end_src
 
-Click 'Run' and you should now see "Hello, World!" display on the right-hand
-side. Nice! Unless you've programmed in a LISP before, the way we do this
-function call may strike you as strange - in Relic, instead of writing function
-calls as, e.g. =add(2, 3)=, we write them =(add 2 3)=. This applies to operators
-also - instead of =2 + 3= we write =(+ 2 3)=. This style can be confusing at
-first, but it also empowers a feature of Relic we will meet later: metaprogramming. 
+After running, you will now see "Hello, World!" printed on a new line,
+followed by the term =:unit=. This is because after running, the =write-line=
+function returns the value =:unit=, which the repl then prints to the command
+line. Nice!
+
+You will likely also have noticed that the function call uses an unusuan
+syntax - in Relic, instead of writing function calls as, e.g. =add(2, 3)=, we
+write them =(add 2 3)=. This applies to operators also - instead of =2 + 3= we
+write =(+ 2 3)=. This style can be confusing at first, but it also empowers a
+feature of Relic we will meet later: metaprogramming.
 
 With this knowledge in hand, we can try evaluating some other expressions, e.g. 
 
@@ -65,4 +66,12 @@ Try some of your own!
 (write-line (append "Hi, " your-name))
 #+end_src
 
+
+** Conditionals
+
+#+begin_src relic
+(if (< 2 3)
+  (write-line "two is less than three")
+  (write-line "three is less than two??"))
+#+end_src
 

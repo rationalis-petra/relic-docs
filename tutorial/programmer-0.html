@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-05-27 Mon 19:04 -->
+<!-- 2026-04-04 Sat 22:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #0: Hi, Relic!</title>
-<meta name="author" content="Connor Redfern" />
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -201,10 +201,19 @@
 <p>
 Prev <a href="../index.html">Up</a> <a href="programmer-1.html">Next</a>
 </p>
-
-<div id="outline-container-org276fcfa" class="outline-2">
-<h2 id="org276fcfa">About this Tutorial</h2>
-<div class="outline-text-2" id="text-org276fcfa">
+<div id="outline-container-org1f269da" class="outline-2">
+<h2 id="org1f269da">IMPORTANT</h2>
+<div class="outline-text-2" id="text-org1f269da">
+<p>
+At current, this tutorial is very much a work in progress. For a much better
+introduction to the basics of relic, it is recommended you chedkout the readme
+of the <a href="https://github.com/rationalis-petra/pico">pico compiler</a>. 
+</p>
+</div>
+</div>
+<div id="outline-container-org31febc9" class="outline-2">
+<h2 id="org31febc9">About this Tutorial</h2>
+<div class="outline-text-2" id="text-org31febc9">
 <p>
 This tutorial is intended to be an introduction to the for developers who have
 already programmed in at least one standard "popular" language such as python,
@@ -213,62 +222,50 @@ Relic draws from (lisp, forth, prolog etc.).
 </p>
 </div>
 </div>
-
-
-<div id="outline-container-orgd978050" class="outline-2">
-<h2 id="orgd978050">Intro &amp; Installation</h2>
-<div class="outline-text-2" id="text-orgd978050">
+<div id="outline-container-org529264b" class="outline-2">
+<h2 id="org529264b">Intro &amp; Installation</h2>
+<div class="outline-text-2" id="text-org529264b">
 <p>
-The Relic language is currently early in development and can only be used Via a
-command line REPL. This tutorial covers the usage of both the language and its'
-REPL.
+Pico (the Relic compiler) is available on Windows or Linux as an AMD64
+executable. To install, download the <a href="https://github.com/rationalis-petra/pico/releases/latest">latest release</a>, unzip the file, navigate to
+the folder corresponding to your OS and run the installer executable.
 </p>
 
 <p>
-Currently, installation is very manual. You'll need
+Now, you should be able to start the compiler by running either <code>relic</code> or
+<code>pico</code> from a command-line. <code>relic help</code> will  
 </p>
-<ul class="org-ul">
-<li>A modern common lisp implementation (e.g. sbcl) with Quicklisp.</li>
-<li>SDL2 installed on your system.</li>
-</ul>
-
+</div>
+</div>
+<div id="outline-container-org877cbbe" class="outline-2">
+<h2 id="org877cbbe">Read, Eval, Print, Loop!</h2>
+<div class="outline-text-2" id="text-org877cbbe">
 <p>
-You can now run the following in your lisp implementation
+To begin with, this first tutorial will use the REPL (Read-Eval-Print-Loop). You
+can get here by running <code>relic repl</code>, although I recommend running in
+interactive mode with <code>relic repl -i</code>. Once the REPL is running, you can type in
+Relic expressions and hit enter to have them evaluated. We'll start with a
+simple one: writing to the terminal.
 </p>
+
 <div class="org-src-container">
-<pre class="src src-lisp"><span style="color: #c5c8c6;">(</span>ql:quickload <span style="color: #b294bb;">:relic</span><span style="color: #c5c8c6;">)</span>
-<span style="color: #c5c8c6;">(</span>relic:make-executable<span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(write-line <span style="color: #f5c791;">"Hello, World!"</span>)
 </pre>
 </div>
 
 <p>
-This should produce an executable named <code>relic</code>, which you can invoke from the
-command-line.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgac14b6a" class="outline-2">
-<h2 id="orgac14b6a">Read, Eval, Print, Loop!</h2>
-<div class="outline-text-2" id="text-orgac14b6a">
-<p>
-Once Viper is open, you'll want to start programming right away, so go ahead and
-click the [img] 'Playground' button. You can now start typing code in the
-left-hand box. We'll start with the venerable 'Hello World'. 
+After running, you will now see "Hello, World!" printed on a new line,
+followed by the term <code>:unit</code>. This is because after running, the <code>write-line</code>
+function returns the value <code>:unit</code>, which the repl then prints to the command
+line. Nice!
 </p>
 
-<div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span>write-line <span style="color: #8abeb7;">"Hello, World!"</span><span style="color: #c5c8c6;">)</span>
-</pre>
-</div>
-
 <p>
-Click 'Run' and you should now see "Hello, World!" display on the right-hand
-side. Nice! Unless you've programmed in a LISP before, the way we do this
-function call may strike you as strange - in Relic, instead of writing function
-calls as, e.g. <code>add(2, 3)</code>, we write them <code>(add 2 3)</code>. This applies to operators
-also - instead of <code>2 + 3</code> we write <code>(+ 2 3)</code>. This style can be confusing at
-first, but it also empowers a feature of Relic we will meet later: metaprogramming. 
+You will likely also have noticed that the function call uses an unusuan
+syntax - in Relic, instead of writing function calls as, e.g. <code>add(2, 3)</code>, we
+write them <code>(add 2 3)</code>. This applies to operators also - instead of <code>2 + 3</code> we
+write <code>(+ 2 3)</code>. This style can be confusing at first, but it also empowers a
+feature of Relic we will meet later: metaprogramming.
 </p>
 
 <p>
@@ -276,9 +273,9 @@ With this knowledge in hand, we can try evaluating some other expressions, e.g.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span>* <span style="color: #81a2be;">2</span> <span style="color: #81a2be;">3</span><span style="color: #c5c8c6;">)</span>
-<span style="color: #c5c8c6;">(</span>- <span style="color: #81a2be;">3</span> <span style="color: #8abeb7;">(</span>* <span style="color: #81a2be;">4</span> <span style="color: #81a2be;">5</span><span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
-<span style="color: #c5c8c6;">(</span>&lt; <span style="color: #81a2be;">2</span> <span style="color: #81a2be;">3</span><span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(* <span style="color: #0D9C94;">2</span> <span style="color: #0D9C94;">3</span>)
+(- <span style="color: #0D9C94;">3</span> (* <span style="color: #0D9C94;">4</span> <span style="color: #0D9C94;">5</span>))
+(&lt; <span style="color: #0D9C94;">2</span> <span style="color: #0D9C94;">3</span>)
 </pre>
 </div>
 
@@ -286,17 +283,27 @@ With this knowledge in hand, we can try evaluating some other expressions, e.g.
 Try some of your own!
 </p>
 </div>
-
-<div id="outline-container-orgc0d7aba" class="outline-3">
-<h3 id="orgc0d7aba">Definitions</h3>
-<div class="outline-text-3" id="text-orgc0d7aba">
+<div id="outline-container-org4a3d7ad" class="outline-3">
+<h3 id="org4a3d7ad">Definitions</h3>
+<div class="outline-text-3" id="text-org4a3d7ad">
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> your-name <span style="color: #8abeb7;">"Bob"</span><span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> your-name <span style="color: #f5c791;">"Bob"</span>)
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span>write-line <span style="color: #8abeb7;">(</span>append <span style="color: #8abeb7;">"Hi, "</span> your-name<span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
+<pre class="src src-relic">(write-line (append <span style="color: #f5c791;">"Hi, "</span> your-name))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org1554eb5" class="outline-3">
+<h3 id="org1554eb5">Conditionals</h3>
+<div class="outline-text-3" id="text-org1554eb5">
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">if</span> (&lt; <span style="color: #0D9C94;">2</span> <span style="color: #0D9C94;">3</span>)
+  (write-line <span style="color: #f5c791;">"two is less than three"</span>)
+  (write-line <span style="color: #f5c791;">"three is less than two??"</span>))
 </pre>
 </div>
 </div>
@@ -304,8 +311,8 @@ Try some of your own!
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2024-05-27 Mon 19:04</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-04-04 Sat 22:45</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

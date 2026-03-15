@@ -7,20 +7,19 @@
 
 * A Project
 Now that we have the basics out of the way, it's time to create a new project! 
-From the menu items at the top, click Project → New. You'll need to select (or
-create) a directory for your project. 
-
-By default, viper will create two new files:
+The Pico Relic compiler comes with the a built-in build system called Atlas.
+Atlas is very flexible with how you structure your files, so we will use a very
+basic layout, which is outlined below. 
 
 #+begin_src ascii
 <projname>
-┣━ <projname>.rls
+┣━ atlas 
 ┗━ src
    ┗━ main.rl 
 #+end_src
 
 ** Modules, Packages and Systems 
-Typically, Relic code is organized into three levels: Modules, Packages and Systems.
+Typically, Relic code is organized into two levels: Modules and Packages.
 
 If we look at the file 'main.rl', we can see the first level: Modules.
 
@@ -56,32 +55,5 @@ that
 #+end_src
 
 
-** Conditionals
-
-#+begin_src relic
-(if (< 2 3)
-  (write-line "two is less than three")
-  (write-line "three is less than two??"))
-#+end_src
 
 
-
-** Comparison
-
-*** Exercise: FizzBuzz
-Below is a code snippet you can copy into your 'main.rl' file to complete fizzbuzz.
-
-#+begin_src relic
-(module main
-  (import core.parse)
-  (export main))
-
-(def main proc []
-  (let! input (read-line))
-  (match (run-parser lexing.num input)
-    (:ok num -> print (fizz-buzz num)
-    (:err err -> print err))))
-
-(def fizz-buzz fn [num]
-  <your code here>)
-#+end_src

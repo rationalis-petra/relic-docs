@@ -20,7 +20,6 @@
   underlying platform, including input/output, memory management, windowing,
   machine word size + architecture and more.
 
-
 + [[file:meta/index.org][Meta]] :: Metaprogramming
 
 + [[file:debug/index.org][Debug]] :: Debug Assistants. 

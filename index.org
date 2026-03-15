@@ -2,23 +2,17 @@
 #+title: Relic Homepage 
 #+options: num:nil toc:nil
 
-[[file:tutorial/programmer-0.org][Tutorial]] • [[file:cookbook/index.org][Cookbook]] • [[file:discussions/index.org][Discussions]] • [[file:spec/index.org][Spec]]  • [[file:internals/index.org][Internals]]
+[[file:tutorial/programmer-0.org][Tutorial]] • [[file:cookbook/index.org][Cookbook]] • [[file:discussions/index.org][Discussions]] • [[file:spec/index.org][Spec]]
 
 
-Relic is a language designed for the at-home hobby programmer. It has the
-following design goals:
-1. Enable a broad range of abstraction levels. To suit the needs of a specific
-   problem, it should be possible to write programs that are much more
-   high-level and ignore some details (such as scripts) and programs which 
-2. Expose the capabilities of the host platform. It can be frustrating to have to reach
-   out to another language for capabilities of the device your program runs on,
-   such as a specific performance threshold, the ability to create windows, or
-   access the network or even to access other computation devices such as
-   graphics cards. It should be possible to write your desired program for your
-   target platform in relic without having to reach for a library in another
-   langauge.
-3. Provide a powerful tool which is itself tool-friendly and tool-aware. This
-   means that it should be design such that it easy to design a build-system,
-   IDE, debugger etc. for. Furthermore, it should be possible for programmers to
-   themselves write programs which integrate well with these tools.
-
+Welcome to the official Relic documentation. For organizational purposes, this
+document is divided up into 4 sections:
++ Tutorial :: The tutorial (incomplete) is a basic walk-through of the language
+  for programmers new to Relic. 
++ Cookbook :: The Cookbook section contains a set of 'recipes', common tasks
+  such as reading a file or printing a table together with example implementations.   
++ Discussions :: The discussions section includes deep-dives into the reasoning
+  (the 'whys') behind various aspects of the language.
++ Spec :: The specification allows tree-like navigation of the entire standard
+  library, with basic descriptions of each value, type and term-former. It is
+  the most complete, and is most suted to those familiar with the language. 

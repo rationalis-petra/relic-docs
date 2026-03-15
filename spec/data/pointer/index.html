@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-08 Sun 16:01 -->
+<!-- 2026-03-14 Sat 07:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.Pointer</title>
@@ -201,29 +201,22 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org1ea31bb" class="outline-2">
-<h2 id="org1ea31bb">Types</h2>
-<div class="outline-text-2" id="text-org1ea31bb">
+<div id="outline-container-org4b617db" class="outline-2">
+<h2 id="org4b617db">Types</h2>
+<div class="outline-text-2" id="text-org4b617db">
 <dl class="org-dl">
-<dt>List</dt><dd>Kind [Type] Type</dd>
+<dt>Ptr</dt><dd>Kind [Type] Type</dd>
 </dl>
-<div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Ptr</span> <span style="color: #9d81ba;">Named</span> <span style="color: #62D2DB;">Ptr</span> <span style="color: #9d81ba;">Family</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Address</span>)
-</pre>
 </div>
 </div>
-</div>
-<div id="outline-container-orgd767a2b" class="outline-2">
-<h2 id="orgd767a2b">Functions</h2>
-<div class="outline-text-2" id="text-orgd767a2b">
+<div id="outline-container-org9ef258b" class="outline-2">
+<h2 id="org9ef258b">Functions</h2>
+<div class="outline-text-2" id="text-org9ef258b">
 <dl class="org-dl">
 <dt>null</dt><dd>All [A] (Ptr A)
 Null will create a new null pointer of type <code>A</code>. Note that because it takes no
 arguments, it is more likely you will need to provide the type of
 the pointer, e.g. <code>(null {I64})</code></dd>
-
-<dt>get</dt><dd>All [A] Proc [(Ptr A) A]
-Get the value at the address pointed to by the pointer.</dd>
 
 <dt>set</dt><dd>All [A] Proc [(Ptr A)] 
 Set the value at the address pointed to by the pointer.</dd>
@@ -242,13 +235,19 @@ Create a new pointer, pointing to the value provided to the procedure. The
 memory for this pointer is allocated from the stack, so it does not need to be
 deleted. Take care not to return a local <code>Ptr</code> from the function which created
 it, as the memory is no longer valid when the function returns.</dd>
+
+<dt>get</dt><dd>All [A] Proc [(Ptr A) A]
+Get the value at the address pointed to by the pointer.</dd>
+
+<dt>^</dt><dd>All [A] Proc [(Ptr A) A]
+'^' is an alias for 'get'.</dd>
 </dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-08 Sun 16:01</p>
+<p class="date">Created: 2026-03-14 Sat 07:44</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
