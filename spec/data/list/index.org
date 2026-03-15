@@ -22,13 +22,29 @@
   with =current-allocator=.
 
 * Functions
-+ mk-list :: All [A] (Proc [U64 U64] (List A))
++ mk-list :: All [A] (Proc [U64] (List A))
+  =(mk-list cap)= Will create a new list with memory pre-allocated for 'cap' elements.
+  
 + free-list :: All [A] (Proc [(List A)] Unit)
+  =(free-list list)= Will free the memory associated with the list.
+
 + elt :: All [A] (Proc [U64 (List A)] A)
+  =(elt i list)= Returns the 'i'th element of the list.
+
 + eset :: All [A] (Proc [U64 A (List A)] Unit)
+  =(eset i x list)= Sets the value in the list at position 'i' to 'x'.
+
 + each :: All [A] (Proc [(Proc [A] Unit) (List A)] Unit)
+  =(each f list)= will apply the function 'f' to each element of the list.
+  
 + map :: All [A B] (Proc [(Proc [A] B) (List A)] (List B))
+  =(map f list)= will apply the function 'f' to each element of the list, and
+  store the outputs in a new list, which is returned.
 
++ push :: All [A] (Proc [A (Ptr List A)] Unit)
+  =(push x ptr)= Will push the value 'x' onto the list pointed to by 'ptr',
+  increasing the length by one and possibly allocating new memory.
 
-+ push :: All [A] (Proc [A (Dynamic List A)] Unit)
-+ pop :: All [A] (Proc [(Dynamic List A)] A)
++ pop :: All [A] (Proc [(Ptr List A)] A)
+  =(pop x ptr)= Will pop the value at the end of the list pointed to by 'ptr',
+  decreasing the length by one and returning the value popped.

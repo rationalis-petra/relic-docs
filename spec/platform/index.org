@@ -6,7 +6,7 @@
 
 + [[file:memory/index.org][Memory]] :: Garbage collection and Manual Memory management.
 
-+ [[file:time/index.org][Time]] :: The Profiling module.
++ [[file:time/index.org][Time]] :: Get and manipulate dates and times. 
 
 + [[file:thread/index.org][Thread]] :: The system threading library. 
 

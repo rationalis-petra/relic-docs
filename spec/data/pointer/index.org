@@ -5,10 +5,7 @@
 [[file:../index.org][up]]
 
 * Types
-+ List :: Kind [Type] Type
-#+begin_src relic
-(def Ptr Named Ptr Family [A] Address)
-#+end_src
++ Ptr :: Kind [Type] Type
   
 
 * Functions
@@ -16,9 +13,6 @@
   Null will create a new null pointer of type =A=. Note that because it takes no
   arguments, it is more likely you will need to provide the type of
   the pointer, e.g. =(null {I64})=
-
-+ get :: All [A] Proc [(Ptr A) A]
-  Get the value at the address pointed to by the pointer.
 
 + set :: All [A] Proc [(Ptr A)] 
   Set the value at the address pointed to by the pointer.
@@ -38,3 +32,8 @@
   deleted. Take care not to return a local =Ptr= from the function which created
   it, as the memory is no longer valid when the function returns.
 
++ get :: All [A] Proc [(Ptr A) A]
+  Get the value at the address pointed to by the pointer.
+
++ ^ :: All [A] Proc [(Ptr A) A]
+  '^' is an alias for 'get'.

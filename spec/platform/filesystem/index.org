@@ -9,20 +9,39 @@
 + File :: Opaque Handle
 
 + FileError :: 
-  #+begin_src relic
-  Enum :does-not-exist :permission-denied
-  #+end_src
+#+begin_src relic
+Named FileError Enum 64 :does-not-exist :already-exists :permission-denied :invalid-argument
+#+end_src
 
 + Mode :: 
-  #+begin_src relic
-  Enum :read :write :read-write
-  #+end_src
+#+begin_src relic
+Named Mode Enum 64 :read :write :read-write
+#+end_src
 
 * Functions
 
-+ open-file :: Proc [String (Enum 64 :read :write :read-write)] (Enum 64 [:ok File] [:err (Enum 64 :DoesNotExist :PermissionDenied)])
++ open-file :: Proc [String Mode] (Result File FileError)
+  Attempt to open a file at the provided path, and use the provided =Mode= to
+  set the allowed operations (read, write or read and write).
+
 + close-file :: Proc [File] Unit
+  Close the file provided, meaning that reads and writes will no longer be valid
+  (will return the 'invalid argument' error), but the file will now be free for
+  other processes to access.
+
 + read-byte :: Proc [File] U8
+
 + read-chunk :: Proc [File (Maybe U64)] (List U8)
+  From the file provided, read up-to =:some x= (if provided) number of bytes
+  provided and return them in a list. If =:none= is provided instead, read until
+  the end of the file.
+
 + write-byte :: Proc [File U8] Unit
+  Write a byte into the file provided, extending it if necessary.
+
 + write-chunk :: Proc [File (List U8)] Units
+  Write a list of bytes into the file provided.
+
++ error-description :: Proc [FileError] String
+  Produces a string description of a file error. Useful for printing out error
+  messages.

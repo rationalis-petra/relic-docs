@@ -3,11 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-12-07 Sun 10:34 -->
+<!-- 2026-03-09 Mon 10:33 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>System.Terminal</title>
-<meta name="author" content="Connor Redfern" />
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
   #content { max-width: 60em; margin: auto; }
@@ -201,23 +201,30 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org8122388" class="outline-2">
-<h2 id="org8122388">Functions</h2>
-<div class="outline-text-2" id="text-org8122388">
+<div id="outline-container-org185c523" class="outline-2">
+<h2 id="org185c523">Functions</h2>
+<div class="outline-text-2" id="text-org185c523">
 <dl class="org-dl">
-<dt>read-codepoint</dt><dd>Read the next input character available in the standard input stream, as a unicode codepoint</dd>
+<dt>read-codepoint</dt><dd>Proc [] U8
+Read the next input character available in the standard input stream, as a
+unicode codepoint. Will block if it needs to wait for input.</dd>
 
-<dt>write-codepoint</dt><dd>Write the next character available to the standard output stream, as a unicode codepoint.</dd>
+<dt>write-codepoint</dt><dd>Proc [U8] Unit
+Write the next character available to the standard output stream, as a unicode codepoint.</dd>
 
 <dt>write-string</dt><dd>Proc [String] Unit
 Write a UTF-8 encoded string to the standard output stream.</dd>
+
+<dt>write-line</dt><dd>Proc [String] Unit
+Write a UTF-8 encoded string to the standard output stream, followed by a
+newline. Equivalent to <code>proc [str] (seq (write-string str) (write-string "\n"))</code></dd>
 </dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2025-12-07 Sun 10:34</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-03-09 Mon 10:33</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

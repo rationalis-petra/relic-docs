@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-14 Sat 07:58 -->
+<!-- 2026-03-14 Sat 07:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Data.List</title>
+<title>Data.Slice</title>
 <meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -197,74 +197,48 @@
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Data.List</h1>
+<h1 class="title">Data.Slice</h1>
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-orgbbad2fc" class="outline-2">
-<h2 id="orgbbad2fc">Types</h2>
-<div class="outline-text-2" id="text-orgbbad2fc">
+<div id="outline-container-org1cd9227" class="outline-2">
+<h2 id="org1cd9227">Types</h2>
+<div class="outline-text-2" id="text-org1cd9227">
 <dl class="org-dl">
-<dt>List</dt><dd>Kind [Type] Type</dd>
-</dl>
-<div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">List</span> <span style="color: #9d81ba;">Family</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Named</span> <span style="color: #62D2DB;">List</span> <span style="color: #9d81ba;">Struct</span>
-  [<span style="color: #7CF083;">.data</span> <span style="color: #62D2DB;">Address</span>]
-  [<span style="color: #7CF083;">.len</span> <span style="color: #62D2DB;">U64</span>]
-  [<span style="color: #7CF083;">.capacity</span> <span style="color: #62D2DB;">U64</span>]
-  [<span style="color: #7CF083;">.gpa</span> <span style="color: #62D2DB;">Allocator</span>])
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org7a77a80" class="outline-2">
-<h2 id="org7a77a80">Macros</h2>
-<div class="outline-text-2" id="text-org7a77a80">
-<dl class="org-dl">
-<dt>list</dt><dd>A basic macro for creating literal lists. Use as <code>(list elt1 elt2 elt3)</code>.
-For example, <code>(list 1 2 3 4 5)</code> will generate a list containing the elements
-1-5. The list macro uses the <code>mk-list</code> function, and thus allocates memory
-with <code>current-allocator</code>.</dd>
+<dt>Slice</dt><dd>Kind [Type] Type
+The 'Slice' type represents a block of memory containing some number of contiguous
+elements</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgbd297ad" class="outline-2">
-<h2 id="orgbd297ad">Functions</h2>
-<div class="outline-text-2" id="text-orgbd297ad">
+<div id="outline-container-org5ebc88a" class="outline-2">
+<h2 id="org5ebc88a">Functions</h2>
+<div class="outline-text-2" id="text-org5ebc88a">
 <dl class="org-dl">
-<dt>mk-list</dt><dd>All [A] (Proc [U64] (List A))
-<code>(mk-list cap)</code> Will create a new list with memory pre-allocated for 'cap' elements.</dd>
+<dt>null</dt><dd>All [A] (Ptr A)
+Null will create a new null pointer of type <code>A</code>. Note that because it takes no
+arguments, it is more likely you will need to provide the type of
+the pointer, e.g. <code>(null {I64})</code></dd>
 
-<dt>free-list</dt><dd>All [A] (Proc [(List A)] Unit)
-<code>(free-list list)</code> Will free the memory associated with the list.</dd>
+<dt>new</dt><dd>All [A] Proc [U64] (Slice A) 
+<code>(new {A} len)</code> Creates a new slice, with space allocated for 'len' elements
+of type 'A'. All memory is uninitialized.</dd>
 
-<dt>elt</dt><dd>All [A] (Proc [U64 (List A)] A)
-<code>(elt i list)</code> Returns the 'i'th element of the list.</dd>
+<dt>delete</dt><dd>All [A] Unit
+<code>(delete slice)</code> Will free the underlying memory owned by the slice.</dd>
 
-<dt>eset</dt><dd>All [A] (Proc [U64 A (List A)] Unit)
-<code>(eset i x list)</code> Sets the value in the list at position 'i' to 'x'.</dd>
+<dt>elt</dt><dd>All [A] Proc [U64 (Slice A)] A
+<code>(elt i slice)</code> gives to the 'i'th element of the slice</dd>
 
-<dt>each</dt><dd>All [A] (Proc [(Proc [A] Unit) (List A)] Unit)
-<code>(each f list)</code> will apply the function 'f' to each element of the list.</dd>
-
-<dt>map</dt><dd>All [A B] (Proc [(Proc [A] B) (List A)] (List B))
-<code>(map f list)</code> will apply the function 'f' to each element of the list, and
-store the outputs in a new list, which is returned.</dd>
-
-<dt>push</dt><dd>All [A] (Proc [A (Ptr List A)] Unit)
-<code>(push x ptr)</code> Will push the value 'x' onto the list pointed to by 'ptr',
-increasing the length by one and possibly allocating new memory.</dd>
-
-<dt>pop</dt><dd>All [A] (Proc [(Ptr List A)] A)
-<code>(pop x ptr)</code> Will pop the value at the end of the list pointed to by 'ptr',
-decreasing the length by one and returning the value popped.</dd>
+<dt>eset</dt><dd>All [A] Proc [U64 A (Slice A)] A
+<code>(elt i x slice)</code> sets the value at index 'i' of the slice to the value of 'x'.</dd>
 </dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-14 Sat 07:58</p>
+<p class="date">Created: 2026-03-14 Sat 07:44</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

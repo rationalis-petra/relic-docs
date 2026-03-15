@@ -1,0 +1,29 @@
+#+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+#+title: Debug
+#+options: num:nil toc:nil
+
+
+* Functions 
++ describe :: Term Former
+  This term former is used to produce a (string) description of a module,
+  intended for debugging usage by, e.g. writing the string to the repl.
+
+  #+begin_src relic
+user > (write-string (debug.describe data.pointer))
+Module:  pointer
+────────────────────────────────────────────
+null : All [A] Ptr A
+get : All [A] Proc [(Ptr A)] A
+^ : All [A] Proc [(Ptr A)] A
+set : All [A] Proc [(Ptr A) A] Unit
+new : All [A] Proc [A] (Ptr A)
+local : All [A] Proc [A] (Ptr A)
+delete : All [A] Proc [(Ptr A)] Unit
+────────────────────────────────────────────
+  #+end_src
+
++ debug-break :: Proc [] Unit
+  If there are any debuggers attached to a running program, execution will stop
+  when this function is hit, as if they had hit a set breakpoint. Note that if a
+  debugger is NOT attached then, depending on the system, this may instead cause
+  the program to crash.

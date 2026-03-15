@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-14 Sat 07:58 -->
+<!-- 2026-03-08 Sun 22:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Data.List</title>
+<title>Debug</title>
 <meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -193,78 +193,48 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
-<link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+<link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Data.List</h1>
-<p>
-<a href="../index.html">up</a>
+<h1 class="title">Debug</h1>
+<div id="outline-container-org3b5dad4" class="outline-2">
+<h2 id="org3b5dad4">Functions</h2>
+<div class="outline-text-2" id="text-org3b5dad4">
+<dl class="org-dl">
+<dt>describe</dt><dd><p>
+Term Former
+This term former is used to produce a (string) description of a module,
+intended for debugging usage by, e.g. writing the string to the repl.
 </p>
-<div id="outline-container-orgbbad2fc" class="outline-2">
-<h2 id="orgbbad2fc">Types</h2>
-<div class="outline-text-2" id="text-orgbbad2fc">
-<dl class="org-dl">
-<dt>List</dt><dd>Kind [Type] Type</dd>
-</dl>
+
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">List</span> <span style="color: #9d81ba;">Family</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Named</span> <span style="color: #62D2DB;">List</span> <span style="color: #9d81ba;">Struct</span>
-  [<span style="color: #7CF083;">.data</span> <span style="color: #62D2DB;">Address</span>]
-  [<span style="color: #7CF083;">.len</span> <span style="color: #62D2DB;">U64</span>]
-  [<span style="color: #7CF083;">.capacity</span> <span style="color: #62D2DB;">U64</span>]
-  [<span style="color: #7CF083;">.gpa</span> <span style="color: #62D2DB;">Allocator</span>])
+<pre class="src src-relic">user &gt; (write-string (debug<span style="color: #7CF083;">.describe</span> data<span style="color: #7CF083;">.pointer</span>))
+<span style="color: #62D2DB;">Module</span><span style="color: #7CF083;">:</span>  pointer
+&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+null <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>
+get <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">A</span>
+^ <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">A</span>
+set <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>) <span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Unit</span>
+new <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">A</span>] (<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)
+local <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">A</span>] (<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)
+delete <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">Unit</span>
+&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 </pre>
-</div>
-</div>
-</div>
-<div id="outline-container-org7a77a80" class="outline-2">
-<h2 id="org7a77a80">Macros</h2>
-<div class="outline-text-2" id="text-org7a77a80">
-<dl class="org-dl">
-<dt>list</dt><dd>A basic macro for creating literal lists. Use as <code>(list elt1 elt2 elt3)</code>.
-For example, <code>(list 1 2 3 4 5)</code> will generate a list containing the elements
-1-5. The list macro uses the <code>mk-list</code> function, and thus allocates memory
-with <code>current-allocator</code>.</dd>
-</dl>
-</div>
-</div>
-<div id="outline-container-orgbd297ad" class="outline-2">
-<h2 id="orgbd297ad">Functions</h2>
-<div class="outline-text-2" id="text-orgbd297ad">
-<dl class="org-dl">
-<dt>mk-list</dt><dd>All [A] (Proc [U64] (List A))
-<code>(mk-list cap)</code> Will create a new list with memory pre-allocated for 'cap' elements.</dd>
+</div></dd>
 
-<dt>free-list</dt><dd>All [A] (Proc [(List A)] Unit)
-<code>(free-list list)</code> Will free the memory associated with the list.</dd>
-
-<dt>elt</dt><dd>All [A] (Proc [U64 (List A)] A)
-<code>(elt i list)</code> Returns the 'i'th element of the list.</dd>
-
-<dt>eset</dt><dd>All [A] (Proc [U64 A (List A)] Unit)
-<code>(eset i x list)</code> Sets the value in the list at position 'i' to 'x'.</dd>
-
-<dt>each</dt><dd>All [A] (Proc [(Proc [A] Unit) (List A)] Unit)
-<code>(each f list)</code> will apply the function 'f' to each element of the list.</dd>
-
-<dt>map</dt><dd>All [A B] (Proc [(Proc [A] B) (List A)] (List B))
-<code>(map f list)</code> will apply the function 'f' to each element of the list, and
-store the outputs in a new list, which is returned.</dd>
-
-<dt>push</dt><dd>All [A] (Proc [A (Ptr List A)] Unit)
-<code>(push x ptr)</code> Will push the value 'x' onto the list pointed to by 'ptr',
-increasing the length by one and possibly allocating new memory.</dd>
-
-<dt>pop</dt><dd>All [A] (Proc [(Ptr List A)] A)
-<code>(pop x ptr)</code> Will pop the value at the end of the list pointed to by 'ptr',
-decreasing the length by one and returning the value popped.</dd>
+<dt>debug-break</dt><dd>Proc [] Unit
+If there are any debuggers attached to a running program, execution will stop
+when this function is hit, as if they had hit a set breakpoint. Note that if a
+debugger is NOT attached then, depending on the system, this may instead cause
+the program to crash.</dd>
 </dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-14 Sat 07:58</p>
+<p class="date">Created: 2026-03-08 Sun 22:11</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

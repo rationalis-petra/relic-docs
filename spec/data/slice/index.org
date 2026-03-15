@@ -1,0 +1,29 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Data.Slice
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ Slice :: Kind [Type] Type
+  The 'Slice' type represents a block of memory containing some number of contiguous
+  elements 
+
+* Functions
++ null :: All [A] (Ptr A)
+  Null will create a new null pointer of type =A=. Note that because it takes no
+  arguments, it is more likely you will need to provide the type of
+  the pointer, e.g. =(null {I64})=
+
++ new :: All [A] Proc [U64] (Slice A) 
+  =(new {A} len)= Creates a new slice, with space allocated for 'len' elements
+  of type 'A'. All memory is uninitialized.
+
++ delete :: All [A] Unit
+  =(delete slice)= Will free the underlying memory owned by the slice.
+
++ elt :: All [A] Proc [U64 (Slice A)] A
+  =(elt i slice)= gives to the 'i'th element of the slice
+
++ eset :: All [A] Proc [U64 A (Slice A)] A
+  =(elt i x slice)= sets the value at index 'i' of the slice to the value of 'x'.
