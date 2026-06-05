@@ -1,3 +1,55 @@
 #+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
 #+title: Extra
 #+options: num:nil toc:nil
+
+* Macros
+- ann :: Convenience macro for declaring types.
+  
+- loop :: A macro for writing simple numeric for-loops and condition-based while
+  loops, using the same macro.
+
+  Sample Usage 
+  #+begin_src relic
+;; Print 0 to 9 interleaved with 10 to 1 
+(loop [for i from 0 below 10]
+      [for j from 10 above 0]
+  (write-line (to-string i))
+  (write-line (to-string j)))
+  #+end_src
+
+
+  #+begin_src relic
+;; Print 0 to 9, but terminates early if i hits early-end
+(loop [for i from 0 below 10]
+      [while (!= i early-end)]
+  (write-line (to-string i)))
+  #+end_src
+
+- when :: A convenience macro for when you want to run some side-effecting code
+  when a condition is true.
+
+  Sample Usage
+
+  #+begin_src relic
+(when (= (mod i 2) 0)
+  (write-line "i is even!")
+  #+end_src
+
+- -> :: A convenience macro for flattening deeply nested function calls.
+
+  #+begin_src relic
+;; ugly 
+(+ (- (* y 3.14) 10.0) x)
+
+;; elegant
+(-> y
+  (* 3.14)
+  (- 10.0)
+  (+ x))
+  #+end_src
+
+* Procedures
+- exit : Proc [] Unit :: Exit the current process with exit code 0.
+
+- panic : All [A] Proc [String] A :: Exit the current process with exit code -1,
+  and print the string as a message to standard error.

@@ -1,59 +1,7 @@
 #+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
-#+title: Tutorial #1: Your First Project 
+#+title: Tutorial #1: Logical Blocks
 #+options: num:nil toc:nil
 
-[[file:programmer-0.org][Prev]] [[file:../index.org][Up]] [[file:programmer-2.org][Next]]
 
-
-* A Project
-Now that we have the basics out of the way, it's time to create a new project! 
-The Pico Relic compiler comes with the a built-in build system called Atlas.
-Atlas is very flexible with how you structure your files, so we will use a very
-basic layout, which is outlined below. 
-
-#+begin_src ascii
-<projname>
-┣━ atlas 
-┗━ src
-   ┗━ main.rl 
-#+end_src
-
-** Modules, Packages and Systems 
-Typically, Relic code is organized into two levels: Modules and Packages.
-
-If we look at the file 'main.rl', we can see the first level: Modules.
-
-#+begin_src relic
-(module main
-  (export main))
-
-(def main proc []
-  (write-line "Hello from Relic!"))
-#+end_src
-
-Modules can be nested inside each other, so you can have a module "geometry"
-with an internal module "square", for example. Modules can in turn be collected
-into packages. Unlike Modules, Packages cannot be nested inside each other. A
-package is intended to represent a the code of a complete work, such as a
-library or application.
-
-Finally, there are systems. While modules and packages are built into the
-language, systems are not. Instead, systems are used to build packages, so a
-system is a description of how to build a package. Systems allow you to inject
-compile-time parameters, such as whether a build is debug or release, or whether
-to build a specific feature or use a specific library.
-
-A system is defined in a "Relic System" file, with extension =.rls=. You can see
-that 
-
-#+begin_src relic
-(def <projname> system
-  :package "<projname>"
-  :dependencies (list "base")
-  :src "src"
-  :entry "main/main")
-#+end_src
-
-
-
+Prev [[file:../index.org][Up]] [[file:programmer-1.org][Next]]
 

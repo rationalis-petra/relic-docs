@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-04-13 Mon 22:35 -->
+<!-- 2026-05-31 Sun 13:20 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Core</title>
@@ -198,13 +198,13 @@
 <body>
 <div id="content" class="content">
 <h1 class="title">Core</h1>
-<div id="outline-container-org519e516" class="outline-2">
-<h2 id="org519e516">Types</h2>
+<div id="outline-container-orgc3992c8" class="outline-2">
+<h2 id="orgc3992c8">Types</h2>
 </div>
 
-<div id="outline-container-org77c79d8" class="outline-2">
-<h2 id="org77c79d8">Syntactic Terms/Formers</h2>
-<div class="outline-text-2" id="text-org77c79d8">
+<div id="outline-container-orgbd48c6e" class="outline-2">
+<h2 id="orgbd48c6e">Syntactic Terms/Formers</h2>
+<div class="outline-text-2" id="text-orgbd48c6e">
 <dl class="org-dl">
 <dt>def</dt><dd><p>
 Define a new value. Can only be used as a toplevel term in a module.
@@ -218,15 +218,13 @@ Format: <code>(def &lt;name&gt; &lt;value&gt;)</code>
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">def</span> x <span style="color: #0D9C94;">10</span>)
 (<span style="color: #9d81ba;">def</span> sum-to <span style="color: #9d81ba;">proc</span> [x] <span style="color: #9d81ba;">if</span> (&lt; x <span style="color: #0D9C94;">1</span>) x (+ x (sum-to (- x <span style="color: #0D9C94;">1</span>)))))
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
 <dt>declare</dt><dd>Declare that a value has certain properties. Canonly be used as a
 toplevel term in a module.</dd>
 
@@ -241,8 +239,7 @@ Format: <code>(import &lt;import-clause&gt;*)</code>
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">import</span>
   (data<span style="color: #7CF083;">.list</span> :<span style="color: #9d81ba;">all</span>)
@@ -253,11 +250,12 @@ Sample usage:
 
   platform<span style="color: #7CF083;">.terminal</span>)
 </pre>
+</div></dd>
+</dl>
 </div>
-</div>
-<div id="outline-container-org2e14827" class="outline-3">
-<h3 id="org2e14827">Create and Consume Values</h3>
-<div class="outline-text-3" id="text-org2e14827">
+<div id="outline-container-org7ac3456" class="outline-3">
+<h3 id="org7ac3456">Create and Consume Values</h3>
+<div class="outline-text-3" id="text-org7ac3456">
 <dl class="org-dl">
 <dt>proc</dt><dd><p>
 Create a new procedure (function). Procedures are anonymous functions
@@ -283,8 +281,7 @@ Format: <code>(proc {(&lt;arg&gt; &lt;Type&gt;)*}? [&lt;&lt;arg&gt; | (&lt;arg&g
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">write a string to the console  
 </span>(<span style="color: #9d81ba;">proc</span> [x] (write-string x))
@@ -298,9 +295,8 @@ Sample usage:
 <span style="color: #454459;">;; </span><span style="color: #454459;">square any value implementing the num trait 
 </span>(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> {(num (<span style="color: #62D2DB;">Num</span> <span style="color: #62D2DB;">A</span>))} [(x <span style="color: #62D2DB;">A</span>)] (num<span style="color: #7CF083;">.</span>* x x))
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
 <dt>all</dt><dd><p>
 Create a new universally quantified value. When used in cojunction with
 the <code>proc</code> term former, the resultant value behaves as a single procedure,
@@ -313,16 +309,14 @@ Format: <code>(all [&lt;arg&gt;*] ,&lt;body&gt;)</code>
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] memory<span style="color: #7CF083;">.alloc</span> (size-of <span style="color: #62D2DB;">A</span>))
 
 (<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [(x <span style="color: #62D2DB;">A</span>)] x)
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
 <dt>macro</dt><dd><p>
 Convert a procedure into a macro. Macros can only be formed from
 procedures with type <code>Proc [Syntax] (Either String Syntax)</code>
@@ -334,16 +328,14 @@ Format: <code>(macro ,&lt;proc&gt;)</code>
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] memory<span style="color: #7CF083;">.alloc</span> (size-of <span style="color: #62D2DB;">A</span>))
 
 (<span style="color: #9d81ba;">all</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">proc</span> [(x <span style="color: #62D2DB;">A</span>)] x)
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
 <dt>apply</dt><dd>explicitly apply a function to some value(s). Using apply to
 apply a procedure <code>p</code> to arguments <code>a b c</code> is the same as <code>(p a b c)</code>,
 however, if <code>p</code> is not a procedure but is rather a macro or term-former, then
@@ -360,8 +352,7 @@ Format: <code>(array {n m ...}? [[a b c] [d e f] ...])</code>
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">1D array, with dimension
 </span>(array {<span style="color: #0D9C94;">4</span>} [<span style="color: #0D9C94;">3</span> <span style="color: #0D9C94;">7</span> <span style="color: #0D9C94;">1</span> <span style="color: #0D9C94;">9</span>])
@@ -372,9 +363,8 @@ Sample usage:
 <span style="color: #454459;">;; </span><span style="color: #454459;">2D array, leftmost number in dimension is size of outermost array
 </span>(array {<span style="color: #0D9C94;">3</span> <span style="color: #0D9C94;">2</span>} [[<span style="color: #0D9C94;">1</span> <span style="color: #0D9C94;">2</span>] [<span style="color: #0D9C94;">3</span> <span style="color: #0D9C94;">4</span>] [<span style="color: #0D9C94;">5</span> <span style="color: #0D9C94;">6</span>]])
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
 <dt>struct</dt><dd><p>
 Create a new structured value, heterogenously associating names with values
 </p>
@@ -385,17 +375,15 @@ Format: <code>(struct &lt;Type&gt;? [.name val] [.name val] ...)</code>
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">struct</span> [<span style="color: #7CF083;">.x</span> <span style="color: #0D9C94;">37</span>] [<span style="color: #7CF083;">.y</span> <span style="color: #0D9C94;">10</span>] [<span style="color: #7CF083;">.z</span> <span style="color: #0D9C94;">32</span>])
 
 (<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Range</span> <span style="color: #9d81ba;">Struct</span> [<span style="color: #7CF083;">.start</span> <span style="color: #62D2DB;">F32</span>] [<span style="color: #7CF083;">.end</span> <span style="color: #62D2DB;">F32</span>])
 (<span style="color: #9d81ba;">struct</span> <span style="color: #62D2DB;">Range</span> [<span style="color: #7CF083;">.start</span> <span style="color: #0D9C94;">1</span>.<span style="color: #0D9C94;">5</span>] [<span style="color: #7CF083;">.end</span> <span style="color: #0D9C94;">7</span>.<span style="color: #0D9C94;">34</span>])
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
 <dt>.</dt><dd><p>
 Projector - project a value out of a structure. May 
 </p>
@@ -406,24 +394,56 @@ Format: <code>(val.field)</code> or <code>(.field val)</code>
 
 <p>
 Sample usage:
-</p></dd>
-</dl>
+</p>
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #7CF083;">.x</span> (<span style="color: #9d81ba;">struct</span> [<span style="color: #7CF083;">.x</span> <span style="color: #0D9C94;">37</span>] [<span style="color: #7CF083;">.y</span> <span style="color: #0D9C94;">10</span>]))
 
 (point<span style="color: #7CF083;">.x</span>)
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
+<dt>:</dt><dd><p>
+Enum constructor - construct a value from an enum type.
+</p>
+
+<p>
+Format: <code>:val</code> or <code>Type:val</code> or <code>(:val &lt;arg1&gt; ...)</code> or <code>(Type:val &lt;arg1&gt; ...)</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">
+</pre>
+</div></dd>
+
+<dt>match</dt><dd><p>
+Matches a value against patterns deriving from types like Enums or Tagged Variants. Each pattern specifies how the value is destructured and evaluated.
+</p>
+
+<p>
+Format: <code>(match value [pattern body] ...)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Define a simple enum type with two variants
+</span>(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Result</span> <span style="color: #9d81ba;">Enum</span> [<span style="color: #7CF083;">:ok</span> <span style="color: #62D2DB;">I32</span>] [<span style="color: #7CF083;">:error</span> <span style="color: #62D2DB;">String</span>])
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">A match statement handling both variants
+</span>(<span style="color: #9d81ba;">match</span> (<span style="color: #62D2DB;">Result</span><span style="color: #7CF083;">:ok</span> <span style="color: #0D9C94;">42</span>)
+  [[<span style="color: #7CF083;">:ok</span> num] (terminal<span style="color: #7CF083;">.write-line</span> (str <span style="color: #f5c791;">"Success with number: "</span> num))]
+  [[<span style="color: #7CF083;">:error</span> msg] (terminal<span style="color: #7CF083;">.write-line</span> (str <span style="color: #f5c791;">"Error occurred: "</span> msg))])
+</pre>
+</div></dd>
+
 <dt>seal</dt><dd><p>
 Create a new term that will seal away a type from a value. 
 </p>
 
 <p>
 Format: <code>(seal type [T1 T2 ...] {i1 i2 ...}? ,&lt;body&gt;)</code>
-</p></dd>
-</dl>
+</p>
 
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Mon</span> <span style="color: #9d81ba;">Sealed</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Struct</span>
@@ -434,49 +454,219 @@ Format: <code>(seal type [T1 T2 ...] {i1 i2 ...}? ,&lt;body&gt;)</code>
   [<span style="color: #7CF083;">.val</span> <span style="color: #0D9C94;">10</span>]
   [<span style="color: #7CF083;">.stringify</span> i64<span style="color: #7CF083;">.to-string</span>])
 </pre>
-</div>
+</div></dd>
 
-<dl class="org-dl">
-<dt>unseal</dt><dd></dd>
+<dt>unseal</dt><dd><p>
+Unseal types in a sealed value, binding specified fields for use.
+</p>
 
+<p>
+Format: <code>(unseal [name value] [T1 T2 ...] [implicit-binding]? ,&lt;body&gt;)</code>
+</p>
 
-<dt>dynamic</dt><dd></dd>
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">unseal</span> [mon x] [<span style="color: #62D2DB;">I64</span>]
+  (<span style="color: #7CF083;">.val</span> mon)) <span style="color: #454459;">;; </span><span style="color: #454459;">Unseals the .val from a sealed type.</span>
+</pre>
+</div></dd>
 
+<dt>dynamic</dt><dd><p>
+Establish a new dynamic value. Dynamic values are a special kind of
+mutable vaule. Conceptually, dynamic values are pointers to a value on the
+stack. When using <code>bind</code>, a new binding for the value is established, and both
+reads and modifications will read from the new value, but when the function
+containing the <code>bind</code> returns, the dynamic value will update to point at the
+OLD value. The 'initial' value establishes a 'hidden' binding at the top of
+the current call-stack.  
+</p>
 
-<dt>use</dt><dd></dd>
+<p>
+Format: <code>(dynamic &lt;initial_value&gt;)</code>
+</p>
 
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> counter <span style="color: #9d81ba;">dynamic</span> <span style="color: #0D9C94;">0</span>)
+</pre>
+</div></dd>
 
-<dt>modify</dt><dd></dd>
+<dt>use</dt><dd><p>
+Access the current value of a dynamic cell.
+</p>
 
+<p>
+Format: <code>(use &lt;dynamic&gt;)</code>
+</p>
 
-<dt>bind</dt><dd></dd>
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">use</span> counter)
+</pre>
+</div></dd>
 
+<dt>modify</dt><dd><p>
+Modify the value of a dynamically scoped variable.
+</p>
 
-<dt>instance</dt><dd></dd>
+<p>
+Format: <code>(modify &lt;dynamic&gt; &lt;new_value&gt;)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">modify</span> counter (+ (<span style="color: #9d81ba;">use</span> counter) <span style="color: #0D9C94;">1</span>))
+</pre>
+</div></dd>
+
+<dt>bind</dt><dd><p>
+Establish a binding for a dynamic value. The change affects all accesses
+(including callees) within the scope, but all changes to the varible are
+reverted when leaving the bind.
+</p>
+
+<p>
+Format: <code>(bind [name value] ,&lt;body&gt;)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(terminal<span style="color: #7CF083;">.write-line</span> (to-string counter)) <span style="color: #454459;">;; </span><span style="color: #454459;">prints 0
+</span>
+(<span style="color: #9d81ba;">bind</span> [counter <span style="color: #0D9C94;">100</span>]
+  (<span style="color: #9d81ba;">modify</span> counter (+ (<span style="color: #9d81ba;">use</span> counter) <span style="color: #0D9C94;">10</span>))      
+  (terminal<span style="color: #7CF083;">.write-line</span> (to-string counter))) <span style="color: #454459;">;; </span><span style="color: #454459;">prints 110
+</span>
+(terminal<span style="color: #7CF083;">.write-line</span> (to-string counter)) <span style="color: #454459;">;; </span><span style="color: #454459;">prints 0</span>
+</pre>
+</div></dd>
+
+<dt>instance</dt><dd><p>
+Bind values to typeclass traits dynamically.
+</p>
+
+<p>
+Format: <code>(instance type trait implementation)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(instance <span style="color: #62D2DB;">I64</span> <span style="color: #62D2DB;">Num</span>
+  [(+ subtract multiply)])
+</pre>
+</div></dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org36df56a" class="outline-3">
-<h3 id="org36df56a">Binding and Control Flow</h3>
-<div class="outline-text-3" id="text-org36df56a">
+<div id="outline-container-orgcb73101" class="outline-3">
+<h3 id="orgcb73101">Binding and Control Flow</h3>
+<div class="outline-text-3" id="text-orgcb73101">
 <dl class="org-dl">
-<dt>:</dt><dd></dd>
+<dt>if</dt><dd><p>
+Conditional expression that evaluates and returns one of two branches, based on a boolean condition.
+</p>
 
+<p>
+Format: <code>(if condition true-branch false-branch)</code>
+</p>
 
-<dt>match</dt><dd></dd>
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">if</span> <span style="color: #7CF083;">:true</span> <span style="color: #f5c791;">"It's true!"</span> <span style="color: #f5c791;">"It's false."</span>) <span style="color: #454459;">;; </span><span style="color: #454459;">Returns "It's true!"
+</span>
+(<span style="color: #9d81ba;">def</span> pick <span style="color: #9d81ba;">proc</span> [(b <span style="color: #62D2DB;">Bool</span>) (x <span style="color: #62D2DB;">I64</span>) (y <span style="color: #62D2DB;">I64</span>)] (<span style="color: #9d81ba;">if</span> b x y))
+(pick <span style="color: #7CF083;">:false</span> <span style="color: #0D9C94;">10</span> <span style="color: #0D9C94;">5</span>) <span style="color: #454459;">;; </span><span style="color: #454459;">Evaluates to 5</span>
+</pre>
+</div></dd>
 
+<dt>cond</dt><dd><p>
+Evaluate multiple condition-action pairs sequentially until one condition evaluates to true. Returns the result of the first true condition's action.
+</p>
 
-<dt>if</dt><dd></dd>
+<p>
+Format: <code>(cond [condition action] ...)</code>
+</p>
 
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">cond</span> 
+  [<span style="color: #7CF083;">:false</span> <span style="color: #f5c791;">"This won't execute"</span>]
+  [<span style="color: #7CF083;">:true</span> <span style="color: #f5c791;">"This will execute first"</span>]
+  [<span style="color: #7CF083;">:true</span> <span style="color: #f5c791;">"This won't execute, since the first true condition matched."</span>])
 
-<dt>cond</dt><dd></dd>
+(<span style="color: #9d81ba;">def</span> weekday <span style="color: #9d81ba;">proc</span> [(n <span style="color: #62D2DB;">U8</span>)]
+  (<span style="color: #9d81ba;">cond</span> 
+    [(= n <span style="color: #0D9C94;">1</span>) <span style="color: #f5c791;">"Monday"</span>]
+    [(= n <span style="color: #0D9C94;">2</span>) <span style="color: #f5c791;">"Tuesday"</span>]
+    [(= n <span style="color: #0D9C94;">3</span>) <span style="color: #f5c791;">"Wednesday"</span>]
+    [(= n <span style="color: #0D9C94;">4</span>) <span style="color: #f5c791;">"Thursday"</span>]
+    [(= n <span style="color: #0D9C94;">5</span>) <span style="color: #f5c791;">"Friday"</span>]
+    [(= n <span style="color: #0D9C94;">6</span>) <span style="color: #f5c791;">"Saturday"</span>]
+    [(= n <span style="color: #0D9C94;">7</span>) <span style="color: #f5c791;">"Sunday"</span>]
+    [<span style="color: #7CF083;">:true</span> <span style="color: #f5c791;">"Invalid Weekday!"</span>])
+</pre>
+</div></dd>
 
+<dt>labels</dt><dd><p>
+Used to define labeled blocks within expressions. Labels function
+somewhat similarly to labels in other programming languages, except they
+accept arguments, which get bound as local variables. This is usefuf for, e.g.
+writing loops or state-machines without needing pointers, refs or other
+mutable constructs. 
+</p>
 
-<dt>labels</dt><dd></dd>
+<p>
+Format: <code>(labels &lt;body&gt; [label &lt;action&gt;] ...)</code>
+</p>
 
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">labels</span> (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">start</span>)
+  [start [x] x]
+  [end <span style="color: #0D9C94;">27</span>])
 
-<dt>go-to</dt><dd></dd>
+(<span style="color: #9d81ba;">labels</span> (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop</span> <span style="color: #0D9C94;">0</span>)
+  [loop [x] (<span style="color: #9d81ba;">if</span> (&lt; x <span style="color: #0D9C94;">10</span>)
+                (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop</span> (+ x <span style="color: #0D9C94;">1</span>))
+                (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">end</span>))]
+  [end (terminal<span style="color: #7CF083;">.write-line</span> <span style="color: #f5c791;">"Loop Done"</span>)])
+</pre>
+</div></dd>
 
+<dt>go-to</dt><dd><p>
+Directs execution to a specific label defined within labels (see
+labels above)
+</p>
+
+<p>
+Format: <code>(go-to label [arguments]*)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">labels</span> (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">val</span> <span style="color: #0D9C94;">7</span>) [val [x] x])
+</pre>
+</div></dd>
 
 <dt>with-reset</dt><dd></dd>
 
@@ -484,19 +674,30 @@ Format: <code>(seal type [T1 T2 ...] {i1 i2 ...}? ,&lt;body&gt;)</code>
 <dt>reset-to</dt><dd></dd>
 
 
-<dt>set</dt><dd></dd>
-
-
 <dt>let</dt><dd></dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgc961bc5" class="outline-3">
-<h3 id="orgc961bc5">Type Casting and Manipulation</h3>
-<div class="outline-text-3" id="text-orgc961bc5">
+<div id="outline-container-org8e958a0" class="outline-3">
+<h3 id="org8e958a0">Type Casting and Information</h3>
+<div class="outline-text-3" id="text-org8e958a0">
 <dl class="org-dl">
-<dt>is</dt><dd></dd>
+<dt>is</dt><dd><p>
+Assert that a value is a specific type. Primary usages are to restrict the
+type of literals, to provide type information to the type checker, and to
+provide type informationto a human reader.
+</p>
 
+<p>
+Format: <code>(is &lt;value&gt; &lt;type&gt;)</code>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">(new 3) would create a pointer to a 64-bit integer (the default)
+</span><span style="color: #454459;">;; </span><span style="color: #454459;">(new (is 3 U32)) restricts the type of the literal to 32 bits
+</span>(new (<span style="color: #9d81ba;">is</span> <span style="color: #0D9C94;">3</span> <span style="color: #62D2DB;">U32</span>))
+</pre>
+</div></dd>
 
 <dt>into</dt><dd></dd>
 
@@ -507,30 +708,122 @@ Format: <code>(seal type [T1 T2 ...] {i1 i2 ...}? ,&lt;body&gt;)</code>
 <dt>name</dt><dd></dd>
 
 
-<dt>widen</dt><dd></dd>
-
-
-<dt>narrow</dt><dd></dd>
-
-
 <dt>unname</dt><dd></dd>
 
 
-<dt>size-of</dt><dd></dd>
+<dt>widen</dt><dd><p>
+Take an integral or floating type and move into a type with strictly
+more information. For example, a U8 can be widened into an I16, but NOT an I8,
+as an I8 cannot represent values larger than 127, whereas a U8 can represent
+values up to 255.
+</p>
+
+<p>
+Format: <code>(widen &lt;value&gt; &lt;type&gt;)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">
+</pre>
+</div></dd>
+
+<dt>narrow</dt><dd></dd>
+</dl>
 
 
-<dt>align-of</dt><dd></dd>
+<dl class="org-dl">
+<dt>size-of</dt><dd><p>
+Given a type, returns the size of that type (in bytes) as an int of
+type U64. Can be used in polymorphic (all) functions also.
+</p>
 
+<p>
+Format: <code>(size-of &lt;type&gt;)</code>
+</p>
 
-<dt>offset-of</dt><dd></dd>
+<p>
+Sample usage:
+</p></dd>
+</dl>
+<p>
+,#+begin_src relic
+(def Point Struct [.x F32] [.y F32])
+</p>
+
+<p>
+;; Allocate enough memory to store 4 Points
+(def pos-memory memory.allocate (* (size-of Point)))
+#+end_src
+</p>
+
+<dl class="org-dl">
+<dt>align-of</dt><dd><p>
+Given a type, returns the alignment of that type (in bytes) as an int of
+type U64. Can be used in polymorphic (all) functions also.
+</p>
+
+<p>
+Format: <code>(align-of &lt;type&gt;)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Point</span> <span style="color: #9d81ba;">Struct</span> [<span style="color: #7CF083;">.x</span> <span style="color: #62D2DB;">F32</span>] [<span style="color: #7CF083;">.y</span> <span style="color: #62D2DB;">F32</span>])
+
+(ailgn-of <span style="color: #62D2DB;">Point</span>) <span style="color: #454459;">;; </span><span style="color: #454459;">=&gt; 4</span>
+</pre>
+</div></dd>
+
+<dt>offset-of</dt><dd><p>
+Given a fieldname and a struct, returns the offset of the field
+(in bytes) relative to the start of the struct.
+</p>
+
+<p>
+Format: <code>(offset-of &lt;fieldname&gt; &lt;type&gt;)</code>
+</p>
+
+<p>
+Sample usage:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic"> (<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Point</span> <span style="color: #9d81ba;">Struct</span> [<span style="color: #7CF083;">.x</span> <span style="color: #62D2DB;">F32</span>] [<span style="color: #7CF083;">.y</span> <span style="color: #62D2DB;">F32</span>])
+
+ (offset-of x <span style="color: #62D2DB;">Point</span>) <span style="color: #454459;">;; </span><span style="color: #454459;">=&gt; 0
+</span> (offset-of y <span style="color: #62D2DB;">Point</span>) <span style="color: #454459;">;; </span><span style="color: #454459;">=&gt; 4</span>
+</pre>
+</div></dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org9d50e61" class="outline-3">
-<h3 id="org9d50e61">Type formers</h3>
-<div class="outline-text-3" id="text-org9d50e61">
+<div id="outline-container-orga800413" class="outline-3">
+<h3 id="orga800413">Type formers</h3>
+<div class="outline-text-3" id="text-orga800413">
 <dl class="org-dl">
-<dt>Proc</dt><dd></dd>
+<dt>Proc</dt><dd><p>
+Create a new procedure type.
+</p>
+
+<p>
+Format: <code>(Proc [&lt;Types...&gt;] &lt;ReturnType&gt;)</code>
+</p>
+
+<p>
+Sample usage: 
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">  (<span style="color: #9d81ba;">ann</span> print-age <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">I64</span>] <span style="color: #62D2DB;">Unit</span>)
+  (<span style="color: #9d81ba;">def</span> print-age <span style="color: #9d81ba;">proc</span> [age] <span style="color: #9d81ba;">seq</span>
+    (terminal<span style="color: #7CF083;">.write-string</span> <span style="color: #f5c791;">"Age: "</span>)
+    (terminal<span style="color: #7CF083;">.write-string</span> (to-string age)))
+</pre>
+</div></dd>
 
 <dt>Array</dt><dd></dd>
 
@@ -593,7 +886,7 @@ Format: <code>(seal type [T1 T2 ...] {i1 i2 ...}? ,&lt;body&gt;)</code>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-04-13 Mon 22:35</p>
+<p class="date">Created: 2026-05-31 Sun 13:20</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

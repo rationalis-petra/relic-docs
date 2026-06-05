@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-09 Mon 10:33 -->
+<!-- 2026-05-13 Wed 16:45 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>System.Terminal</title>
@@ -201,22 +201,27 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org185c523" class="outline-2">
-<h2 id="org185c523">Functions</h2>
-<div class="outline-text-2" id="text-org185c523">
+<div id="outline-container-org8b1a68c" class="outline-2">
+<h2 id="org8b1a68c">Functions</h2>
+<div class="outline-text-2" id="text-org8b1a68c">
 <dl class="org-dl">
-<dt>read-codepoint</dt><dd>Proc [] U8
-Read the next input character available in the standard input stream, as a
+<dt>read-codepoint : Proc [] U8</dt><dd>Read the next input character available in the standard input stream, as a
 unicode codepoint. Will block if it needs to wait for input.</dd>
+</dl>
 
-<dt>write-codepoint</dt><dd>Proc [U8] Unit
-Write the next character available to the standard output stream, as a unicode codepoint.</dd>
 
-<dt>write-string</dt><dd>Proc [String] Unit
-Write a UTF-8 encoded string to the standard output stream.</dd>
+<dl class="org-dl">
+<dt>write-codepoint : Proc [U8] Unit</dt><dd>Write the next character available to the standard output stream, as a unicode codepoint.</dd>
+</dl>
 
-<dt>write-line</dt><dd>Proc [String] Unit
-Write a UTF-8 encoded string to the standard output stream, followed by a
+
+<dl class="org-dl">
+<dt>write-string : Proc [String] Unit</dt><dd>Write a UTF-8 encoded string to the standard output stream.</dd>
+</dl>
+
+
+<dl class="org-dl">
+<dt>write-line : Proc [String] Unit</dt><dd>Write a UTF-8 encoded string to the standard output stream, followed by a
 newline. Equivalent to <code>proc [str] (seq (write-string str) (write-string "\n"))</code></dd>
 </dl>
 </div>
@@ -224,7 +229,7 @@ newline. Equivalent to <code>proc [str] (seq (write-string str) (write-string "\
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-09 Mon 10:33</p>
+<p class="date">Created: 2026-05-13 Wed 16:45</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

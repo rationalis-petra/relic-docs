@@ -17,35 +17,45 @@ C/C++, Java etc. No prior experience is assumed with the many "weird" languages
 Relic draws from (lisp, forth, prolog etc.).
 
 
-* Intro & Installation
-Pico (the Relic compiler) is available on Windows or Linux as an AMD64
-executable. To install, download the [[https://github.com/rationalis-petra/pico/releases/latest][latest release]], unzip the file, navigate to
-the folder corresponding to your OS and run the installer executable.
+* Getting Started
 
-Now, you should be able to start the compiler by running either =relic= or
-=pico= from a command-line. =relic help= will  
+Relic is powered by Pico, the Relic compiler. It is available for Windows and
+Linux as an AMD64 executable. To install, download the [[https://github.com/rationalis-petra/pico/releases/latest][latest release]], unzip the
+archive, navigate to your operating system's folder, and execute the appropriate
+installer.
 
-* Read, Eval, Print, Loop!
-To begin with, this first tutorial will use the REPL (Read-Eval-Print-Loop). You
-can get here by running =relic repl=, although I recommend running in
-interactive mode with =relic repl -i=. Once the REPL is running, you can type in
-Relic expressions and hit enter to have them evaluated. We'll start with a
-simple one: writing to the terminal.
+Once installed, you can start the compiler by running either =relic= or =pico=
+from the command line. For general assistance, run =relic help= to see available
+commands and options. 
+
+* Diving into the REPL
+
+This tutorial begins with the REPL, Relic's Read-Eval-Print Loop environment.
+Launch the REPL by running =relic repl= from the command line. For an enhanced
+experience, add the =-i= flag to run in interactive mode: =relic repl -i=,
+although be aware that this is currently experimental and you may encounter bugs.
+Inside the REPL, you can evaluate Relic expressions line by line. Let's start
+with some simple arithmetic. If you type =(+ 11 7)= and hit Enter, you should
+see the following.
 
 #+begin_src relic
-(write-line "Hello, World!")
+user > (+ 11 7)
+18
 #+end_src
+
+This is because Relic will evaluate the 
 
 After running, you will now see "Hello, World!" printed on a new line,
 followed by the term =:unit=. This is because after running, the =write-line=
 function returns the value =:unit=, which the repl then prints to the command
 line. Nice!
 
-You will likely also have noticed that the function call uses an unusuan
-syntax - in Relic, instead of writing function calls as, e.g. =add(2, 3)=, we
-write them =(add 2 3)=. This applies to operators also - instead of =2 + 3= we
-write =(+ 2 3)=. This style can be confusing at first, but it also empowers a
-feature of Relic we will meet later: metaprogramming.
+Relic uses a unique syntax for function calls. Instead of the standard
+=add(2, 3)=, functions in Relic are written as =(add 2 3)=. This prefix style
+even applies to operators. For example, instead of =2 + 3=, you would write
+=(+ 2 3)=. While this syntax may seem unusual initially, it integrates
+seamlessly with Relic's advanced features like metaprogramming, which we'll
+explore later.
 
 With this knowledge in hand, we can try evaluating some other expressions, e.g. 
 
@@ -57,21 +67,48 @@ With this knowledge in hand, we can try evaluating some other expressions, e.g.
 
 Try some of your own!
 
-** Definitions
-#+begin_src relic
-(def your-name "Bob")
-#+end_src
+** Defining Values and Writing Functions
+
+Relic uses the `def` term to define values. For example:
 
 #+begin_src relic
-(write-line (append "Hi, " your-name))
+(def x 10)  ;; Defines x as 10.
 #+end_src
 
-
-** Conditionals
+You can also use `proc` to define functions. Functions in Relic take arguments
+and return results. For instance: 
 
 #+begin_src relic
-(if (< 2 3)
-  (write-line "two is less than three")
-  (write-line "three is less than two??"))
+(def add-one
+  (proc [(x I64)]
+    (+ x 1)))
 #+end_src
 
+Here, we define a function called `add-one` that increments a number by one.
+
+* Writing Your First Program
+
+Now, let's put everything together to write a simple program:
+
+#+begin_src relic
+;; Define a main function
+(def main
+  (proc []
+    (write-line "Hello, World!")))
+
+;; Call the main function to execute
+(main)
+#+end_src
+
+Save this program in a file called `hello-world.rl` and run it with the Relic
+compiler:
+
+#+begin_src bash
+relic hello-world.rl
+#+end_src
+
+This will print:
+
+#+begin_example
+Hello, World!
+#+end_example

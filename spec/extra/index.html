@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-05 Fri 13:32 -->
+<!-- 2026-05-14 Thu 17:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tutorial #1: Logical Blocks</title>
+<title>Extra</title>
 <meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -193,18 +193,93 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
-<link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+<link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Tutorial #1: Logical Blocks</h1>
-<p>
-Prev <a href="../index.html">Up</a> <a href="programmer-1.html">Next</a>
+<h1 class="title">Extra</h1>
+<div id="outline-container-orgec2e47e" class="outline-2">
+<h2 id="orgec2e47e">Macros</h2>
+<div class="outline-text-2" id="text-orgec2e47e">
+<dl class="org-dl">
+<dt>ann</dt><dd>Convenience macro for declaring types.</dd>
+
+<dt>loop</dt><dd><p>
+A macro for writing simple numeric for-loops and condition-based while
+loops, using the same macro.
 </p>
+
+<p>
+Sample Usage 
+</p>
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Print 0 to 9 interleaved with 10 to 1 
+</span>(loop [for i from <span style="color: #0D9C94;">0</span> below <span style="color: #0D9C94;">10</span>]
+      [for j from <span style="color: #0D9C94;">10</span> above <span style="color: #0D9C94;">0</span>]
+  (write-line (to-string i))
+  (write-line (to-string j)))
+</pre>
+</div></dd>
+</dl>
+
+
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Print 0 to 9, but terminates early if i hits early-end
+</span>(loop [for i from <span style="color: #0D9C94;">0</span> below <span style="color: #0D9C94;">10</span>]
+      [while (!= i early-end)]
+  (write-line (to-string i)))
+</pre>
+</div>
+
+<dl class="org-dl">
+<dt>when</dt><dd><p>
+A convenience macro for when you want to run some side-effecting code
+when a condition is true.
+</p>
+
+<p>
+Sample Usage
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(when (= (mod i <span style="color: #0D9C94;">2</span>) <span style="color: #0D9C94;">0</span>)
+  (write-line <span style="color: #f5c791;">"i is even!"</span>)
+</pre>
+</div></dd>
+
+<dt>-&gt;</dt><dd><p>
+A convenience macro for flattening deeply nested function calls.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">ugly 
+</span>(+ (- (* y <span style="color: #0D9C94;">3</span>.<span style="color: #0D9C94;">14</span>) <span style="color: #0D9C94;">10</span>.<span style="color: #0D9C94;">0</span>) x)
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">elegant
+</span>(-&gt; y
+  (* <span style="color: #0D9C94;">3</span>.<span style="color: #0D9C94;">14</span>)
+  (- <span style="color: #0D9C94;">10</span>.<span style="color: #0D9C94;">0</span>)
+  (+ x))
+</pre>
+</div></dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-orgbd115cc" class="outline-2">
+<h2 id="orgbd115cc">Procedures</h2>
+<div class="outline-text-2" id="text-orgbd115cc">
+<dl class="org-dl">
+<dt>exit : Proc [] Unit</dt><dd>Exit the current process with exit code 0.</dd>
+
+<dt>panic : All [A] Proc [String] A</dt><dd>Exit the current process with exit code -1,
+and print the string as a message to standard error.</dd>
+</dl>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-05 Fri 13:32</p>
+<p class="date">Created: 2026-05-14 Thu 17:12</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

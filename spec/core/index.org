@@ -13,10 +13,10 @@
   Format: =(def <name> <value>)= 
 
   Sample usage:
-#+begin_src relic
+  #+begin_src relic
 (def x 10)
 (def sum-to proc [x] if (< x 1) x (+ x (sum-to (- x 1)))))
-#+end_src
+  #+end_src
 
 + declare :: Declare that a value has certain properties. Canonly be used as a
   toplevel term in a module.
@@ -27,7 +27,7 @@
   Format: =(import <import-clause>*)=
 
   Sample usage:
-#+begin_src relic 
+  #+begin_src relic 
 (import
   (data.list :all)
 
@@ -36,7 +36,7 @@
   (data.pointer :only (new delete))
 
   platform.terminal)
-#+end_src
+  #+end_src
 
 ** Create and Consume Values
 + proc :: Create a new procedure (function). Procedures are anonymous functions
@@ -54,7 +54,7 @@
   Format: =(proc {(<arg> <Type>)*}? [<<arg> | (<arg> <Type>)>*] <body>)=
 
   Sample usage:
-#+begin_src relic 
+  #+begin_src relic 
 ;; write a string to the console  
 (proc [x] (write-string x))
 
@@ -66,7 +66,7 @@
 
 ;; square any value implementing the num trait 
 (all [A] proc {(num (Num A))} [(x A)] (num.* x x))
-#+end_src
+  #+end_src
 
 + all :: Create a new universally quantified value. When used in cojunction with
   the =proc= term former, the resultant value behaves as a single procedure,
@@ -75,11 +75,11 @@
  Format: =(all [<arg>*] ,<body>)= 
  
   Sample usage:
-#+begin_src relic 
+  #+begin_src relic 
 (all [A] memory.alloc (size-of A))
 
 (all [A] proc [(x A)] x)
-#+end_src
+  #+end_src
 
 + macro :: Convert a procedure into a macro. Macros can only be formed from
   procedures with type =Proc [Syntax] (Either String Syntax)=
@@ -87,11 +87,11 @@
  Format: =(macro ,<proc>)= 
  
   Sample usage:
-#+begin_src relic 
+  #+begin_src relic 
 (all [A] memory.alloc (size-of A))
 
 (all [A] proc [(x A)] x)
-#+end_src
+  #+end_src
 
 + apply :: explicitly apply a function to some value(s). Using apply to
   apply a procedure =p= to arguments =a b c= is the same as =(p a b c)=,
@@ -104,7 +104,7 @@
  Format: =(array {n m ...}? [[a b c] [d e f] ...])= 
  
   Sample usage:
-#+begin_src relic 
+  #+begin_src relic 
 ;; 1D array, with dimension
 (array {4} [3 7 1 9])
 
@@ -113,40 +113,59 @@
 
 ;; 2D array, leftmost number in dimension is size of outermost array
 (array {3 2} [[1 2] [3 4] [5 6]])
-#+end_src
+  #+end_src
 
 + struct :: Create a new structured value, heterogenously associating names with values
 
  Format: =(struct <Type>? [.name val] [.name val] ...)= 
   
   Sample usage:
-#+begin_src relic 
+  #+begin_src relic 
 (struct [.x 37] [.y 10] [.z 32])
 
 (def Range Struct [.start F32] [.end F32])
 (struct Range [.start 1.5] [.end 7.34])
-#+end_src
+  #+end_src
 
 + . :: Projector - project a value out of a structure. May 
 
  Format: =(val.field)= or =(.field val)=
 
   Sample usage:
-#+begin_src relic 
+  #+begin_src relic 
 (.x (struct [.x 37] [.y 10]))
 
 (point.x)
-#+end_src
+  #+end_src
 
-+ : :: 
++ : :: Enum constructor - construct a value from an enum type.
 
-+ match ::
+  Format: =:val= or =Type:val= or =(:val <arg1> ...)= or =(Type:val <arg1> ...)=
+
+  #+begin_src relic
+
+  #+end_src
+
++ match :: Matches a value against patterns deriving from types like Enums or Tagged Variants. Each pattern specifies how the value is destructured and evaluated.
+
+ Format: =(match value [pattern body] ...)=
+ 
+ Sample usage:
+  #+begin_src relic
+;; Define a simple enum type with two variants
+(def Result Enum [:ok I32] [:error String])
+
+;; A match statement handling both variants
+(match (Result:ok 42)
+  [[:ok num] (terminal.write-line (str "Success with number: " num))]
+  [[:error msg] (terminal.write-line (str "Error occurred: " msg))])
+  #+end_src
 
 + seal :: Create a new term that will seal away a type from a value. 
 
  Format: =(seal type [T1 T2 ...] {i1 i2 ...}? ,<body>)=
 
-#+begin_src relic
+  #+begin_src relic
 (def Mon Sealed [A] Struct
   [.val A]
   [.stringify Proc [A] String])
@@ -154,63 +173,243 @@
 (seal Mon [I64] struct
   [.val 10]
   [.stringify i64.to-string])
-#+end_src
+  #+end_src
 
-+ unseal :: 
++ unseal :: Unseal types in a sealed value, binding specified fields for use.
 
-+ dynamic :: 
+ Format: =(unseal [name value] [T1 T2 ...] [implicit-binding]? ,<body>)=
+ 
+ Sample usage:
+  #+begin_src relic
+(unseal [mon x] [I64]
+  (.val mon)) ;; Unseals the .val from a sealed type.
+  #+end_src
 
-+ use ::
++ dynamic :: Establish a new dynamic value. Dynamic values are a special kind of
+  mutable vaule. Conceptually, dynamic values are pointers to a value on the
+  stack. When using =bind=, a new binding for the value is established, and both
+  reads and modifications will read from the new value, but when the function
+  containing the =bind= returns, the dynamic value will update to point at the
+  OLD value. The 'initial' value establishes a 'hidden' binding at the top of
+  the current call-stack.  
 
-+ modify ::
+ Format: =(dynamic <initial_value>)=
 
-+ bind ::
+ Sample usage:
+  #+begin_src relic
+(def counter dynamic 0)
+  #+end_src
 
-+ instance ::
++ use :: Access the current value of a dynamic cell.
+
+ Format: =(use <dynamic>)=
+
+ Sample usage:
+  #+begin_src relic
+(use counter)
+  #+end_src
+
++ modify :: Modify the value of a dynamically scoped variable.
+   
+ Format: =(modify <dynamic> <new_value>)=
+
+ Sample usage:
+  #+begin_src relic
+(modify counter (+ (use counter) 1))
+  #+end_src
+
++ bind :: Establish a binding for a dynamic value. The change affects all accesses
+  (including callees) within the scope, but all changes to the varible are
+  reverted when leaving the bind.
+
+ Format: =(bind [name value] ,<body>)=
+
+ Sample usage:
+  #+begin_src relic
+(terminal.write-line (to-string counter)) ;; prints 0
+
+(bind [counter 100]
+  (modify counter (+ (use counter) 10))      
+  (terminal.write-line (to-string counter))) ;; prints 110
+
+(terminal.write-line (to-string counter)) ;; prints 0
+  #+end_src
+
++ instance :: Bind values to typeclass traits dynamically.
+
+ Format: =(instance type trait implementation)=
+
+ Sample usage:
+  #+begin_src relic
+(instance I64 Num
+  [(+ subtract multiply)])
+  #+end_src
 
 ** Binding and Control Flow
 
-+ if ::
++ if :: Conditional expression that evaluates and returns one of two branches, based on a boolean condition.
 
-+ cond ::
+ Format: =(if condition true-branch false-branch)=
 
-+ labels ::
+ Sample usage:
+  #+begin_src relic
+(if :true "It's true!" "It's false.") ;; Returns "It's true!"
 
-+ go-to ::
+(def pick proc [(b Bool) (x I64) (y I64)] (if b x y))
+(pick :false 10 5) ;; Evaluates to 5
+  #+end_src
+
++ cond :: Evaluate multiple condition-action pairs sequentially until one condition evaluates to true. Returns the result of the first true condition's action.
+
+ Format: =(cond [condition action] ...)=
+
+ Sample usage:
+  #+begin_src relic
+(cond 
+  [:false "This won't execute"]
+  [:true "This will execute first"]
+  [:true "This won't execute, since the first true condition matched."])
+
+(def weekday proc [(n U8)]
+  (cond 
+    [(= n 1) "Monday"]
+    [(= n 2) "Tuesday"]
+    [(= n 3) "Wednesday"]
+    [(= n 4) "Thursday"]
+    [(= n 5) "Friday"]
+    [(= n 6) "Saturday"]
+    [(= n 7) "Sunday"]
+    [:true "Invalid Weekday!"])
+  #+end_src
+
++ labels :: Used to define labeled blocks within expressions. Labels function
+  somewhat similarly to labels in other programming languages, except they
+  accept arguments, which get bound as local variables. This is usefuf for, e.g.
+  writing loops or state-machines without needing pointers, refs or other
+  mutable constructs. 
+
+ Format: =(labels <body> [label <action>] ...)=
+
+ Sample usage:
+  #+begin_src relic
+(labels (go-to start)
+  [start [x] x]
+  [end 27])
+
+(labels (go-to loop 0)
+  [loop [x] (if (< x 10)
+                (go-to loop (+ x 1))
+                (go-to end))]
+  [end (terminal.write-line "Loop Done")])
+  #+end_src
+
++ go-to :: Directs execution to a specific label defined within labels (see
+  labels above)
+
+ Format: =(go-to label [arguments]*)=
+
+ Sample usage:
+  #+begin_src relic
+(labels (go-to val 7) [val [x] x])
+  #+end_src
 
 + with-reset ::
 
 + reset-to ::
 
-+ set ::
-
 + let ::
 
-** Type Casting and Manipulation
-+ is ::
+** Type Casting and Information
 
-+ into ::
++ is :: Assert that a value is a specific type. Primary usages are to restrict the
+  type of literals, to provide type information to the type checker, and to
+  provide type informationto a human reader.
+
+  Format: =(is <value> <type>)=
+  
+  #+begin_src relic
+;; (new 3) would create a pointer to a 64-bit integer (the default)
+;; (new (is 3 U32)) restricts the type of the literal to 32 bits
+(new (is 3 U32))
+  #+end_src
+
++ into :: 
 
 + out-of ::
 
 + name ::
 
-+ widen ::
++ unname ::
+  
++ widen :: Take an integral or floating type and move into a type with strictly
+  more information. For example, a U8 can be widened into an I16, but NOT an I8,
+  as an I8 cannot represent values larger than 127, whereas a U8 can represent
+  values up to 255.
 
+  Format: =(widen <value> <type>)=
+
+  Sample usage:
+  #+begin_src relic
+
+  #+end_src
+  
 + narrow ::
 
-+ unname ::
 
-+ size-of ::
++ size-of :: Given a type, returns the size of that type (in bytes) as an int of
+  type U64. Can be used in polymorphic (all) functions also.
 
-+ align-of ::
+ Format: =(size-of <type>)=
 
-+ offset-of ::
+ Sample usage:
+,#+begin_src relic
+(def Point Struct [.x F32] [.y F32])
+
+;; Allocate enough memory to store 4 Points
+(def pos-memory memory.allocate (* (size-of Point)))
+#+end_src
+
++ align-of :: Given a type, returns the alignment of that type (in bytes) as an int of
+  type U64. Can be used in polymorphic (all) functions also.
+
+ Format: =(align-of <type>)=
+
+ Sample usage:
+  #+begin_src relic
+(def Point Struct [.x F32] [.y F32])
+
+(ailgn-of Point) ;; => 4
+  #+end_src
+
++ offset-of :: Given a fieldname and a struct, returns the offset of the field
+  (in bytes) relative to the start of the struct.
+
+  Format: =(offset-of <fieldname> <type>)=
+
+  Sample usage:
+
+  #+begin_src relic
+ (def Point Struct [.x F32] [.y F32])
+
+ (offset-of x Point) ;; => 0
+ (offset-of y Point) ;; => 4
+  #+end_src
 
 
 ** Type formers
-+ Proc ::
-+ Array ::
++ Proc :: Create a new procedure type.
+
+  Format: =(Proc [<Types...>] <ReturnType>)=
+
+  Sample usage: 
+  #+begin_src relic
+  (ann print-age Proc [I64] Unit)
+  (def print-age proc [age] seq
+    (terminal.write-string "Age: ")
+    (terminal.write-string (to-string age)))
+  #+end_src
+
++ Array :: 
 + Struct ::
 + Enum ::
 + Reset ::

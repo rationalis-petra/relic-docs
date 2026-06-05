@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-04-04 Sat 22:45 -->
+<!-- 2026-06-05 Fri 12:38 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #0: Hi, Relic!</title>
@@ -201,9 +201,9 @@
 <p>
 Prev <a href="../index.html">Up</a> <a href="programmer-1.html">Next</a>
 </p>
-<div id="outline-container-org1f269da" class="outline-2">
-<h2 id="org1f269da">IMPORTANT</h2>
-<div class="outline-text-2" id="text-org1f269da">
+<div id="outline-container-orgff1047f" class="outline-2">
+<h2 id="orgff1047f">IMPORTANT</h2>
+<div class="outline-text-2" id="text-orgff1047f">
 <p>
 At current, this tutorial is very much a work in progress. For a much better
 introduction to the basics of relic, it is recommended you chedkout the readme
@@ -211,9 +211,9 @@ of the <a href="https://github.com/rationalis-petra/pico">pico compiler</a>.
 </p>
 </div>
 </div>
-<div id="outline-container-org31febc9" class="outline-2">
-<h2 id="org31febc9">About this Tutorial</h2>
-<div class="outline-text-2" id="text-org31febc9">
+<div id="outline-container-orgedabe93" class="outline-2">
+<h2 id="orgedabe93">About this Tutorial</h2>
+<div class="outline-text-2" id="text-orgedabe93">
 <p>
 This tutorial is intended to be an introduction to the for developers who have
 already programmed in at least one standard "popular" language such as python,
@@ -222,36 +222,45 @@ Relic draws from (lisp, forth, prolog etc.).
 </p>
 </div>
 </div>
-<div id="outline-container-org529264b" class="outline-2">
-<h2 id="org529264b">Intro &amp; Installation</h2>
-<div class="outline-text-2" id="text-org529264b">
+<div id="outline-container-org7215031" class="outline-2">
+<h2 id="org7215031">Getting Started</h2>
+<div class="outline-text-2" id="text-org7215031">
 <p>
-Pico (the Relic compiler) is available on Windows or Linux as an AMD64
-executable. To install, download the <a href="https://github.com/rationalis-petra/pico/releases/latest">latest release</a>, unzip the file, navigate to
-the folder corresponding to your OS and run the installer executable.
+Relic is powered by Pico, the Relic compiler. It is available for Windows and
+Linux as an AMD64 executable. To install, download the <a href="https://github.com/rationalis-petra/pico/releases/latest">latest release</a>, unzip the
+archive, navigate to your operating system's folder, and execute the appropriate
+installer.
 </p>
 
 <p>
-Now, you should be able to start the compiler by running either <code>relic</code> or
-<code>pico</code> from a command-line. <code>relic help</code> will  
+Once installed, you can start the compiler by running either <code>relic</code> or <code>pico</code>
+from the command line. For general assistance, run <code>relic help</code> to see available
+commands and options. 
 </p>
 </div>
 </div>
-<div id="outline-container-org877cbbe" class="outline-2">
-<h2 id="org877cbbe">Read, Eval, Print, Loop!</h2>
-<div class="outline-text-2" id="text-org877cbbe">
+<div id="outline-container-org9516ea9" class="outline-2">
+<h2 id="org9516ea9">Diving into the REPL</h2>
+<div class="outline-text-2" id="text-org9516ea9">
 <p>
-To begin with, this first tutorial will use the REPL (Read-Eval-Print-Loop). You
-can get here by running <code>relic repl</code>, although I recommend running in
-interactive mode with <code>relic repl -i</code>. Once the REPL is running, you can type in
-Relic expressions and hit enter to have them evaluated. We'll start with a
-simple one: writing to the terminal.
+This tutorial begins with the REPL, Relic's Read-Eval-Print Loop environment.
+Launch the REPL by running <code>relic repl</code> from the command line. For an enhanced
+experience, add the <code>-i</code> flag to run in interactive mode: <code>relic repl -i</code>,
+although be aware that this is currently experimental and you may encounter bugs.
+Inside the REPL, you can evaluate Relic expressions line by line. Let's start
+with some simple arithmetic. If you type <code>(+ 11 7)</code> and hit Enter, you should
+see the following.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(write-line <span style="color: #f5c791;">"Hello, World!"</span>)
+<pre class="src src-relic">user &gt; (+ <span style="color: #0D9C94;">11</span> <span style="color: #0D9C94;">7</span>)
+<span style="color: #0D9C94;">18</span>
 </pre>
 </div>
+
+<p>
+This is because Relic will evaluate the 
+</p>
 
 <p>
 After running, you will now see "Hello, World!" printed on a new line,
@@ -261,11 +270,12 @@ line. Nice!
 </p>
 
 <p>
-You will likely also have noticed that the function call uses an unusuan
-syntax - in Relic, instead of writing function calls as, e.g. <code>add(2, 3)</code>, we
-write them <code>(add 2 3)</code>. This applies to operators also - instead of <code>2 + 3</code> we
-write <code>(+ 2 3)</code>. This style can be confusing at first, but it also empowers a
-feature of Relic we will meet later: metaprogramming.
+Relic uses a unique syntax for function calls. Instead of the standard
+<code>add(2, 3)</code>, functions in Relic are written as <code>(add 2 3)</code>. This prefix style
+even applies to operators. For example, instead of <code>2 + 3</code>, you would write
+<code>(+ 2 3)</code>. While this syntax may seem unusual initially, it integrates
+seamlessly with Relic's advanced features like metaprogramming, which we'll
+explore later.
 </p>
 
 <p>
@@ -283,36 +293,77 @@ With this knowledge in hand, we can try evaluating some other expressions, e.g.
 Try some of your own!
 </p>
 </div>
-<div id="outline-container-org4a3d7ad" class="outline-3">
-<h3 id="org4a3d7ad">Definitions</h3>
-<div class="outline-text-3" id="text-org4a3d7ad">
+<div id="outline-container-org4c10f20" class="outline-3">
+<h3 id="org4c10f20">Defining Values and Writing Functions</h3>
+<div class="outline-text-3" id="text-org4c10f20">
+<p>
+Relic uses the `def` term to define values. For example:
+</p>
+
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> your-name <span style="color: #f5c791;">"Bob"</span>)
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> x <span style="color: #0D9C94;">10</span>)  <span style="color: #454459;">;; </span><span style="color: #454459;">Defines x as 10.</span>
 </pre>
 </div>
 
+<p>
+You can also use `proc` to define functions. Functions in Relic take arguments
+and return results. For instance: 
+</p>
+
 <div class="org-src-container">
-<pre class="src src-relic">(write-line (append <span style="color: #f5c791;">"Hi, "</span> your-name))
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> add-one
+  (<span style="color: #9d81ba;">proc</span> [(x <span style="color: #62D2DB;">I64</span>)]
+    (+ x <span style="color: #0D9C94;">1</span>)))
 </pre>
 </div>
+
+<p>
+Here, we define a function called `add-one` that increments a number by one.
+</p>
 </div>
 </div>
-<div id="outline-container-org1554eb5" class="outline-3">
-<h3 id="org1554eb5">Conditionals</h3>
-<div class="outline-text-3" id="text-org1554eb5">
+</div>
+<div id="outline-container-org054f0b8" class="outline-2">
+<h2 id="org054f0b8">Writing Your First Program</h2>
+<div class="outline-text-2" id="text-org054f0b8">
+<p>
+Now, let's put everything together to write a simple program:
+</p>
+
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">if</span> (&lt; <span style="color: #0D9C94;">2</span> <span style="color: #0D9C94;">3</span>)
-  (write-line <span style="color: #f5c791;">"two is less than three"</span>)
-  (write-line <span style="color: #f5c791;">"three is less than two??"</span>))
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Define a main function
+</span>(<span style="color: #9d81ba;">def</span> main
+  (<span style="color: #9d81ba;">proc</span> []
+    (write-line <span style="color: #f5c791;">"Hello, World!"</span>)))
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">Call the main function to execute
+</span>(main)
 </pre>
 </div>
+
+<p>
+Save this program in a file called `hello-world.rl` and run it with the Relic
+compiler:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bash">relic hello-world.rl
+</pre>
 </div>
+
+<p>
+This will print:
+</p>
+
+<pre class="example" id="org336ceb3">
+Hello, World!
+</pre>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-04-04 Sat 22:45</p>
+<p class="date">Created: 2026-06-05 Fri 12:38</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
