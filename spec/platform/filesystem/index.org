@@ -19,6 +19,11 @@ Named Mode Enum 64 :read :write :read-write
 #+end_src
 
 * Functions
++ get-cwd :: Proc [String] String
+  Get the current working directory.
+
++ set-cwd :: Proc [String] String
+  Set the current working directory.
 
 + open-file :: Proc [String Mode] (Result File FileError)
   Attempt to open a file at the provided path, and use the provided =Mode= to

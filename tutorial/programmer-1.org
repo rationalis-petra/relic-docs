@@ -1,7 +1,21 @@
 #+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
-#+title: Tutorial #1: Logical Blocks
+#+title: Tutorial #1: Types and Procedures
 #+options: num:nil toc:nil
 
-
 Prev [[file:../index.org][Up]] [[file:programmer-1.org][Next]]
+
+* A Basic Prompt
+
+#+begin_src relic
+;; Define a main function
+(def main proc [] seq
+  (write-string "> ")
+  [let! line (read-line)]
+  (write-line line))
+
+;; Call the main function to execute
+(main)
+#+end_src
+
+
 

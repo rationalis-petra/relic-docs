@@ -14,15 +14,17 @@ of the [[https://github.com/rationalis-petra/pico][pico compiler]].
 This tutorial is intended to be an introduction to the for developers who have
 already programmed in at least one standard "popular" language such as python,
 C/C++, Java etc. No prior experience is assumed with the many "weird" languages
-Relic draws from (lisp, forth, prolog etc.).
-
+Relic draws from (lisp, forth, prolog etc.). The tutorial will center around the
+construction of a basic shell.
 
 * Getting Started
 
 Relic is powered by Pico, the Relic compiler. It is available for Windows and
 Linux as an AMD64 executable. To install, download the [[https://github.com/rationalis-petra/pico/releases/latest][latest release]], unzip the
 archive, navigate to your operating system's folder, and execute the appropriate
-installer.
+installer. To install the visual code extension (optional), go to 'extensions',
+click on the three dots (...), and click *Install from VSIX...* and select
+*relic-<version>.vsix*, which should be in the zip you downloaded earlier.
 
 Once installed, you can start the compiler by running either =relic= or =pico=
 from the command line. For general assistance, run =relic help= to see available
@@ -30,37 +32,48 @@ commands and options.
 
 * Diving into the REPL
 
-This tutorial begins with the REPL, Relic's Read-Eval-Print Loop environment.
-Launch the REPL by running =relic repl= from the command line. For an enhanced
-experience, add the =-i= flag to run in interactive mode: =relic repl -i=,
-although be aware that this is currently experimental and you may encounter bugs.
-Inside the REPL, you can evaluate Relic expressions line by line. Let's start
-with some simple arithmetic. If you type =(+ 11 7)= and hit Enter, you should
-see the following.
+This tutorial begins with the REPL, Relic's Read-Eval-Print Loop. Launch the
+REPL by running =relic repl= from the command line. For an enhanced experience,
+add the =-i= flag to run in interactive mode: =relic repl -i=, although be aware
+that this is currently experimental and you may encounter bugs. Inside the REPL,
+you can evaluate Relic expressions line by line. Let's start with some simple
+arithmetic. If you type =(+ 11 7)= and press Enter, you will see the following.
 
 #+begin_src relic
 user > (+ 11 7)
 18
 #+end_src
 
-This is because Relic will evaluate the 
-
-After running, you will now see "Hello, World!" printed on a new line,
-followed by the term =:unit=. This is because after running, the =write-line=
-function returns the value =:unit=, which the repl then prints to the command
-line. Nice!
-
-Relic uses a unique syntax for function calls. Instead of the standard
-=add(2, 3)=, functions in Relic are written as =(add 2 3)=. This prefix style
-even applies to operators. For example, instead of =2 + 3=, you would write
-=(+ 2 3)=. While this syntax may seem unusual initially, it integrates
-seamlessly with Relic's advanced features like metaprogramming, which we'll
-explore later.
-
-With this knowledge in hand, we can try evaluating some other expressions, e.g. 
+This is because Relic will evaluate the expression =(+ 11 7)= and prints the
+result on the line below. All expressions in relic have some value that they
+evaluate to. Expressions may also have side-effects (perform actions). For
+example, try evaluating =(write-line "Hello, World")=. Your terminal will show:
 
 #+begin_src relic
-(* 2 3)
+user > (write-line "Hello, World")
+Hello, World
+:unit
+#+end_src
+
+The 'Hello World' apperaing is for obvious reasons: the =write-line= function
+will print the argument to the command line. We see =:unit= because, as
+mentioned earlier, /all/ expressions must evaluate to some value. =:unit= is the
+value used when a function does not have anything useful to return. You can
+think of it as similar to =None= from Python.
+
+At this point, it is highly likely that you have noticed the somewhat unique
+syntax Relic uses for function calls. Instead of the standard =add(2, 3)=, we
+strip the commas =add(2 3)= and include the function in the aguments, giving
+=(add 2 3)=. This prefix style even applies to operators. For example, instead
+of =2 + 3=, we would write =(+ 2 3)=. While this syntax does take some getting
+used to, it makes it much easier to understand some of Relic's more advanced
+features, such as metaprogramming (these will be explored later). This syntax
+even applies to pieces of syntax, such as loops, conditionals, definitions etc.
+
+With this knowledge in hand, we can build up more complex expressions, e.g. 
+
+#+begin_src relic
+(* (+ 1 2) 2)
 (- 3 (* 4 5))
 (< 2 3)
 #+end_src
@@ -69,26 +82,31 @@ Try some of your own!
 
 ** Defining Values and Writing Functions
 
-Relic uses the `def` term to define values. For example:
+In Relic, we  use =def= define new values. For example:
 
 #+begin_src relic
-(def x 10)  ;; Defines x as 10.
+user > (def x 10)  ;; Defines x as 10.
+Defined x : I64
+user > (+ x x)
+10
 #+end_src
 
-You can also use `proc` to define functions. Functions in Relic take arguments
-and return results. For instance: 
+To define a function (called a procedure in Relic), we use the =proc= keyword.
+The generaly layout for a procedure is =proc [(arg0 type0) (arg1 type1) ...]=,
+where 'arg0', 'arg1' etc. are the /names/ of the arguments, and =type0=,
+=type1=, etc. are the /types/ of the arguments. Below we have an example of a
+function for a proc that adds 1 to its' argument. 
 
 #+begin_src relic
-(def add-one
-  (proc [(x I64)]
-    (+ x 1)))
+(def add-one (proc [(x I64)] (+ x 1)))
 #+end_src
 
-Here, we define a function called `add-one` that increments a number by one.
 
 * Writing Your First Program
-
-Now, let's put everything together to write a simple program:
+Now that you have the very basics, you can leave leave the repl, either by
+typing =(exit)=, or using ctrl+d (linux), or ctrl+z (windows). We can now write
+a simple 'Hello, World' program as a script. Put the following in a file called
+'hello.rl':
 
 #+begin_src relic
 ;; Define a main function
@@ -100,11 +118,10 @@ Now, let's put everything together to write a simple program:
 (main)
 #+end_src
 
-Save this program in a file called `hello-world.rl` and run it with the Relic
-compiler:
+To run the script from the command line, just run:
 
 #+begin_src bash
-relic hello-world.rl
+relic script hello-world.rl
 #+end_src
 
 This will print:

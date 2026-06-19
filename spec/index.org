@@ -16,9 +16,9 @@
 
 + [[file:data/index.org][Data]] :: Data-structures and their interfaces.
 
-+ [[file:platform/index.org][Platform]] :: Contains a wide variety of libraries for interfacing with the
-  underlying platform, including input/output, memory management, windowing,
-  machine word size + architecture and more.
++ [[file:platform/index.org][Platform]] :: Modules for interfacing with the underlying platform, including
+  input/output, memory management, windowing, machine word size + architecture
+  and more.
 
 + [[file:meta/index.org][Meta]] :: Metaprogramming
 

@@ -84,14 +84,7 @@
 + macro :: Convert a procedure into a macro. Macros can only be formed from
   procedures with type =Proc [Syntax] (Either String Syntax)=
 
- Format: =(macro ,<proc>)= 
- 
-  Sample usage:
-  #+begin_src relic 
-(all [A] memory.alloc (size-of A))
-
-(all [A] proc [(x A)] x)
-  #+end_src
+  Format: =(macro ,<proc>)= 
 
 + apply :: explicitly apply a function to some value(s). Using apply to
   apply a procedure =p= to arguments =a b c= is the same as =(p a b c)=,
@@ -101,7 +94,7 @@
 + array :: Create a new array value, i.e. collection of values of the same type
   laid out contiguously in memory. Arrays may be multidimensional. 
 
- Format: =(array {n m ...}? [[a b c] [d e f] ...])= 
+  Format: =(array {n m ...}? [[a b c] [d e f] ...])= 
  
   Sample usage:
   #+begin_src relic 
@@ -117,7 +110,7 @@
 
 + struct :: Create a new structured value, heterogenously associating names with values
 
- Format: =(struct <Type>? [.name val] [.name val] ...)= 
+  Format: =(struct <Type>? [.name val] [.name val] ...)= 
   
   Sample usage:
   #+begin_src relic 
@@ -129,7 +122,7 @@
 
 + . :: Projector - project a value out of a structure. May 
 
- Format: =(val.field)= or =(.field val)=
+  Format: =(val.field)= or =(.field val)=
 
   Sample usage:
   #+begin_src relic 
@@ -359,22 +352,22 @@
 + size-of :: Given a type, returns the size of that type (in bytes) as an int of
   type U64. Can be used in polymorphic (all) functions also.
 
- Format: =(size-of <type>)=
+  Format: =(size-of <type>)=
 
- Sample usage:
-,#+begin_src relic
+  Sample usage:
+  #+begin_src relic
 (def Point Struct [.x F32] [.y F32])
 
 ;; Allocate enough memory to store 4 Points
 (def pos-memory memory.allocate (* (size-of Point)))
-#+end_src
+  #+end_src
 
 + align-of :: Given a type, returns the alignment of that type (in bytes) as an int of
   type U64. Can be used in polymorphic (all) functions also.
 
- Format: =(align-of <type>)=
+  Format: =(align-of <type>)=
 
- Sample usage:
+  Sample usage:
   #+begin_src relic
 (def Point Struct [.x F32] [.y F32])
 
