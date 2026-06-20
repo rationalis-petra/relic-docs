@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-07 Sun 13:18 -->
+<!-- 2026-06-20 Sat 13:35 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #1: Types and Procedures</title>
@@ -201,10 +201,204 @@
 <p>
 Prev <a href="../index.html">Up</a> <a href="programmer-1.html">Next</a>
 </p>
+<div id="outline-container-org51cf569" class="outline-2">
+<h2 id="org51cf569">A Basic Prompt</h2>
+<div class="outline-text-2" id="text-org51cf569">
+<p>
+As mentioned in the introduction, this tutorial will focus on the construction
+of a basic shell, from which you can execute programs, run commands etc. We will
+start with the shell prompt. Recall the main file from earlier.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Define a main function
+</span>(<span style="color: #9d81ba;">def</span> main
+  (<span style="color: #9d81ba;">proc</span> []
+    (write-line <span style="color: #f5c791;">"Hello, World!"</span>)))
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">Call the main function to execute
+</span>(main)
+</pre>
+</div>
+
+<p>
+Start by replacing the "Hello, World" with an input prompt "&gt; ". We then want to
+read in what the user types, which we can do with the <code>read-line</code> function. In
+order to run these two functions in <i>sequence</i>, use the <code>seq</code> keyword, as shown
+below. Note that the value that a sequence evaluates to is always the last value
+in the sequence. For example, <code>(+ 2 (seq 1 2 3))</code> is the same as <code>(+ 2 3)</code>, i.e. 5.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> main
+  (<span style="color: #9d81ba;">proc</span> []
+    (<span style="color: #9d81ba;">seq</span>
+      (write-string <span style="color: #f5c791;">"&gt; "</span>)
+      (read-line))))
+
+(main)
+</pre>
+</div>
+
+<p>
+When we are inside the context of a 'seq' expression, we can use a special piece
+of syntax: <code>let!</code>. The <code>let!</code> clause will bind a variable for the duration of
+the sequence; after the sequence is evaluated, the variable is no longer
+available.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> main
+  (<span style="color: #9d81ba;">proc</span> []
+    (<span style="color: #9d81ba;">seq</span>
+      (write-string <span style="color: #f5c791;">"&gt; "</span>)
+      [<span style="color: #9d81ba;">let</span>! line (read-line)]
+      (write-string <span style="color: #f5c791;">"you typed: "</span>)
+      (write-line line)))) <span style="color: #454459;">;; </span><span style="color: #454459;">use write-line because it adds a newline after the end.
+</span>
+(main)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org5ae8899" class="outline-2">
+<h2 id="org5ae8899">Syntactic Cleanup</h2>
+<div class="outline-text-2" id="text-org5ae8899">
+<p>
+You will have noticed by now that Relic terms have a lot of parentheses.
+Fortunately, there are ways to reduce the number. In particular, specific
+keywords will perform an 'auto-parenthesization' of the last term provided to
+them. Take <code>def</code>, for example: <code>(def x + 2 3)</code> is treated the same as
+<code>(def x (+ 2 3))</code>. With this knowledge, we can remove the parentheses around
+our 'proc', as they will get auto-parenthesized.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> main <span style="color: #9d81ba;">proc</span> []
+  (<span style="color: #9d81ba;">seq</span>
+    (write-string <span style="color: #f5c791;">"&gt; "</span>)
+    [<span style="color: #9d81ba;">let</span>! line (read-line)]
+    (write-string <span style="color: #f5c791;">"you typed: "</span>)
+    (write-line line)))
+
+(main)
+</pre>
+</div>
+
+<p>
+The <code>proc</code> keyword behaves the same way, meaning that <code>(proc [x] + x x)</code>
+similarly behaves the same as <code>(proc [x] (+ x x))</code>. With this in mind, we now
+have the below program:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> main <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
+  (write-string <span style="color: #f5c791;">"&gt; "</span>)
+  [<span style="color: #9d81ba;">let</span>! line (read-line)]
+  (write-string <span style="color: #f5c791;">"you typed: "</span>)
+  (write-line line))
+
+(main)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org71d4c0a" class="outline-2">
+<h2 id="org71d4c0a">An Interaction Loop</h2>
+<div class="outline-text-2" id="text-org71d4c0a">
+<p>
+The basic way one interatcts with a shell is in a loop: reading user input,
+processing it, then deciding when to exit or not. We will factor out this logic
+into a function, which will return <code>:true</code> if we should continue the loop, and
+<code>:false</code> otherwise. For now, we will have the shell simply echo bach what you
+type, with "exit" being used to quit the shell.
+</p>
+
+<p>
+In order to compare the input with "exit", we will want to import the <code>equality</code>
+module, which gives us access to <code>=</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">import</span> (abs<span style="color: #7CF083;">.equality</span> :<span style="color: #9d81ba;">all</span>))
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">Note: Type annotations on arguments are optional, as Relic can  
+</span><span style="color: #454459;">;;       </span><span style="color: #454459;">usually deduce the correct type.
+</span>(<span style="color: #9d81ba;">def</span> iter <span style="color: #9d81ba;">proc</span> [str] <span style="color: #9d81ba;">seq</span>
+  (write-string <span style="color: #f5c791;">"echo: "</span>)
+  (write-line str)
+  (<span style="color: #9d81ba;">if</span> (= str <span style="color: #f5c791;">"exit"</span>) <span style="color: #7CF083;">:false</span> <span style="color: #7CF083;">:true</span>))
+</pre>
+</div>
+
+<p>
+We will now write our main loop. Unlike in other languages, we do not have
+separate keywords for <code>while</code>, <code>for</code> etc. Instead, we start all loops with the
+<code>loop</code> keyword, then introduce <code>while</code> and <code>for</code> as subclauses in our loop. 
+For example, the following will print the numbers 1 to 10:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i from <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
+  (write-line (to-string i)))
+</pre>
+</div>
+
+<p>
+But, we can introduce a second for loop that runs in parallel. The below loop
+will print 1, 10, 2, 9, 3, 8, 4, 7, etc. 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i from <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
+      [<span style="color: #9d81ba;">for</span> j from <span style="color: #0D9C94;">10</span> <span style="color: #9d81ba;">downto</span> <span style="color: #0D9C94;">1</span>]
+  (write-line (to-string i))
+  (write-line (to-string j)))
+</pre>
+</div>
+
+<p>
+We can even introduce a <code>while</code> loop that runs at the same time: in the below
+example, we will only print numbers up to 4, as the while clause will cause the
+entire loop to terminate.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i from <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
+      [<span style="color: #9d81ba;">while</span> (&lt; i <span style="color: #0D9C94;">5</span>)]
+  (write-line (to-string i)))
+</pre>
+</div>
+
+<p>
+Fortunately, we do not need any of these more complex loops: a simple while loop
+will work for us.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> main <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
+  (write-string <span style="color: #f5c791;">"&gt; "</span>)
+  (<span style="color: #9d81ba;">loop</span> 
+    [<span style="color: #9d81ba;">while</span> (iter (read-line))]
+    (write-string <span style="color: #f5c791;">"&gt; "</span>))
+  (write-line <span style="color: #f5c791;">"exiting the shell..."</span>))
+
+(main)
+</pre>
+</div>
+
+<p>
+If you run the program now, you should get 
+</p>
+</div>
+</div>
+<div id="outline-container-org6f4cca0" class="outline-2">
+<h2 id="org6f4cca0">Advanced Conditionals</h2>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-07 Sun 13:18</p>
+<p class="date">Created: 2026-06-20 Sat 13:35</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

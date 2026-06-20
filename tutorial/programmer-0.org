@@ -101,6 +101,13 @@ function for a proc that adds 1 to its' argument.
 (def add-one (proc [(x I64)] (+ x 1)))
 #+end_src
 
+Note specifically the usage of square brackets '[]'. To remember when to use
+which type of bracket, remember that '()' are used for exprissions, which will
+get evaluated to a value, while '[]' are used for syntax which means something
+specific in the context of a larger expression. In this case, the [] are used
+for the arguments of the procedure. Other examples might be for the variables
+and conditions in a for loop.
+
 
 * Writing Your First Program
 Now that you have the very basics, you can leave leave the repl, either by

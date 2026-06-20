@@ -5,17 +5,151 @@
 Prev [[file:../index.org][Up]] [[file:programmer-1.org][Next]]
 
 * A Basic Prompt
+As mentioned in the introduction, this tutorial will focus on the construction
+of a basic shell, from which you can execute programs, run commands etc. We will
+start with the shell prompt. Recall the main file from earlier.
 
 #+begin_src relic
 ;; Define a main function
-(def main proc [] seq
-  (write-string "> ")
-  [let! line (read-line)]
-  (write-line line))
+(def main
+  (proc []
+    (write-line "Hello, World!")))
 
 ;; Call the main function to execute
 (main)
 #+end_src
 
+Start by replacing the "Hello, World" with an input prompt "> ". We then want to
+read in what the user types, which we can do with the =read-line= function. In
+order to run these two functions in /sequence/, use the =seq= keyword, as shown
+below. Note that the value that a sequence evaluates to is always the last value
+in the sequence. For example, =(+ 2 (seq 1 2 3))= is the same as =(+ 2 3)=, i.e. 5.
 
+#+begin_src relic
+(def main
+  (proc []
+    (seq
+      (write-string "> ")
+      (read-line))))
 
+(main)
+#+end_src
+
+When we are inside the context of a 'seq' expression, we can use a special piece
+of syntax: =let!=. The =let!= clause will bind a variable for the duration of
+the sequence; after the sequence is evaluated, the variable is no longer
+available.
+
+#+begin_src relic
+(def main
+  (proc []
+    (seq
+      (write-string "> ")
+      [let! line (read-line)]
+      (write-string "you typed: ")
+      (write-line line)))) ;; use write-line because it adds a newline after the end.
+
+(main)
+#+end_src
+
+* Syntactic Cleanup 
+You will have noticed by now that Relic terms have a lot of parentheses.
+Fortunately, there are ways to reduce the number. In particular, specific
+keywords will perform an 'auto-parenthesization' of the last term provided to
+them. Take =def=, for example: =(def x + 2 3)= is treated the same as
+=(def x (+ 2 3))=. With this knowledge, we can remove the parentheses around
+our 'proc', as they will get auto-parenthesized.
+
+#+begin_src relic
+(def main proc []
+  (seq
+    (write-string "> ")
+    [let! line (read-line)]
+    (write-string "you typed: ")
+    (write-line line)))
+
+(main)
+#+end_src
+
+The =proc= keyword behaves the same way, meaning that =(proc [x] + x x)=
+similarly behaves the same as =(proc [x] (+ x x))=. With this in mind, we now
+have the below program:
+
+#+begin_src relic
+(def main proc [] seq
+  (write-string "> ")
+  [let! line (read-line)]
+  (write-string "you typed: ")
+  (write-line line))
+
+(main)
+#+end_src
+
+* An Interaction Loop
+The basic way one interatcts with a shell is in a loop: reading user input,
+processing it, then deciding when to exit or not. We will factor out this logic
+into a function, which will return =:true= if we should continue the loop, and
+=:false= otherwise. For now, we will have the shell simply echo bach what you
+type, with "exit" being used to quit the shell.
+
+In order to compare the input with "exit", we will want to import the =equality=
+module, which gives us access to ~=~.
+
+#+begin_src relic
+(import (abs.equality :all))
+
+;; Note: Type annotations on arguments are optional, as Relic can  
+;;       usually deduce the correct type.
+(def iter proc [str] seq
+  (write-string "echo: ")
+  (write-line str)
+  (if (= str "exit") :false :true))
+#+end_src
+
+We will now write our main loop. Unlike in other languages, we do not have
+separate keywords for =while=, =for= etc. Instead, we start all loops with the
+=loop= keyword, then introduce =while= and =for= as subclauses in our loop. 
+For example, the following will print the numbers 1 to 10:
+
+#+begin_src relic
+(loop [for i from 1 upto 10]
+  (write-line (to-string i)))
+#+end_src
+
+But, we can introduce a second for loop that runs in parallel. The below loop
+will print 1, 10, 2, 9, 3, 8, 4, 7, etc. 
+
+#+begin_src relic
+(loop [for i from 1 upto 10]
+      [for j from 10 downto 1]
+  (write-line (to-string i))
+  (write-line (to-string j)))
+#+end_src
+
+We can even introduce a =while= loop that runs at the same time: in the below
+example, we will only print numbers up to 4, as the while clause will cause the
+entire loop to terminate.
+
+#+begin_src relic
+(loop [for i from 1 upto 10]
+      [while (< i 5)]
+  (write-line (to-string i)))
+#+end_src
+
+Fortunately, we do not need any of these more complex loops: a simple while loop
+will work for us.
+
+#+begin_src relic 
+(def main proc [] seq
+  (write-string "> ")
+  (loop 
+    [while (iter (read-line))]
+    (write-string "> "))
+  (write-line "exiting the shell..."))
+
+(main)
+#+end_src
+
+If you run the program now, you should get 
+
+* Advanced Conditionals
