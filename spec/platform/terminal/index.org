@@ -10,6 +10,13 @@
   Read the next input character available in the standard input stream, as a
   unicode codepoint. Will block if it needs to wait for input.
 
++ read-codepoint : Proc [] String :: 
+  
+  Read the input until the next '\n' character is encountered, and return that
+  input in a new string, with memory allocated by the =current-allocator=.
+  Newline characters ('\r' and '\n') are removed from the string before it is
+  returned. 
+
   
 + write-codepoint : Proc [U8] Unit :: 
   

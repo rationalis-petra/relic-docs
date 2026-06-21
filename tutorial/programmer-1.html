@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-20 Sat 13:35 -->
+<!-- 2026-06-21 Sun 14:06 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tutorial #1: Types and Procedures</title>
+<title>Tutorial #1: Basic Control Flow</title>
 <meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -197,13 +197,13 @@
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Tutorial #1: Types and Procedures</h1>
+<h1 class="title">Tutorial #1: Basic Control Flow</h1>
 <p>
 Prev <a href="../index.html">Up</a> <a href="programmer-1.html">Next</a>
 </p>
-<div id="outline-container-org51cf569" class="outline-2">
-<h2 id="org51cf569">A Basic Prompt</h2>
-<div class="outline-text-2" id="text-org51cf569">
+<div id="outline-container-org18eb81b" class="outline-2">
+<h2 id="org18eb81b">A Basic Prompt</h2>
+<div class="outline-text-2" id="text-org18eb81b">
 <p>
 As mentioned in the introduction, this tutorial will focus on the construction
 of a basic shell, from which you can execute programs, run commands etc. We will
@@ -261,9 +261,9 @@ available.
 </div>
 </div>
 </div>
-<div id="outline-container-org5ae8899" class="outline-2">
-<h2 id="org5ae8899">Syntactic Cleanup</h2>
-<div class="outline-text-2" id="text-org5ae8899">
+<div id="outline-container-orga9e540e" class="outline-2">
+<h2 id="orga9e540e">Syntactic Cleanup</h2>
+<div class="outline-text-2" id="text-orga9e540e">
 <p>
 You will have noticed by now that Relic terms have a lot of parentheses.
 Fortunately, there are ways to reduce the number. In particular, specific
@@ -303,9 +303,9 @@ have the below program:
 </div>
 </div>
 </div>
-<div id="outline-container-org71d4c0a" class="outline-2">
-<h2 id="org71d4c0a">An Interaction Loop</h2>
-<div class="outline-text-2" id="text-org71d4c0a">
+<div id="outline-container-org6573dde" class="outline-2">
+<h2 id="org6573dde">An Interaction Loop</h2>
+<div class="outline-text-2" id="text-org6573dde">
 <p>
 The basic way one interatcts with a shell is in a loop: reading user input,
 processing it, then deciding when to exit or not. We will factor out this logic
@@ -339,7 +339,7 @@ For example, the following will print the numbers 1 to 10:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i from <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
+<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
   (write-line (to-string i)))
 </pre>
 </div>
@@ -350,8 +350,8 @@ will print 1, 10, 2, 9, 3, 8, 4, 7, etc.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i from <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
-      [<span style="color: #9d81ba;">for</span> j from <span style="color: #0D9C94;">10</span> <span style="color: #9d81ba;">downto</span> <span style="color: #0D9C94;">1</span>]
+<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
+      [<span style="color: #9d81ba;">for</span> j <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">10</span> <span style="color: #9d81ba;">downto</span> <span style="color: #0D9C94;">1</span>]
   (write-line (to-string i))
   (write-line (to-string j)))
 </pre>
@@ -364,7 +364,7 @@ entire loop to terminate.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i from <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
+<pre class="src src-relic">(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">upto</span> <span style="color: #0D9C94;">10</span>]
       [<span style="color: #9d81ba;">while</span> (&lt; i <span style="color: #0D9C94;">5</span>)]
   (write-line (to-string i)))
 </pre>
@@ -392,13 +392,39 @@ If you run the program now, you should get
 </p>
 </div>
 </div>
-<div id="outline-container-org6f4cca0" class="outline-2">
-<h2 id="org6f4cca0">Advanced Conditionals</h2>
+<div id="outline-container-orged7e32a" class="outline-2">
+<h2 id="orged7e32a">Memory</h2>
+<div class="outline-text-2" id="text-orged7e32a">
+<p>
+Before we finish this section of the tutorial, we will need to fix a bug you
+may not have noticed. As the <code>read-line</code> function allocates memory for the input
+line, and we do not free this memory later, this program has a memory leak.
+</p>
+
+<p>
+For programmers unused to manual memory management, the idea of manually
+managing memory may seem tediuous, error-prone and archaic. Fortunately, Relic
+provides tools which, combined with good architecture, can significantly reduce
+the risk and tedium of memory-related issues. We will explore the most useful of
+these (allocation strategies) in a later chapter, but for now, all we need to do
+is modify our <code>iter</code> procedure to free the line after it is used.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> iter <span style="color: #9d81ba;">proc</span> [str] <span style="color: #9d81ba;">seq</span>
+  (write-string <span style="color: #f5c791;">"echo: "</span>)
+  (write-line str)
+  [<span style="color: #9d81ba;">let</span>! should-continue (<span style="color: #9d81ba;">if</span> (= str <span style="color: #f5c791;">"exit"</span>) <span style="color: #7CF083;">:false</span> <span style="color: #7CF083;">:true</span>)]
+  (data<span style="color: #7CF083;">.string.delete</span> str)
+  should-continue)
+</pre>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-20 Sat 13:35</p>
+<p class="date">Created: 2026-06-21 Sun 14:06</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

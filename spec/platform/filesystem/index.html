@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-15 Sun 17:20 -->
+<!-- 2026-06-20 Sat 18:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Platform.Filesystem</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-orgacddb7c" class="outline-2">
-<h2 id="orgacddb7c">Types</h2>
-<div class="outline-text-2" id="text-orgacddb7c">
+<div id="outline-container-org8caa44f" class="outline-2">
+<h2 id="org8caa44f">Types</h2>
+<div class="outline-text-2" id="text-org8caa44f">
 <dl class="org-dl">
 <dt>File</dt><dd>Opaque Handle</dd>
 
@@ -223,34 +223,33 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org95e70ca" class="outline-2">
-<h2 id="org95e70ca">Functions</h2>
-<div class="outline-text-2" id="text-org95e70ca">
+<div id="outline-container-org47bc7f9" class="outline-2">
+<h2 id="org47bc7f9">Functions</h2>
+<div class="outline-text-2" id="text-org47bc7f9">
 <dl class="org-dl">
-<dt>open-file</dt><dd>Proc [String Mode] (Result File FileError)
-Attempt to open a file at the provided path, and use the provided <code>Mode</code> to
+<dt>current-directory : Proc [] String</dt><dd>Get the current working directory.</dd>
+
+<dt>set-current-directory : Proc [String] String</dt><dd>Set the current working directory.</dd>
+
+<dt>open-file : Proc [String Mode] (Result File FileError)</dt><dd>Attempt to open a file at the provided path, and use the provided <code>Mode</code> to
 set the allowed operations (read, write or read and write).</dd>
 
-<dt>close-file</dt><dd>Proc [File] Unit
-Close the file provided, meaning that reads and writes will no longer be valid
+<dt>close-file : Proc [File] Unit</dt><dd>Close the file provided, meaning that reads and writes will no longer be valid
 (will return the 'invalid argument' error), but the file will now be free for
 other processes to access.</dd>
 
-<dt>read-byte</dt><dd>Proc [File] U8</dd>
+<dt>read-byte : Proc [File] U8</dt><dd></dd>
 
-<dt>read-chunk</dt><dd>Proc [File (Maybe U64)] (List U8)
-From the file provided, read up-to <code>:some x</code> (if provided) number of bytes
+
+<dt>read-chunk : Proc [File (Maybe U64)] (List U8)</dt><dd>From the file provided, read up-to <code>:some x</code> (if provided) number of bytes
 provided and return them in a list. If <code>:none</code> is provided instead, read until
 the end of the file.</dd>
 
-<dt>write-byte</dt><dd>Proc [File U8] Unit
-Write a byte into the file provided, extending it if necessary.</dd>
+<dt>write-byte : Proc [File U8] Unit</dt><dd>Write a byte into the file provided, extending it if necessary.</dd>
 
-<dt>write-chunk</dt><dd>Proc [File (List U8)] Units
-Write a list of bytes into the file provided.</dd>
+<dt>write-chunk : Proc [File (List U8)] Units</dt><dd>Write a list of bytes into the file provided.</dd>
 
-<dt>error-description</dt><dd>Proc [FileError] String
-Produces a string description of a file error. Useful for printing out error
+<dt>error-description : Proc [FileError] String</dt><dd>Produces a string description of a file error. Useful for printing out error
 messages.</dd>
 </dl>
 </div>
@@ -258,7 +257,7 @@ messages.</dd>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-15 Sun 17:20</p>
+<p class="date">Created: 2026-06-20 Sat 18:34</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

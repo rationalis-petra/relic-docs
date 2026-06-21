@@ -19,34 +19,34 @@ Named Mode Enum 64 :read :write :read-write
 #+end_src
 
 * Functions
-+ get-cwd :: Proc [String] String
++ current-directory : Proc [] String ::
   Get the current working directory.
 
-+ set-cwd :: Proc [String] String
++ set-current-directory : Proc [String] String ::
   Set the current working directory.
 
-+ open-file :: Proc [String Mode] (Result File FileError)
++ open-file : Proc [String Mode] (Result File FileError) ::
   Attempt to open a file at the provided path, and use the provided =Mode= to
   set the allowed operations (read, write or read and write).
 
-+ close-file :: Proc [File] Unit
++ close-file : Proc [File] Unit ::
   Close the file provided, meaning that reads and writes will no longer be valid
   (will return the 'invalid argument' error), but the file will now be free for
   other processes to access.
 
-+ read-byte :: Proc [File] U8
++ read-byte : Proc [File] U8 ::
 
-+ read-chunk :: Proc [File (Maybe U64)] (List U8)
++ read-chunk : Proc [File (Maybe U64)] (List U8) ::
   From the file provided, read up-to =:some x= (if provided) number of bytes
   provided and return them in a list. If =:none= is provided instead, read until
   the end of the file.
 
-+ write-byte :: Proc [File U8] Unit
++ write-byte : Proc [File U8] Unit ::
   Write a byte into the file provided, extending it if necessary.
 
-+ write-chunk :: Proc [File (List U8)] Units
++ write-chunk : Proc [File (List U8)] Units ::
   Write a list of bytes into the file provided.
 
-+ error-description :: Proc [FileError] String
++ error-description : Proc [FileError] String ::
   Produces a string description of a file error. Useful for printing out error
   messages.

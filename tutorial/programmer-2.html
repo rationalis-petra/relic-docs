@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-05-27 Mon 19:04 -->
+<!-- 2026-06-20 Sat 18:29 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tutorial #2: Objects and Structures</title>
-<meta name="author" content="Connor Redfern" />
+<title>Tutorial #2: Projects and Structures</title>
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -197,107 +197,17 @@
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Tutorial #2: Objects and Structures</h1>
+<h1 class="title">Tutorial #2: Projects and Structures</h1>
 <p>
 <a href="programmer-1.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-3.html">Next</a>
 </p>
-
-<div id="outline-container-orge6f55ec" class="outline-2">
-<h2 id="orge6f55ec">The Relic Object Philosophy</h2>
-<div class="outline-text-2" id="text-orge6f55ec">
-<p>
-In a traditional object-oriented language, objects perform a variety of
-functions - they can encapsulate state, represent abstractions, allow code reuse
-via inheritance and so on. In Relic, the design of objects is singularly focused
-on encapsulating state. 
-</p>
-</div>
-</div>
-
-
-<div id="outline-container-orgfdccb74" class="outline-2">
-<h2 id="orgfdccb74">A Simple Object</h2>
-<div class="outline-text-2" id="text-orgfdccb74">
-<p>
-We will start with a simple object - a square. This square has a single <i>slot</i>,
-called length, which is initialized to 4.
-</p>
-
-<p>
-We further define two messages that the object can receive (methods).
-In response to the <code>;length</code> message, we simply return the length of a side of
-the square. In response to the <code>;area</code> message, we calculate area from the
-length message.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> my-square <span style="color: #b5bd68;">object</span> <span style="color: #8abeb7;">[</span><span style="color: #f0c674;">(</span>length <span style="color: #81a2be;">4</span><span style="color: #f0c674;">)</span><span style="color: #8abeb7;">]</span>
-  <span style="color: #8abeb7;">(</span>;length -&gt; length<span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span>;area -&gt; <span style="color: #f0c674;">(</span>* length length<span style="color: #f0c674;">)</span><span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
-</pre>
-</div>
-
-<p>
-We are now able to invoke these messages on our square:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span>;length my-square<span style="color: #c5c8c6;">)</span> <span style="color: #969896; font-style: italic;">;; =&gt; 4</span>
-<span style="color: #c5c8c6;">(</span>;area my-square<span style="color: #c5c8c6;">)</span>   <span style="color: #969896; font-style: italic;">;; =&gt; 16</span>
-</pre>
-</div>
-
-<div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> square <span style="color: #b5bd68;">fn</span> <span style="color: #8abeb7;">(</span>length<span style="color: #8abeb7;">)</span> <span style="color: #b5bd68;">object</span> <span style="color: #8abeb7;">[</span><span style="color: #f0c674;">(</span>length <span style="color: #81a2be;">4</span><span style="color: #f0c674;">)</span><span style="color: #8abeb7;">]</span>
-  <span style="color: #8abeb7;">(</span>;length -&gt; length<span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span>;area -&gt; * length length<span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org021b309" class="outline-2">
-<h2 id="org021b309">Slots</h2>
-<div class="outline-text-2" id="text-org021b309">
-<p>
-Let's move on to a more complex example: suppose that we want to be able to set
-the length/area of our square. Suppose further that we want to cache the area so
-that we don't need to recompute it each time the <code>;area</code> message is sent. We can
-use the <code>sets</code> function to <i>set</i> the value of a <i>slot</i>.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> mut-square <span style="color: #b5bd68;">fn</span> <span style="color: #8abeb7;">(</span>initial-length<span style="color: #8abeb7;">)</span> <span style="color: #b5bd68;">object</span>
-    <span style="color: #8abeb7;">[</span><span style="color: #f0c674;">(</span>length initial-length<span style="color: #f0c674;">)</span>
-     <span style="color: #f0c674;">(</span>area <span style="color: #b5bd68;">(</span>* initial-length initial-length<span style="color: #b5bd68;">)</span><span style="color: #f0c674;">)</span><span style="color: #8abeb7;">]</span>
-
-  <span style="color: #8abeb7;">(</span>;length -&gt; length<span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span>;set-length new-length -&gt; <span style="color: #b5bd68;">seq</span>
-    <span style="color: #f0c674;">(</span>sets length new-length<span style="color: #f0c674;">)</span>
-    <span style="color: #f0c674;">(</span>sets area <span style="color: #b5bd68;">(</span>* length length<span style="color: #b5bd68;">)</span><span style="color: #f0c674;">)</span><span style="color: #8abeb7;">)</span>
-
-  <span style="color: #8abeb7;">(</span>;area -&gt; area<span style="color: #8abeb7;">)</span>
-  <span style="color: #8abeb7;">(</span>;set-area new-length -&gt; <span style="color: #b5bd68;">seq</span>
-    <span style="color: #f0c674;">(</span>sets area new-area<span style="color: #f0c674;">)</span>
-    <span style="color: #f0c674;">(</span>sets length <span style="color: #b5bd68;">(</span>sqrt area<span style="color: #b5bd68;">)</span><span style="color: #f0c674;">)</span><span style="color: #8abeb7;">)</span><span style="color: #c5c8c6;">)</span>
-</pre>
-</div>
-
-
-<div class="org-src-container">
-<pre class="src src-relic"><span style="color: #c5c8c6;">(</span><span style="color: #b5bd68;">def</span> my-square mut-square <span style="color: #81a2be;">3</span><span style="color: #c5c8c6;">)</span>
-<span style="color: #c5c8c6;">(</span>;area my-square<span style="color: #c5c8c6;">)</span> <span style="color: #969896; font-style: italic;">;; =&gt; 9</span>
-
-<span style="color: #c5c8c6;">(</span>;set-area my-square <span style="color: #81a2be;">16</span><span style="color: #c5c8c6;">)</span>
-<span style="color: #c5c8c6;">(</span>;length my-square<span style="color: #c5c8c6;">)</span> <span style="color: #969896; font-style: italic;">;; =&gt; 4</span>
-</pre>
-</div>
-</div>
+<div id="outline-container-orgecb2f94" class="outline-2">
+<h2 id="orgecb2f94"></h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2024-05-27 Mon 19:04</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-06-20 Sat 18:29</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
