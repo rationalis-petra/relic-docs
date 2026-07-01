@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-14 Sat 11:03 -->
+<!-- 2026-06-21 Sun 17:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.String</title>
@@ -201,35 +201,38 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org9e773f9" class="outline-2">
-<h2 id="org9e773f9">Types</h2>
-<div class="outline-text-2" id="text-org9e773f9">
+<div id="outline-container-orge167140" class="outline-2">
+<h2 id="orge167140">Types</h2>
+<div class="outline-text-2" id="text-orge167140">
 <dl class="org-dl">
-<dt>String</dt><dd>Type
-The String type stores string data as a pair of a list of UTF-8 bytes with a
-null-terminator at the end and a length. This means they can be easily
-converted into a c-style string, but makes certain operations that depend on
-length more efficient.</dd>
+<dt>String : Type</dt><dd>The String type stores string data as a struct containing of a block of UTF-8
+bytes with  and a length. Strings do NOT have a null-terminator, which means
+that care must be taken when intefacing with C libraries.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orge4aa78f" class="outline-2">
-<h2 id="orge4aa78f">Functions</h2>
-<div class="outline-text-2" id="text-orge4aa78f">
+<div id="outline-container-org1d412ff" class="outline-2">
+<h2 id="org1d412ff">Functions</h2>
+<div class="outline-text-2" id="text-org1d412ff">
 <dl class="org-dl">
-<dt>nth-byte</dt><dd>Proc [U64 String] U8
-Get the nth byte of the underlying memory of the string</dd>
+<dt>nth-byte : Proc [U64 String] U8</dt><dd>Get the nth byte of the underlying memory of the string</dd>
 
-<dt>from-ascii</dt><dd>Proc [(List U8)] String
-Converts a list of ASCII bytes into a string. Note that the bytes are assumed
-to NOT be null-terminated, so a null-terminator is pushed onto the end of the string.</dd>
+<dt>from-ascii : Proc [(List U8)] String</dt><dd>Converts a list of ASCII bytes into a string, allocating new memory for the
+string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
+null-terminator is pushed onto the end of the string.</dd>
+
+<dt>delete : Proc [String] Unit</dt><dd>Free the underlying memory of the string, assuming it is allocated with <code>current-allocator</code>.</dd>
+
+<dt>= : Proc [String String] Bool</dt><dd>Return true if the two strings are equal, and false otherwise.</dd>
+
+<dt>!= : Proc [String String] Bool</dt><dd>Return true if the two strings are <b>not</b> equal, and false otherwise.</dd>
 </dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-14 Sat 11:03</p>
+<p class="date">Created: 2026-06-21 Sun 17:27</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

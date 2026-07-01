@@ -2,7 +2,7 @@
 #+title: Tutorial #1: Basic Control Flow
 #+options: num:nil toc:nil
 
-Prev [[file:../index.org][Up]] [[file:programmer-1.org][Next]]
+[[file:programmer-0.org][Prev]] [[file:../index.org][Up]] [[file:programmer-2.org][Next]]
 
 * A Basic Prompt
 As mentioned in the introduction, this tutorial will focus on the construction
@@ -92,12 +92,7 @@ into a function, which will return =:true= if we should continue the loop, and
 =:false= otherwise. For now, we will have the shell simply echo bach what you
 type, with "exit" being used to quit the shell.
 
-In order to compare the input with "exit", we will want to import the =equality=
-module, which gives us access to ~=~.
-
 #+begin_src relic
-(import (abs.equality :all))
-
 ;; Note: Type annotations on arguments are optional, as Relic can  
 ;;       usually deduce the correct type.
 (def iter proc [str] seq
@@ -141,10 +136,9 @@ will work for us.
 
 #+begin_src relic 
 (def main proc [] seq
-  (write-string "> ")
   (loop 
-    [while (iter (read-line))]
-    (write-string "> "))
+    (write-string "> ")
+    [while (iter (read-line))])
   (write-line "exiting the shell..."))
 
 (main)

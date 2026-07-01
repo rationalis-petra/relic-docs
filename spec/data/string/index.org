@@ -5,18 +5,25 @@
 [[file:../index.org][up]]
 
 * Types 
-+ String :: Type
-  The String type stores string data as a pair of a list of UTF-8 bytes with a
-  null-terminator at the end and a length. This means they can be easily
-  converted into a c-style string, but makes certain operations that depend on
-  length more efficient.
++ String : Type ::
+  The String type stores string data as a struct containing of a block of UTF-8
+  bytes with  and a length. Strings do NOT have a null-terminator, which means
+  that care must be taken when intefacing with C libraries.
 
 * Functions 
-+ nth-byte :: Proc [U64 String] U8
++ nth-byte : Proc [U64 String] U8 ::
   Get the nth byte of the underlying memory of the string
 
-+ from-ascii :: Proc [(List U8)] String
++ from-ascii : Proc [(List U8)] String ::
   Converts a list of ASCII bytes into a string, allocating new memory for the
   string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
   null-terminator is pushed onto the end of the string.
 
++ delete : Proc [String] Unit ::
+  Free the underlying memory of the string, assuming it is allocated with =current-allocator=.
+
++ = : Proc [String String] Bool ::
+  Return true if the two strings are equal, and false otherwise.
+
++ != : Proc [String String] Bool ::
+  Return true if the two strings are *not* equal, and false otherwise.

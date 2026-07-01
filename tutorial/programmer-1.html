@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-21 Sun 14:06 -->
+<!-- 2026-06-26 Fri 10:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #1: Basic Control Flow</title>
@@ -199,11 +199,11 @@
 <div id="content" class="content">
 <h1 class="title">Tutorial #1: Basic Control Flow</h1>
 <p>
-Prev <a href="../index.html">Up</a> <a href="programmer-1.html">Next</a>
+<a href="programmer-0.html">Prev</a> <a href="../index.html">Up</a> <a href="programmer-2.html">Next</a>
 </p>
-<div id="outline-container-org18eb81b" class="outline-2">
-<h2 id="org18eb81b">A Basic Prompt</h2>
-<div class="outline-text-2" id="text-org18eb81b">
+<div id="outline-container-orgd73bf63" class="outline-2">
+<h2 id="orgd73bf63">A Basic Prompt</h2>
+<div class="outline-text-2" id="text-orgd73bf63">
 <p>
 As mentioned in the introduction, this tutorial will focus on the construction
 of a basic shell, from which you can execute programs, run commands etc. We will
@@ -261,9 +261,9 @@ available.
 </div>
 </div>
 </div>
-<div id="outline-container-orga9e540e" class="outline-2">
-<h2 id="orga9e540e">Syntactic Cleanup</h2>
-<div class="outline-text-2" id="text-orga9e540e">
+<div id="outline-container-org7248f77" class="outline-2">
+<h2 id="org7248f77">Syntactic Cleanup</h2>
+<div class="outline-text-2" id="text-org7248f77">
 <p>
 You will have noticed by now that Relic terms have a lot of parentheses.
 Fortunately, there are ways to reduce the number. In particular, specific
@@ -303,9 +303,9 @@ have the below program:
 </div>
 </div>
 </div>
-<div id="outline-container-org6573dde" class="outline-2">
-<h2 id="org6573dde">An Interaction Loop</h2>
-<div class="outline-text-2" id="text-org6573dde">
+<div id="outline-container-org0527863" class="outline-2">
+<h2 id="org0527863">An Interaction Loop</h2>
+<div class="outline-text-2" id="text-org0527863">
 <p>
 The basic way one interatcts with a shell is in a loop: reading user input,
 processing it, then deciding when to exit or not. We will factor out this logic
@@ -314,15 +314,8 @@ into a function, which will return <code>:true</code> if we should continue the 
 type, with "exit" being used to quit the shell.
 </p>
 
-<p>
-In order to compare the input with "exit", we will want to import the <code>equality</code>
-module, which gives us access to <code>=</code>.
-</p>
-
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">import</span> (abs<span style="color: #7CF083;">.equality</span> :<span style="color: #9d81ba;">all</span>))
-
-<span style="color: #454459;">;; </span><span style="color: #454459;">Note: Type annotations on arguments are optional, as Relic can  
+<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Note: Type annotations on arguments are optional, as Relic can  
 </span><span style="color: #454459;">;;       </span><span style="color: #454459;">usually deduce the correct type.
 </span>(<span style="color: #9d81ba;">def</span> iter <span style="color: #9d81ba;">proc</span> [str] <span style="color: #9d81ba;">seq</span>
   (write-string <span style="color: #f5c791;">"echo: "</span>)
@@ -377,10 +370,9 @@ will work for us.
 
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">def</span> main <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
-  (write-string <span style="color: #f5c791;">"&gt; "</span>)
   (<span style="color: #9d81ba;">loop</span> 
-    [<span style="color: #9d81ba;">while</span> (iter (read-line))]
-    (write-string <span style="color: #f5c791;">"&gt; "</span>))
+    (write-string <span style="color: #f5c791;">"&gt; "</span>)
+    [<span style="color: #9d81ba;">while</span> (iter (read-line))])
   (write-line <span style="color: #f5c791;">"exiting the shell..."</span>))
 
 (main)
@@ -392,9 +384,9 @@ If you run the program now, you should get
 </p>
 </div>
 </div>
-<div id="outline-container-orged7e32a" class="outline-2">
-<h2 id="orged7e32a">Memory</h2>
-<div class="outline-text-2" id="text-orged7e32a">
+<div id="outline-container-org81384a9" class="outline-2">
+<h2 id="org81384a9">Memory</h2>
+<div class="outline-text-2" id="text-org81384a9">
 <p>
 Before we finish this section of the tutorial, we will need to fix a bug you
 may not have noticed. As the <code>read-line</code> function allocates memory for the input
@@ -424,7 +416,7 @@ is modify our <code>iter</code> procedure to free the line after it is used.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-21 Sun 14:06</p>
+<p class="date">Created: 2026-06-26 Fri 10:56</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

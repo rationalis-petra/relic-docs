@@ -102,7 +102,7 @@ function for a proc that adds 1 to its' argument.
 #+end_src
 
 Note specifically the usage of square brackets '[]'. To remember when to use
-which type of bracket, remember that '()' are used for exprissions, which will
+which type of bracket, remember that '()' are used for expressions, which will
 get evaluated to a value, while '[]' are used for syntax which means something
 specific in the context of a larger expression. In this case, the [] are used
 for the arguments of the procedure. Other examples might be for the variables

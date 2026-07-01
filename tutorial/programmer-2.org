@@ -4,4 +4,41 @@
 
 [[file:programmer-1.org][Prev]]  [[file:../index.org][Up]]  [[file:programmer-3.org][Next]]
 
-* Making a project
+* Current Directory
+Here, we will focus on adding some simple features to our shell. First up, it is
+common for a shell to print the name of the current directory before the prompt.
+In Relic, we can access this string with =get-current-directory=, which will
+return a (freshly allocated) string with the name of the current directory. As
+with =read-line=, we will need to free this memory later. Let's replace our call
+to =write-string= with a =prompt= function which will print the prompt for the
+user.
+
+#+begin_src relic
+(def prompt proc [] seq
+  [let cwd (platform.filesystem.get-current-directory)]
+  (write-line cwd)
+  (data.string.delete cwd)
+  (write-string "> "))
+#+end_src
+
+Inside our main function, we then can rewrite the loop.
+#+begin_src relic
+  (loop 
+    (prompt)
+    [while (iter (read-line))])
+#+end_src
+
+* Commands
+Of cource, once we display the current directory, we will want a way to change it.
+This can be done in relic using =set-current-directory=, but we will want to
+update the 
+
+#+begin_example relic
+#+end_example
+
+* Allocators
+While we have managed to add some basic functionality to our shell, remembering
+when to free memory is becoming a bit of a pain. Fortunately, we have a
+solution: allocators. 
+
+* Project

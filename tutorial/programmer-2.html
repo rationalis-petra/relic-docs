@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-20 Sat 18:29 -->
+<!-- 2026-06-26 Fri 11:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #2: Projects and Structures</title>
@@ -201,13 +201,69 @@
 <p>
 <a href="programmer-1.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-3.html">Next</a>
 </p>
-<div id="outline-container-orgecb2f94" class="outline-2">
-<h2 id="orgecb2f94"></h2>
+<div id="outline-container-orge0d2990" class="outline-2">
+<h2 id="orge0d2990">Current Directory</h2>
+<div class="outline-text-2" id="text-orge0d2990">
+<p>
+Here, we will focus on adding some simple features to our shell. First up, it is
+common for a shell to print the name of the current directory before the prompt.
+In Relic, we can access this string with <code>get-current-directory</code>, which will
+return a (freshly allocated) string with the name of the current directory. As
+with <code>read-line</code>, we will need to free this memory later. Let's replace our call
+to <code>write-string</code> with a <code>prompt</code> function which will print the prompt for the
+user.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> prompt <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span> cwd (platform<span style="color: #7CF083;">.filesystem.get-current-directory</span>)]
+  (write-line cwd)
+  (data<span style="color: #7CF083;">.string.delete</span> cwd)
+  (write-string <span style="color: #f5c791;">"&gt; "</span>))
+</pre>
+</div>
+
+<p>
+Inside our main function, we then can rewrite the loop.
+</p>
+<div class="org-src-container">
+<pre class="src src-relic">  (<span style="color: #9d81ba;">loop</span> 
+    (prompt)
+    [<span style="color: #9d81ba;">while</span> (iter (read-line))])
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org47b19f5" class="outline-2">
+<h2 id="org47b19f5">CD, PWD</h2>
+<div class="outline-text-2" id="text-org47b19f5">
+<p>
+Of cource, once we display the current directory, we will want a way to change it
+using <code>set-current-directory</code>. 
+</p>
+
+<pre class="example" id="orgf1b38c3">
+
+</pre>
+</div>
+</div>
+<div id="outline-container-org3e26948" class="outline-2">
+<h2 id="org3e26948">Allocators</h2>
+<div class="outline-text-2" id="text-org3e26948">
+<p>
+While we have managed to add some basic functionality to our shell, remembering
+when to free memory is becoming a bit of a pain. Fortunately, we have a
+solution: allocators. 
+</p>
+</div>
+</div>
+<div id="outline-container-orge6124ac" class="outline-2">
+<h2 id="orge6124ac">Project</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-20 Sat 18:29</p>
+<p class="date">Created: 2026-06-26 Fri 11:11</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
