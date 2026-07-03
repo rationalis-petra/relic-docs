@@ -22,7 +22,7 @@ Named Mode Enum 64 :read :write :read-write
 + current-directory : Proc [] String ::
   Get the current working directory.
 
-+ set-current-directory : Proc [String] String ::
++ set-current-directory : Proc [String] FileError ::
   Set the current working directory.
 
 + open-file : Proc [String Mode] (Result File FileError) ::

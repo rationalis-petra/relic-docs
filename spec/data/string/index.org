@@ -15,7 +15,7 @@
   Get the nth byte of the underlying memory of the string. Not guaranteed to be
   the nth character if the string contains non-ascii characters.
 
-+ slice : Proc [U64 U64 String] String ::
++ subview : Proc [U64 U64 String] String ::
   The function =(slice start end str)= Return a new string which is a substring
   of the original string, starting at the =start= byte, and ending at the byte
   *before* end. This means that =(slice 0 str.memsize str)= will return the

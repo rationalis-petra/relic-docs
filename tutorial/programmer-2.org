@@ -1,5 +1,5 @@
 #+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
-#+title: Tutorial #2: Projects and Structures 
+#+title: Tutorial #2: Introducing Commands 
 #+options: num:nil toc:nil
 
 [[file:programmer-1.org][Prev]]  [[file:../index.org][Up]]  [[file:programmer-3.org][Next]]
@@ -177,11 +177,115 @@ underlying list with =memory.free=.
   should-exit)
 #+end_src
 
-* Branching Conditionals
+* Advanced Control Flow
+Now that we have the command components, we will want to implement some
+commands. We wil start with =cd= to set the current working directory, as
+promised earlier, and =echo=, as it is simple. We will start with =echo= and
+function to print errors if we receive a command that isn't recognized:
 
-* Allocators
-While we have managed to add some basic functionality to our shell, remembering
-when to free memory is becoming a bit of a pain. Fortunately, we have a
-solution: allocators. 
+#+begin_src relic
+(def unrecognized proc [cmd] seq
+  (write-string "Unrecognized command: ")
+  (write-line cmd))
 
-* Project
+(def echo proc [args] seq
+  (loop [for i from 1 below args.len]
+    (write-string (elt i args))
+    (write-string " "))
+  (write-string "\n"))
+#+end_src
+
+Next, we will cover the =cd= command, and use a new error handling strategy
+making use of the =labels= term former. =labels= allows for code somewhat
+similar to using =goto= in C, but with several differences.
+
+The general layout of a =labels= form is as follows:
+
+#+begin_src relic
+(labels
+  <starting-expression>
+  [label-1 [params...] <body>]
+  [label-2 [params...] <body>]
+  ...)
+#+end_src
+
+The way a =labels= statement works is that, whenever you are evaluating in
+either the /starting-expression/ or one of the label /bodies/, you can invoke
+=(go-to label args...)= to jump execution to that label, with the label's
+/params/ substituted for the go-to's /args/. As a simple example, we can set up
+a very basic loop that will print the numbers 1 to 10, shown below.
+
+We have only two labels, =loop-continue=, which performs one iteration of the
+loop, and =loop-exit=, which is how we stop the loop. The starting expression is
+very simple and just kicks off the loop. Feel free to copy-paste this example
+into a =repl=, or a *.rl* file and play around with running different variations.
+
+#+begin_src relic
+(labels
+  (go-to loop-continue 0)
+
+  [loop-continue [i] seq 
+    (write-string "i: ")
+    (write-line (to-string i))
+
+    (if (u64.< i 10)
+        (go-to loop-continue (+ i 1))
+        (go-to loop-exit))]
+
+  [loop-exit (write-line "done")])
+#+end_src
+
+For our =cd= procedure, we will use =labels= to help in our error handling. We
+have only one label: the =early-exit= label, which lets us quit the proc and
+print an error message if something goes wrong. Otherwise, our /starting
+expression/ is actually most of the function, and represents the 'happy' (error
+free) path for our code. At the moment, we will leave handling any errors raisd
+by =set-current-directory= for later.
+
+#+begin_src  relic
+(def cd proc [args] labels
+  (seq
+    (when (u64.< args.len 1)
+      (go-to early-exit "error: cd requires an argument; none was provided"))
+    (when (u64.> args.len 2)
+      (go-to early-exit "error: cd requires exactly one argument; too many were provided"))
+
+    (write-string "changing dir to: ")
+    (write-line (elt 1 args))
+    (filesystem.set-current-directory (elt 1 args)))
+
+  [early-exit [reason]
+   (write-line reason)])
+#+end_src
+
+Now that we have our 3 commands, we can re-write the =iter= proc once again. At
+the moment, the simplest implementation is just to compare the command againts
+all known command strings, i.e. "exit", "cd" and "echo". Normally, you would do
+this with an if/else-if chain. However, the structure of Relic =if= would make
+this unnecessarily painful to write, i.e.
+=(if <cond> <case1> (if <cond2> <case2> ...))=, we would stack up a number of
+closing parentheses equal to the number of if cases. Yikes! Instead, Relic has
+=cond=, which lets you write a set of =[condition body]= pairs, and it will
+match on the first condition that returns true. A quirk all terms in Relic
+needing to evaluate to a value is that =cond= must guarantee that /at least/ one
+of the branches matches. As such, the last condition in a =cond= must always be
+the literal =:true=, and you will get an error otherwise.
+
+#+begin_src relic
+(def iter proc [str] seq
+  [let! should-continue local :true]
+  [let! commands (split-on str #space)]
+  [let! command-name (elt 0 commands)]
+
+  (cond
+   [(= "exit" command-name) (set should-continue :false)]
+   [(= "cd" command-name) (cd commands)]
+   [(= "echo" command-name) (echo commands)]
+   [:true (unrecognized command-name)])
+
+  (string.delete str)
+  (memory.free commands.data)
+  (get should-continue))
+#+end_src
+
+

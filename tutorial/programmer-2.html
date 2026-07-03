@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-07-03 Fri 21:02 -->
+<!-- 2026-07-03 Fri 22:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tutorial #2: Projects and Structures</title>
+<title>Tutorial #2: Introducing Commands</title>
 <meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -197,13 +197,13 @@
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Tutorial #2: Projects and Structures</h1>
+<h1 class="title">Tutorial #2: Introducing Commands</h1>
 <p>
 <a href="programmer-1.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-3.html">Next</a>
 </p>
-<div id="outline-container-org71af823" class="outline-2">
-<h2 id="org71af823">Current Directory</h2>
-<div class="outline-text-2" id="text-org71af823">
+<div id="outline-container-org43b7cad" class="outline-2">
+<h2 id="org43b7cad">Current Directory</h2>
+<div class="outline-text-2" id="text-org43b7cad">
 <p>
 Here, we will focus on adding some simple features to our shell. First up, it is
 common for a shell to print the name of the current directory before the prompt.
@@ -254,9 +254,9 @@ refer to <code>filesystem.get-current-directory</code>.
 </div>
 </div>
 </div>
-<div id="outline-container-org0686fc4" class="outline-2">
-<h2 id="org0686fc4">Commands</h2>
-<div class="outline-text-2" id="text-org0686fc4">
+<div id="outline-container-orga94e5a8" class="outline-2">
+<h2 id="orga94e5a8">Commands</h2>
+<div class="outline-text-2" id="text-orga94e5a8">
 <p>
 Of cource, once we display the current directory, we will want a way to change it.
 This can be done in relic using <code>set-current-directory</code>, but before we can do
@@ -426,27 +426,143 @@ underlying list with <code>memory.free</code>.
 </div>
 </div>
 </div>
-<div id="outline-container-org0670612" class="outline-2">
-<h2 id="org0670612">Branching Conditionals</h2>
+<div id="outline-container-orgf51969e" class="outline-2">
+<h2 id="orgf51969e">Advanced Control Flow</h2>
+<div class="outline-text-2" id="text-orgf51969e">
+<p>
+Now that we have the command components, we will want to implement some
+commands. We wil start with <code>cd</code> to set the current working directory, as
+promised earlier, and <code>echo</code>, as it is simple. We will start with <code>echo</code> and
+function to print errors if we receive a command that isn't recognized:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> unrecognized <span style="color: #9d81ba;">proc</span> [cmd] <span style="color: #9d81ba;">seq</span>
+  (write-string <span style="color: #f5c791;">"Unrecognized command: "</span>)
+  (write-line cmd))
+
+(<span style="color: #9d81ba;">def</span> echo <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">seq</span>
+  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">below</span> args<span style="color: #7CF083;">.len</span>]
+    (write-string (elt i args))
+    (write-string <span style="color: #f5c791;">" "</span>))
+  (write-string <span style="color: #f5c791;">"\n"</span>))
+</pre>
 </div>
 
-<div id="outline-container-org11e7826" class="outline-2">
-<h2 id="org11e7826">Allocators</h2>
-<div class="outline-text-2" id="text-org11e7826">
 <p>
-While we have managed to add some basic functionality to our shell, remembering
-when to free memory is becoming a bit of a pain. Fortunately, we have a
-solution: allocators. 
+Next, we will cover the <code>cd</code> command, and use a new error handling strategy
+making use of the <code>labels</code> term former. <code>labels</code> allows for code somewhat
+similar to using <code>goto</code> in C, but with several differences.
 </p>
+
+<p>
+The general layout of a <code>labels</code> form is as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">labels</span>
+  &lt;starting-expression&gt;
+  [label-1 [params<span style="color: #7CF083;">...</span>] &lt;body&gt;]
+  [label-2 [params<span style="color: #7CF083;">...</span>] &lt;body&gt;]
+  <span style="color: #7CF083;">...</span>)
+</pre>
+</div>
+
+<p>
+The way a <code>labels</code> statement works is that, whenever you are evaluating in
+either the <i>starting-expression</i> or one of the label <i>bodies</i>, you can invoke
+<code>(go-to label args...)</code> to jump execution to that label, with the label's
+<i>params</i> substituted for the go-to's <i>args</i>. As a simple example, we can set up
+a very basic loop that will print the numbers 1 to 10, shown below.
+</p>
+
+<p>
+We have only two labels, <code>loop-continue</code>, which performs one iteration of the
+loop, and <code>loop-exit</code>, which is how we stop the loop. The starting expression is
+very simple and just kicks off the loop. Feel free to copy-paste this example
+into a <code>repl</code>, or a <b>.rl</b> file and play around with running different variations.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">labels</span>
+  (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop-continue</span> <span style="color: #0D9C94;">0</span>)
+
+  [loop-continue [i] <span style="color: #9d81ba;">seq</span> 
+    (write-string <span style="color: #f5c791;">"i: "</span>)
+    (write-line (to-string i))
+
+    (<span style="color: #9d81ba;">if</span> (u64<span style="color: #7CF083;">.</span>&lt; i <span style="color: #0D9C94;">10</span>)
+        (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop-continue</span> (+ i <span style="color: #0D9C94;">1</span>))
+        (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop-exit</span>))]
+
+  [loop-exit (write-line <span style="color: #f5c791;">"done"</span>)])
+</pre>
+</div>
+
+<p>
+For our <code>cd</code> procedure, we will use <code>labels</code> to help in our error handling. We
+have only one label: the <code>early-exit</code> label, which lets us quit the proc and
+print an error message if something goes wrong. Otherwise, our <i>starting
+expression</i> is actually most of the function, and represents the 'happy' (error
+free) path for our code. At the moment, we will leave handling any errors raisd
+by <code>set-current-directory</code> for later.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> cd <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">labels</span>
+  (<span style="color: #9d81ba;">seq</span>
+    (when (u64<span style="color: #7CF083;">.</span>&lt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">1</span>)
+      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> <span style="color: #f5c791;">"error: cd requires an argument; none was provided"</span>))
+    (when (u64<span style="color: #7CF083;">.</span>&gt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">2</span>)
+      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> <span style="color: #f5c791;">"error: cd requires exactly one argument; too many were provided"</span>))
+
+    (write-string <span style="color: #f5c791;">"changing dir to: "</span>)
+    (write-line (elt <span style="color: #0D9C94;">1</span> args))
+    (filesystem<span style="color: #7CF083;">.set-current-directory</span> (elt <span style="color: #0D9C94;">1</span> args)))
+
+  [early-exit [reason]
+   (write-line reason)])
+</pre>
+</div>
+
+<p>
+Now that we have our 3 commands, we can re-write the <code>iter</code> proc once again. At
+the moment, the simplest implementation is just to compare the command againts
+all known command strings, i.e. "exit", "cd" and "echo". Normally, you would do
+this with an if/else-if chain. However, the structure of Relic <code>if</code> would make
+this unnecessarily painful to write, i.e.
+<code>(if &lt;cond&gt; &lt;case1&gt; (if &lt;cond2&gt; &lt;case2&gt; ...))</code>, we would stack up a number of
+closing parentheses equal to the number of if cases. Yikes! Instead, Relic has
+<code>cond</code>, which lets you write a set of <code>[condition body]</code> pairs, and it will
+match on the first condition that returns true. A quirk all terms in Relic
+needing to evaluate to a value is that <code>cond</code> must guarantee that <i>at least</i> one
+of the branches matches. As such, the last condition in a <code>cond</code> must always be
+the literal <code>:true</code>, and you will get an error otherwise.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> iter <span style="color: #9d81ba;">proc</span> [str] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span>! should-continue local <span style="color: #7CF083;">:true</span>]
+  [<span style="color: #9d81ba;">let</span>! commands (split-on str #space)]
+  [<span style="color: #9d81ba;">let</span>! command-name (elt <span style="color: #0D9C94;">0</span> commands)]
+
+  (<span style="color: #9d81ba;">cond</span>
+   [(= <span style="color: #f5c791;">"exit"</span> command-name) (set should-continue <span style="color: #7CF083;">:false</span>)]
+   [(= <span style="color: #f5c791;">"cd"</span> command-name) (cd commands)]
+   [(= <span style="color: #f5c791;">"echo"</span> command-name) (echo commands)]
+   [<span style="color: #7CF083;">:true</span> (unrecognized command-name)])
+
+  (string<span style="color: #7CF083;">.delete</span> str)
+  (memory<span style="color: #7CF083;">.free</span> commands<span style="color: #7CF083;">.data</span>)
+  (get should-continue))
+</pre>
 </div>
 </div>
-<div id="outline-container-org572ac02" class="outline-2">
-<h2 id="org572ac02">Project</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-07-03 Fri 21:02</p>
+<p class="date">Created: 2026-07-03 Fri 22:17</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
