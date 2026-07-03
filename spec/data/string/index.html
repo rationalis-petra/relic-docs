@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-21 Sun 17:27 -->
+<!-- 2026-07-03 Fri 11:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.String</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-orge167140" class="outline-2">
-<h2 id="orge167140">Types</h2>
-<div class="outline-text-2" id="text-orge167140">
+<div id="outline-container-orgceffbb3" class="outline-2">
+<h2 id="orgceffbb3">Types</h2>
+<div class="outline-text-2" id="text-orgceffbb3">
 <dl class="org-dl">
 <dt>String : Type</dt><dd>The String type stores string data as a struct containing of a block of UTF-8
 bytes with  and a length. Strings do NOT have a null-terminator, which means
@@ -211,11 +211,17 @@ that care must be taken when intefacing with C libraries.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org1d412ff" class="outline-2">
-<h2 id="org1d412ff">Functions</h2>
-<div class="outline-text-2" id="text-org1d412ff">
+<div id="outline-container-org9572830" class="outline-2">
+<h2 id="org9572830">Functions</h2>
+<div class="outline-text-2" id="text-org9572830">
 <dl class="org-dl">
-<dt>nth-byte : Proc [U64 String] U8</dt><dd>Get the nth byte of the underlying memory of the string</dd>
+<dt>nth-byte : Proc [U64 String] U8</dt><dd>Get the nth byte of the underlying memory of the string. Not guaranteed to be
+the nth character if the string contains non-ascii characters.</dd>
+
+<dt>slice : Proc [U64 U64 String] String</dt><dd>The function <code>(slice start end str)</code> Return a new string which is a substring
+of the original string, starting at the <code>start</code> byte, and ending at the byte
+<b>before</b> end. This means that <code>(slice 0 str.memsize str)</code> will return the
+original string.</dd>
 
 <dt>from-ascii : Proc [(List U8)] String</dt><dd>Converts a list of ASCII bytes into a string, allocating new memory for the
 string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
@@ -232,7 +238,7 @@ null-terminator is pushed onto the end of the string.</dd>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-21 Sun 17:27</p>
+<p class="date">Created: 2026-07-03 Fri 11:34</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

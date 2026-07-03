@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-26 Fri 11:11 -->
+<!-- 2026-07-03 Fri 21:02 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #2: Projects and Structures</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="programmer-1.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-3.html">Next</a>
 </p>
-<div id="outline-container-orge0d2990" class="outline-2">
-<h2 id="orge0d2990">Current Directory</h2>
-<div class="outline-text-2" id="text-orge0d2990">
+<div id="outline-container-org71af823" class="outline-2">
+<h2 id="org71af823">Current Directory</h2>
+<div class="outline-text-2" id="text-org71af823">
 <p>
 Here, we will focus on adding some simple features to our shell. First up, it is
 common for a shell to print the name of the current directory before the prompt.
@@ -232,24 +232,207 @@ Inside our main function, we then can rewrite the loop.
     [<span style="color: #9d81ba;">while</span> (iter (read-line))])
 </pre>
 </div>
-</div>
-</div>
-<div id="outline-container-org47b19f5" class="outline-2">
-<h2 id="org47b19f5">CD, PWD</h2>
-<div class="outline-text-2" id="text-org47b19f5">
+
 <p>
-Of cource, once we display the current directory, we will want a way to change it
-using <code>set-current-directory</code>. 
+Before moving on, now is a good time to start thinking about <b>imports</b> referring
+to the <code>get-current-directory</code> function by the fill import path is a bit
+unwieldy, so we can <i>import</i> the filesystem module, meaning that we can simply
+refer to <code>filesystem.get-current-directory</code>. 
 </p>
 
-<pre class="example" id="orgf1b38c3">
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">import</span> platform<span style="color: #7CF083;">.filesystem</span>)
 
+<span style="color: #454459;">;;</span><span style="color: #454459;">....
+</span> 
+(<span style="color: #9d81ba;">def</span> prompt <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span> cwd (filesystem<span style="color: #7CF083;">.get-current-directory</span>)]
+  (write-line cwd)
+  (data<span style="color: #7CF083;">.string.delete</span> cwd)
+  (write-string <span style="color: #f5c791;">"&gt; "</span>))
 </pre>
 </div>
 </div>
-<div id="outline-container-org3e26948" class="outline-2">
-<h2 id="org3e26948">Allocators</h2>
-<div class="outline-text-2" id="text-org3e26948">
+</div>
+<div id="outline-container-org0686fc4" class="outline-2">
+<h2 id="org0686fc4">Commands</h2>
+<div class="outline-text-2" id="text-org0686fc4">
+<p>
+Of cource, once we display the current directory, we will want a way to change it.
+This can be done in relic using <code>set-current-directory</code>, but before we can do
+<i>that</i>, we first need to provide our shell with the ability to recognize
+different commands, beyond just 'exit'.
+</p>
+
+<p>
+The natural next step then is to separate our input string on spaces, so let's
+start by importing some functions that will be useful later.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">import</span>
+ platform<span style="color: #7CF083;">.filesystem</span>
+ platform<span style="color: #7CF083;">.memory</span>
+
+ (data<span style="color: #7CF083;">.pointer</span> <span style="color: #7CF083;">:only</span> (get set local))
+ (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:only</span> (mk-list push elt))
+ (data<span style="color: #7CF083;">.string</span> <span style="color: #7CF083;">:only</span> (subview nth-byte)))
+</pre>
+</div>
+
+<p>
+Our algorithm will run as follows:
+</p>
+<ul class="org-ul">
+<li>Initialize the compoents (list of strings we want to return) to an empty list</li>
+<li>Initialize the start of the <b>current word</b> to the start of the string</li>
+</ul>
+
+<p>
+Then, we will loop over each character in the string, and:
+</p>
+<ul class="org-ul">
+<li>If current character is a space, do to things:
+<ul class="org-ul">
+<li>Add a new word starting at our most recent word start, and ending just
+before the current character.</li>
+<li>Reset the start of the current word to the character after the current one</li>
+</ul></li>
+</ul>
+
+<p>
+Note that the last character may NOT be a space, so once our loop finishes, we
+will need to act as if there is an extra character that <i>is</i> a space at the end
+of the loop, to ensure the last word gets pushed on.
+</p>
+
+<p>
+This algorithm is not perfect, and handles, e.g. double spaces less than
+ideally, however, it is nice and simple, and should be more than enough for our
+purposes.
+</p>
+
+<p>
+We will start with our initialization. In Relic, the only way to get mutable
+values by mutating memory explicitly, i.e. via pointers. We can use the <code>local</code>
+function that we imported from the <code>pointer</code> module to create a pointer using
+local (i.e. on-stack) memory. Note that you should <b>never</b> return a local
+pointer from a procedure, as local (stack) memory is invalid once the procedure
+returns.
+</p>
+
+<p>
+We can initialize <code>start</code> with 0, and we want to initialize our list with 0
+elements, but with space reserved for 8. 8 has been chosen as it will be enough
+for most cases without being excessive, as lists will automatically grow if we
+exceed their capacity.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> split-on <span style="color: #9d81ba;">proc</span> [str delimiter] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span>! start (local <span style="color: #0D9C94;">0</span>)]
+  [<span style="color: #9d81ba;">let</span>! components (local (list<span style="color: #7CF083;">.mk-list</span> <span style="color: #0D9C94;">0</span> <span style="color: #0D9C94;">8</span>))]
+
+  <span style="color: #454459;">;; </span><span style="color: #454459;">Rest of the function goes here...
+</span>  )
+</pre>
+</div>
+
+<p>
+The body of the loop is relatively easy to fill out, and we will make use of a
+new piece of syntax and some new functions. The <code>when</code> conditional is like if,
+but has no <code>:false</code> branch, as it is assumed implicitly return the value
+<code>:unit</code>. Additionally, like <code>proc</code> and <code>def</code>, it performs auto parenthesization
+after the condition.
+</p>
+
+<p>
+Our new functions are <code>push</code> which will add a value to the end of our list, and
+<code>subview</code>, which is like <code>substring</code>, but does not allocate any memory, it
+simply provides a substring which views the original memory. This will make
+cleanup easier later. The arguments to <code>subview</code> are the start and end position
+of the substing, together with the original string we want to take the substring
+of.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> split-on <span style="color: #9d81ba;">proc</span> [str delimiter] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span>! start (local <span style="color: #0D9C94;">0</span>)]
+  [<span style="color: #9d81ba;">let</span>! components (local (list<span style="color: #7CF083;">.mk-list</span> <span style="color: #0D9C94;">0</span> <span style="color: #0D9C94;">8</span>))]
+
+  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> str<span style="color: #7CF083;">.memsize</span>]
+    (when (= (nth-byte i str) delimiter) <span style="color: #9d81ba;">seq</span>
+
+      <span style="color: #454459;">;; </span><span style="color: #454459;">Push the subcommant 
+</span>      (push (subview (get start) i str) components)
+      <span style="color: #454459;">;; </span><span style="color: #454459;">Set the start of the next womd to the character after the current one
+</span>      (set start (+ i <span style="color: #0D9C94;">1</span>))))
+  <span style="color: #454459;">;; </span><span style="color: #454459;">Rest of the function goes here...
+</span>  )
+</pre>
+</div>
+
+<p>
+To finish the function, we will want to do the final subview push, to treat the
+character <i>after</i> the last character as a space, then we will want to return the
+value in the components pointer, which we can do with the <code>get</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> split-on <span style="color: #9d81ba;">proc</span> [str delimiter] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span>! start (local <span style="color: #0D9C94;">0</span>)]
+  [<span style="color: #9d81ba;">let</span>! components (local (list<span style="color: #7CF083;">.mk-list</span> <span style="color: #0D9C94;">0</span> <span style="color: #0D9C94;">8</span>))]
+
+  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> str<span style="color: #7CF083;">.memsize</span>]
+    (when (= (nth-byte i str) delimiter) <span style="color: #9d81ba;">seq</span>
+
+      <span style="color: #454459;">;; </span><span style="color: #454459;">Push the subcommant 
+</span>      (push (subview (get start) i str) components)
+      <span style="color: #454459;">;; </span><span style="color: #454459;">Set the start of the next word to the character after the current one
+</span>      (set start (+ i <span style="color: #0D9C94;">1</span>))))
+
+  (push (subview (get start) str<span style="color: #7CF083;">.memsize</span> str) components)
+  (get components))
+</pre>
+</div>
+
+<p>
+Now that we have our <code>split-on</code> function, we can re-write our <code>iter</code> function,
+by getting the commands from the input line, then printing out each, which will
+be a useful diagnostic to see if our procedure works correctly. To write a
+character literal in Relic, we use #&lt;char&gt;, so <code>#a</code> is the character literal for
+a. Note that in Relic, there is no difference between a character and a
+function, so <code>#a</code> is the same as the number literal <code>97</code>. For some 'special'
+characters, we refer to them by name, so space is <code>#space</code>. 
+</p>
+
+<p>
+Once we are done with them, we can free the memory associated with the
+underlying list with <code>memory.free</code>.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> iter <span style="color: #9d81ba;">proc</span> [str] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span>! commands (split-on str #space)]
+
+  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> commands<span style="color: #7CF083;">.len</span>]
+    (write-line (elt i commands)))
+
+  [<span style="color: #9d81ba;">let</span>! should-exit (<span style="color: #9d81ba;">if</span> (= str <span style="color: #f5c791;">"exit"</span>) <span style="color: #7CF083;">:false</span> <span style="color: #7CF083;">:true</span>)]
+  (memory<span style="color: #7CF083;">.free</span> commands<span style="color: #7CF083;">.data</span>)
+  (string<span style="color: #7CF083;">.delete</span> str)
+  should-exit)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org0670612" class="outline-2">
+<h2 id="org0670612">Branching Conditionals</h2>
+</div>
+
+<div id="outline-container-org11e7826" class="outline-2">
+<h2 id="org11e7826">Allocators</h2>
+<div class="outline-text-2" id="text-org11e7826">
 <p>
 While we have managed to add some basic functionality to our shell, remembering
 when to free memory is becoming a bit of a pain. Fortunately, we have a
@@ -257,13 +440,13 @@ solution: allocators.
 </p>
 </div>
 </div>
-<div id="outline-container-orge6124ac" class="outline-2">
-<h2 id="orge6124ac">Project</h2>
+<div id="outline-container-org572ac02" class="outline-2">
+<h2 id="org572ac02">Project</h2>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-26 Fri 11:11</p>
+<p class="date">Created: 2026-07-03 Fri 21:02</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
