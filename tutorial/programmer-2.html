@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-07-03 Fri 22:17 -->
+<!-- 2026-07-09 Thu 09:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #2: Introducing Commands</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="programmer-1.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-3.html">Next</a>
 </p>
-<div id="outline-container-org43b7cad" class="outline-2">
-<h2 id="org43b7cad">Current Directory</h2>
-<div class="outline-text-2" id="text-org43b7cad">
+<div id="outline-container-orge06d48c" class="outline-2">
+<h2 id="orge06d48c">Current Directory</h2>
+<div class="outline-text-2" id="text-orge06d48c">
 <p>
 Here, we will focus on adding some simple features to our shell. First up, it is
 common for a shell to print the name of the current directory before the prompt.
@@ -234,7 +234,7 @@ Inside our main function, we then can rewrite the loop.
 </div>
 
 <p>
-Before moving on, now is a good time to start thinking about <b>imports</b> referring
+Before moving on, now is a good time to start thinking about <b>imports</b>. Referring
 to the <code>get-current-directory</code> function by the fill import path is a bit
 unwieldy, so we can <i>import</i> the filesystem module, meaning that we can simply
 refer to <code>filesystem.get-current-directory</code>. 
@@ -252,11 +252,30 @@ refer to <code>filesystem.get-current-directory</code>.
   (write-string <span style="color: #f5c791;">"&gt; "</span>))
 </pre>
 </div>
+
+<p>
+It is even possible to take it one step further and rename the import from
+'filesystem' to just 'fs'. To do this, we wrap the importee in parens and add
+<code>:as &lt;newname&gt;</code> after the end.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">import</span> (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs))
+
+<span style="color: #454459;">;; </span><span style="color: #454459;">....
+</span> 
+(<span style="color: #9d81ba;">def</span> prompt <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
+  [<span style="color: #9d81ba;">let</span> cwd (fs<span style="color: #7CF083;">.get-current-directory</span>)]
+  (write-line cwd)
+  (data<span style="color: #7CF083;">.string.delete</span> cwd)
+  (write-string <span style="color: #f5c791;">"&gt; "</span>))
+</pre>
 </div>
 </div>
-<div id="outline-container-orga94e5a8" class="outline-2">
-<h2 id="orga94e5a8">Commands</h2>
-<div class="outline-text-2" id="text-orga94e5a8">
+</div>
+<div id="outline-container-org629f704" class="outline-2">
+<h2 id="org629f704">Commands</h2>
+<div class="outline-text-2" id="text-org629f704">
 <p>
 Of cource, once we display the current directory, we will want a way to change it.
 This can be done in relic using <code>set-current-directory</code>, but before we can do
@@ -271,7 +290,7 @@ start by importing some functions that will be useful later.
 
 <div class="org-src-container">
 <pre class="src src-relic">(<span style="color: #9d81ba;">import</span>
- platform<span style="color: #7CF083;">.filesystem</span>
+ (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
  platform<span style="color: #7CF083;">.memory</span>
 
  (data<span style="color: #7CF083;">.pointer</span> <span style="color: #7CF083;">:only</span> (get set local))
@@ -426,9 +445,9 @@ underlying list with <code>memory.free</code>.
 </div>
 </div>
 </div>
-<div id="outline-container-orgf51969e" class="outline-2">
-<h2 id="orgf51969e">Advanced Control Flow</h2>
-<div class="outline-text-2" id="text-orgf51969e">
+<div id="outline-container-org1a09dc7" class="outline-2">
+<h2 id="org1a09dc7">Advanced Control Flow</h2>
+<div class="outline-text-2" id="text-org1a09dc7">
 <p>
 Now that we have the command components, we will want to implement some
 commands. We wil start with <code>cd</code> to set the current working directory, as
@@ -562,7 +581,7 @@ the literal <code>:true</code>, and you will get an error otherwise.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-07-03 Fri 22:17</p>
+<p class="date">Created: 2026-07-09 Thu 09:44</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

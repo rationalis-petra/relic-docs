@@ -28,7 +28,7 @@ Inside our main function, we then can rewrite the loop.
     [while (iter (read-line))])
 #+end_src
 
-Before moving on, now is a good time to start thinking about *imports* referring
+Before moving on, now is a good time to start thinking about *imports*. Referring
 to the =get-current-directory= function by the fill import path is a bit
 unwieldy, so we can /import/ the filesystem module, meaning that we can simply
 refer to =filesystem.get-current-directory=. 
@@ -45,6 +45,22 @@ refer to =filesystem.get-current-directory=.
   (write-string "> "))
 #+end_src
 
+It is even possible to take it one step further and rename the import from
+'filesystem' to just 'fs'. To do this, we wrap the importee in parens and add
+=:as <newname>= after the end.
+
+#+begin_src relic
+(import (platform.filesystem :as fs))
+
+;; ....
+ 
+(def prompt proc [] seq
+  [let cwd (fs.get-current-directory)]
+  (write-line cwd)
+  (data.string.delete cwd)
+  (write-string "> "))
+#+end_src
+
 * Commands
 Of cource, once we display the current directory, we will want a way to change it.
 This can be done in relic using =set-current-directory=, but before we can do
@@ -56,7 +72,7 @@ start by importing some functions that will be useful later.
 
 #+begin_src relic
 (import
- platform.filesystem
+ (platform.filesystem :as fs)
  platform.memory
 
  (data.pointer :only (get set local))

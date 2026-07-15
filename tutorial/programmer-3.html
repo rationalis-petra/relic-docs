@@ -3,13 +3,13 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2024-05-27 Mon 19:04 -->
+<!-- 2026-07-09 Thu 11:22 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tutorial #3: Variants and Producers</title>
-<meta name="author" content="Connor Redfern" />
+<title>Tutorial #3: Administrative Duties</title>
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -197,19 +197,276 @@
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Tutorial #3: Variants and Producers</h1>
+<h1 class="title">Tutorial #3: Administrative Duties</h1>
 <p>
 <a href="programmer-2.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-4.html">Next</a>
 </p>
+<div id="outline-container-org8cdcfec" class="outline-2">
+<h2 id="org8cdcfec">Next Steps</h2>
+<div class="outline-text-2" id="text-org8cdcfec">
+<p>
+Thus far, the primary focus of these tutorials has been on introducing new
+features to our shell. We will now take a step back and do some housekeeping on
+this project, divided into three distinct phases:
+</p>
+<ul class="org-ul">
+<li>Making use of the <b>atlas</b> build system</li>
+<li>Swapping our shell to use an arena allocator based design</li>
+<li>Handling errors correctly.</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org9d896da" class="outline-2">
+<h2 id="org9d896da">Modules and Atlas</h2>
+<div class="outline-text-2" id="text-org9d896da">
+<p>
+We will start our cleanup with the files themselves, by refactoring our project
+to be modular, and make use of the built-in build system for Relic: <b>atlas</b>.
+</p>
 
+<p>
+Previously, the shell program was just a single file: <code>shell.rl</code>. Using <b>atlas</b>,
+we will update it to have the following structure:
+</p>
 
-<div id="outline-container-org1740a73" class="outline-2">
-<h2 id="org1740a73"></h2>
+<p>
+You can start by just moving the <code>shell.rl</code> to where <code>main.rl</code> is in this file
+structure; we will walk through the purporse and contents of each of these files
+later. We will start with the first file, <code>atlas-project</code>. As the name implies,
+there is only one of these files per project, and it should be placed at the
+root of the project. It specifies:
+</p>
+<ul class="org-ul">
+<li>What version of atlas to use.</li>
+<li>What dependenc(y/ies) on other packages it has.</li>
+</ul>
+
+<p>
+At the moment, there is only one version of atlas (0.0.1), and we have only one
+dependency, <code>base</code>, which is relic's name for the standard library.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-atlas">(<span style="color: #9d81ba;">lang</span> atlas 0.0.1)
+
+(<span style="color: #9d81ba;">package</span> (<span style="color: #0bc9cf;">name</span> shell)
+  (<span style="color: #0bc9cf;">dependencies</span> base))
+</pre>
+</div>
+
+<p>
+The next file is the <code>atlas</code> file. Generally, you will want one of these per
+subdirectory in your <code>src</code>. Note that the name <code>src</code> is not special, when
+running atlas, once it detects an <code>atlas-project</code> file, it will recursively
+search all subdirectories for file with the name <code>atlas</code> and assume that they
+describe the build. In our case, we need only one.
+</p>
+
+<p>
+The two primary clauses that we use inside an atlas file are the <i>executable</i>
+and <i>library</i> clauses. Both are effectively identical, except that the
+executable clause also requires an <i>entry-point</i>. The general components of a
+library/executable is as follows
+</p>
+
+<dl class="org-dl">
+<dt>file</dt><dd>The file containing the executable/library. <b>MUST</b> be a module file
+(more on that later). Note that ".rl" is appended automatically to the filenames.</dd>
+<dt>dependencies</dt><dd>Optional. The libraries that the library/executable depends
+on.</dd>
+<dt>name</dt><dd>The name of the library/executable. Used in dependency lists, and
+when running programs from the terminal.</dd>
+<dt>entry-point</dt><dd>Executable only. Must be a name of a function defined in the
+module, and is the function that is called at the start of execution. When the
+entry-point function returns, the program exits/finishes.</dd>
+</dl>
+
+<div class="org-src-container">
+<pre class="src src-atlas">(<span style="color: #9d81ba;">executable</span>
+  (<span style="color: #0bc9cf;">name</span> shell)
+
+  (<span style="color: #0bc9cf;">file</span> <span style="color: #f5c791;">"main"</span>)
+  (entry-point main)
+
+  (<span style="color: #0bc9cf;">dependencies</span> commands))
+
+(<span style="color: #9d81ba;">library</span> 
+  (<span style="color: #0bc9cf;">name</span> commands)
+  (<span style="color: #0bc9cf;">file</span> <span style="color: #f5c791;">"commands"</span>))
+</pre>
+</div>
+
+<p>
+Now that we have the project structure set up, the next step is to rewrite our
+single <code>shell.rl</code> into the two files, <code>commands.rl</code> and <code>main.rl</code>. We will start
+with <code>commands.rl</code>. Start by copying the three 'command functions
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> unrecognized <span style="color: #9d81ba;">proc</span> [cmd] <span style="color: #9d81ba;">seq</span>
+  (write-string <span style="color: #f5c791;">"Unrecognized command: "</span>)
+  (write-line cmd))
+
+(<span style="color: #9d81ba;">def</span> echo <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">seq</span>
+  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">below</span> args<span style="color: #7CF083;">.len</span>]
+    (write-string (elt i args))
+    (write-string <span style="color: #f5c791;">" "</span>))
+  (write-string <span style="color: #f5c791;">"\n"</span>))
+
+(<span style="color: #9d81ba;">def</span> cd <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">labels</span>
+  (<span style="color: #9d81ba;">seq</span>
+    (when (u64<span style="color: #7CF083;">.</span>&lt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">1</span>)
+      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> <span style="color: #f5c791;">"error: cd requires an argument; none was provided"</span>))
+    (when (u64<span style="color: #7CF083;">.</span>&gt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">2</span>)
+      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> <span style="color: #f5c791;">"error: cd requires exactly one argument; too many were provided"</span>))
+
+    (write-string <span style="color: #f5c791;">"changing dir to: "</span>)
+    (write-line (elt <span style="color: #0D9C94;">1</span> args))
+    (fs<span style="color: #7CF083;">.set-current-directory</span> (elt <span style="color: #0D9C94;">1</span> args)))
+
+  [early-exit [reason]
+   (write-line reason)])
+</pre>
+</div>
+
+<p>
+To convert from a module file to a script file is relatively easy: all we need
+to do is add a <code>modlue</code> header at the top of the file. The module header will be
+where we coalesce all imports to the module, as well as specifying what the
+module exports.
+</p>
+
+<p>
+Looking at the code, we can cut down out the original for <code>shell.rl</code> and depend
+only on
+</p>
+<ul class="org-ul">
+<li>The filesystem module (for cd)</li>
+<li>The <code>elt</code> list method</li>
+</ul>
+
+<p>
+Our module header thus looks like:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> commands
+  (<span style="color: #9d81ba;">import</span>
+    (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
+
+    (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:only</span> (elt)))
+  (<span style="color: #9d81ba;">export</span> unrecognized echo cd))
+</pre>
+</div>
+
+<p>
+However, if we try to load the module as-is, we would find that we quickly run
+into errors. This is because when running a script, a bunch of modules are
+already imported for us. In particular:
+</p>
+<ul class="org-ul">
+<li>Core contains</li>
+<li>Extra contains macros (more on these later) that add 'nice to haves' int the
+language, such as <code>loop</code> and <code>when</code>.</li>
+<li>Num contains a module for each primitive numeric type, i.e. <code>u8</code>, <code>u64</code>,
+<code>f32</code>, etc. We use this for comparison (<code>u64.&lt;</code>).</li>
+</ul>
+
+<p>
+In our case, we will be a but lazy and import all sympols from these modules.
+So, our full module header becomes:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> commands
+  (<span style="color: #9d81ba;">import</span>
+   (core :<span style="color: #9d81ba;">all</span>)
+   (extra :<span style="color: #9d81ba;">all</span>)
+   (num :<span style="color: #9d81ba;">all</span>)
+
+   (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
+   (platform<span style="color: #7CF083;">.terminal</span> :<span style="color: #9d81ba;">all</span>)
+
+   (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:only</span> (elt)))
+
+ (<span style="color: #9d81ba;">export</span> :<span style="color: #9d81ba;">all</span>))
+</pre>
+</div>
+
+<p>
+Our main (shell) module will be similar: copy to it all functions <b>except</b> the
+three 'command' functions. The only export is our entry-point (<code>main</code>). Remember
+to remove the call to <code>main</code> at the end of the file, otherwise our shell will
+run twice!.
+</p>
+
+<p>
+We will also need some more imports in our header: we want the original set of
+imports from <code>shell</code>, plus the onse we added to <code>commands</code>, together with the
+following:
+</p>
+
+<dl class="org-dl">
+<dt><b>data</b></dt><dd>Contains modules for data-structures like <code>list</code> and <code>string</code></dd>
+<dt><b>abs.equality</b></dt><dd>Contains the <code>Eq</code> trait and instances. Traits and instances
+will be covered later, but for now all you need to know is that it lets us use
+the <code>=</code> function with different types, so <code>(= 3 4)</code> and <code>(= "hello" "hello")</code>
+both work.</dd>
+<dt><b>abs.numeric</b></dt><dd>Contains the <code>Num</code> trait and instances, which let us use <code>+</code>,
+<code>-</code>, etc. in a generic way.</dd>
+</dl>
+
+<p>
+The full header for <code>main.rl</code> is thus:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> shell
+  (<span style="color: #9d81ba;">import</span>
+   (core :<span style="color: #9d81ba;">all</span>)
+   (extra :<span style="color: #9d81ba;">all</span>)
+   (data :<span style="color: #9d81ba;">all</span>)
+   (num :<span style="color: #9d81ba;">all</span>)
+   (abs<span style="color: #7CF083;">.equality</span> :<span style="color: #9d81ba;">all</span>)
+   (abs<span style="color: #7CF083;">.numeric</span> :<span style="color: #9d81ba;">all</span>)
+
+   platform<span style="color: #7CF083;">.memory</span>
+   (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
+   (platform<span style="color: #7CF083;">.terminal</span> :<span style="color: #9d81ba;">all</span>)
+
+   (data<span style="color: #7CF083;">.pointer</span> <span style="color: #7CF083;">:only</span> (get set local))
+   (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:only</span> (mk-list push elt))
+   (data<span style="color: #7CF083;">.string</span> <span style="color: #7CF083;">:only</span> (subview nth-byte))
+
+   (commands :<span style="color: #9d81ba;">all</span>))
+  (<span style="color: #9d81ba;">export</span> main))
+</pre>
+</div>
+
+<p>
+Now that all of these files have been written, using your command line, navigate
+to the same folder that <code>atlas-project</code> is in and type <code>atlas run shell</code>.
+Assuming that you haven't made any mistakes, you should see your shell prompt.
+</p>
+
+<p>
+<b>Note</b>: while it is not <i>yet</i> implemented, support for building executable files
+is planned. Once this feature drops, <code>altas build shell</code> will produce a <code>*.exe</code>
+file from your shell program.
+</p>
+</div>
+</div>
+<div id="outline-container-orge8dc6c4" class="outline-2">
+<h2 id="orge8dc6c4">Allocators</h2>
+</div>
+
+<div id="outline-container-org33c83be" class="outline-2">
+<h2 id="org33c83be">Enums and Error Handling</h2>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2024-05-27 Mon 19:04</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-07-09 Thu 11:22</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
