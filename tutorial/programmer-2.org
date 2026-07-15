@@ -15,7 +15,7 @@ user.
 
 #+begin_src relic
 (def prompt proc [] seq
-  [let cwd (platform.filesystem.get-current-directory)]
+  [let! cwd (platform.filesystem.get-current-directory)]
   (write-line cwd)
   (data.string.delete cwd)
   (write-string "> "))
@@ -39,7 +39,7 @@ refer to =filesystem.get-current-directory=.
 ;;....
  
 (def prompt proc [] seq
-  [let cwd (filesystem.get-current-directory)]
+  [let! cwd (filesystem.get-current-directory)]
   (write-line cwd)
   (data.string.delete cwd)
   (write-string "> "))
@@ -55,7 +55,7 @@ It is even possible to take it one step further and rename the import from
 ;; ....
  
 (def prompt proc [] seq
-  [let cwd (fs.get-current-directory)]
+  [let! cwd (fs.get-current-directory)]
   (write-line cwd)
   (data.string.delete cwd)
   (write-string "> "))
