@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-14 Sat 07:44 -->
+<!-- 2026-08-09 Sun 10:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.Slice</title>
@@ -201,28 +201,39 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org1cd9227" class="outline-2">
-<h2 id="org1cd9227">Types</h2>
-<div class="outline-text-2" id="text-org1cd9227">
+<div id="outline-container-org723d303" class="outline-2">
+<h2 id="org723d303">Types</h2>
+<div class="outline-text-2" id="text-org723d303">
 <dl class="org-dl">
-<dt>Slice</dt><dd>Kind [Type] Type
+<dt>Slice : Kind [Type] Type</dt><dd><p>
 The 'Slice' type represents a block of memory containing some number of contiguous
-elements</dd>
+elements.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">Slice</span> <span style="color: #9d81ba;">Named</span> <span style="color: #62D2DB;">Slice</span> <span style="color: #9d81ba;">Family</span> [<span style="color: #9d81ba;">Type</span>] <span style="color: #9d81ba;">Struct</span> [<span style="color: #7CF083;">.addr</span> <span style="color: #62D2DB;">Address</span>] [<span style="color: #7CF083;">.len</span> <span style="color: #62D2DB;">U64</span>])
+</pre>
+</div></dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org5ebc88a" class="outline-2">
-<h2 id="org5ebc88a">Functions</h2>
-<div class="outline-text-2" id="text-org5ebc88a">
+<div id="outline-container-orgcd43fb8" class="outline-2">
+<h2 id="orgcd43fb8">Functions</h2>
+<div class="outline-text-2" id="text-orgcd43fb8">
+</div>
+<div id="outline-container-orgae8f0b2" class="outline-3">
+<h3 id="orgae8f0b2">Core</h3>
+<div class="outline-text-3" id="text-orgae8f0b2">
 <dl class="org-dl">
-<dt>null</dt><dd>All [A] (Ptr A)
-Null will create a new null pointer of type <code>A</code>. Note that because it takes no
+<dt>null : All [A] (Ptr A)</dt><dd>Null will create a new null pointer of type <code>A</code>. Note that because it takes no
 arguments, it is more likely you will need to provide the type of
 the pointer, e.g. <code>(null {I64})</code></dd>
 
-<dt>new</dt><dd>All [A] Proc [U64] (Slice A) 
-<code>(new {A} len)</code> Creates a new slice, with space allocated for 'len' elements
+<dt>new : All [A] Proc [U64] (Slice A)</dt><dd><code>(new {A} len)</code> Creates a new slice, with space allocated for 'len' elements
 of type 'A'. All memory is uninitialized.</dd>
+
+<dt>copy : All [A] Proc [(Slice A)] (Slice A)</dt><dd><code>(copy slice}</code> Will create a new slice, with memory allocated from
+<code>current-allocator</code>, whose memory is directly copied fromthe provided slice.</dd>
 
 <dt>delete</dt><dd>All [A] Unit
 <code>(delete slice)</code> Will free the underlying memory owned by the slice.</dd>
@@ -235,10 +246,26 @@ of type 'A'. All memory is uninitialized.</dd>
 </dl>
 </div>
 </div>
+<div id="outline-container-org6420169" class="outline-3">
+<h3 id="org6420169">Utility</h3>
+<div class="outline-text-3" id="text-org6420169">
+<dl class="org-dl">
+<dt>subview : (All [A] Proc [U64 U64 (Slice A)] (Slice A))</dt><dd><code>(subview start end slice)</code> will return a new slice whose memory points to a
+subview of the provided slice. The first element <code>(elt 0)</code> of the new slice
+will be <code>(elt start)</code> of the old slice. The last element of the new slice will
+be <code>(elt (- end 1))</code> of the old slice.</dd>
+
+<dt>join (All [A] Proc [(Slice A) (Slice A)] (Slice A))</dt><dd><code>(join s1 s2)</code> will return a new slice, whose memory is allocated from
+<code>current-allocator</code>, and whose contents are precisely the concatenation of s1
+and s2.</dd>
+</dl>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-14 Sat 07:44</p>
+<p class="date">Created: 2026-08-09 Sun 10:50</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

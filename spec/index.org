@@ -4,10 +4,12 @@
 
 [[file:../index.org][up]]
 
-+ [[file:core/index.org][Core]] :: Fundamental parts of the language. Includes native types, type
++ [[file:lang/index.org][Lang]] :: The kernel, together with a range of utility macros providing common
+  language constructs such as loops, conditionals, etc.
   constructors, reflection utilities etc.
 
-+ [[file:extra/index.org][Extra]] :: Language sugar such as =loop= and =when=.
++ [[file:core/index.org][Core]] :: Fundamental parts of the language. Includes native types, type
+  constructors, reflection utilities etc.
 
 + [[file:abs/index.org][Abs]] :: Abstractions. The modules in this module define and provide
   implementations for various traits, such as =Num= and =Show=.
@@ -22,11 +24,5 @@
 
 + [[file:meta/index.org][Meta]] :: Metaprogramming
 
-+ [[file:debug/index.org][Debug]] :: Debug Assistants. 
-
-+ [[file:dev/index.org][Dev]] :: Reserved Module for Implementors.
-
-+ [[file:foreign/index.org][Foreign]] :: Foreign Function Interface
-
-+ [[file:user/index.org][User]] :: The User module does not (by itself) have any special definitions, but
-  it does import other modules. It is the module the repl starts in.
++ [[file:prelude/index.org][Prelude]] :: The Prelude module does not (by itself) have any special definitions, but
+  it does import other modules.

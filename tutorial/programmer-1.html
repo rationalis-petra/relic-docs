@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-06-26 Fri 10:56 -->
+<!-- 2026-08-04 Tue 10:19 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #1: Basic Control Flow</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="programmer-0.html">Prev</a> <a href="../index.html">Up</a> <a href="programmer-2.html">Next</a>
 </p>
-<div id="outline-container-orgd73bf63" class="outline-2">
-<h2 id="orgd73bf63">A Basic Prompt</h2>
-<div class="outline-text-2" id="text-orgd73bf63">
+<div id="outline-container-org85c51b4" class="outline-2">
+<h2 id="org85c51b4">A Basic Prompt</h2>
+<div class="outline-text-2" id="text-org85c51b4">
 <p>
 As mentioned in the introduction, this tutorial will focus on the construction
 of a basic shell, from which you can execute programs, run commands etc. We will
@@ -261,9 +261,9 @@ available.
 </div>
 </div>
 </div>
-<div id="outline-container-org7248f77" class="outline-2">
-<h2 id="org7248f77">Syntactic Cleanup</h2>
-<div class="outline-text-2" id="text-org7248f77">
+<div id="outline-container-org12188e5" class="outline-2">
+<h2 id="org12188e5">Syntactic Cleanup</h2>
+<div class="outline-text-2" id="text-org12188e5">
 <p>
 You will have noticed by now that Relic terms have a lot of parentheses.
 Fortunately, there are ways to reduce the number. In particular, specific
@@ -303,9 +303,9 @@ have the below program:
 </div>
 </div>
 </div>
-<div id="outline-container-org0527863" class="outline-2">
-<h2 id="org0527863">An Interaction Loop</h2>
-<div class="outline-text-2" id="text-org0527863">
+<div id="outline-container-orgbe4b366" class="outline-2">
+<h2 id="orgbe4b366">An Interaction Loop</h2>
+<div class="outline-text-2" id="text-orgbe4b366">
 <p>
 The basic way one interatcts with a shell is in a loop: reading user input,
 processing it, then deciding when to exit or not. We will factor out this logic
@@ -384,9 +384,9 @@ If you run the program now, you should get
 </p>
 </div>
 </div>
-<div id="outline-container-org81384a9" class="outline-2">
-<h2 id="org81384a9">Memory</h2>
-<div class="outline-text-2" id="text-org81384a9">
+<div id="outline-container-orgfdc2eac" class="outline-2">
+<h2 id="orgfdc2eac">Memory</h2>
+<div class="outline-text-2" id="text-orgfdc2eac">
 <p>
 Before we finish this section of the tutorial, we will need to fix a bug you
 may not have noticed. As the <code>read-line</code> function allocates memory for the input
@@ -407,7 +407,7 @@ is modify our <code>iter</code> procedure to free the line after it is used.
   (write-string <span style="color: #f5c791;">"echo: "</span>)
   (write-line str)
   [<span style="color: #9d81ba;">let</span>! should-continue (<span style="color: #9d81ba;">if</span> (= str <span style="color: #f5c791;">"exit"</span>) <span style="color: #7CF083;">:false</span> <span style="color: #7CF083;">:true</span>)]
-  (data<span style="color: #7CF083;">.string.delete</span> str)
+  (delete str)
   should-continue)
 </pre>
 </div>
@@ -416,7 +416,7 @@ is modify our <code>iter</code> procedure to free the line after it is used.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-06-26 Fri 10:56</p>
+<p class="date">Created: 2026-08-04 Tue 10:19</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

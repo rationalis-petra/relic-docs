@@ -163,6 +163,6 @@ is modify our =iter= procedure to free the line after it is used.
   (write-string "echo: ")
   (write-line str)
   [let! should-continue (if (= str "exit") :false :true)]
-  (data.string.delete str)
+  (delete str)
   should-continue)
 #+end_src

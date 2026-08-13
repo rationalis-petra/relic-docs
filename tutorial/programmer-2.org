@@ -17,7 +17,7 @@ user.
 (def prompt proc [] seq
   [let! cwd (platform.filesystem.get-current-directory)]
   (write-line cwd)
-  (data.string.delete cwd)
+  (delete cwd)
   (write-string "> "))
 #+end_src
 
@@ -41,7 +41,7 @@ refer to =filesystem.get-current-directory=.
 (def prompt proc [] seq
   [let! cwd (filesystem.get-current-directory)]
   (write-line cwd)
-  (data.string.delete cwd)
+  (delete cwd)
   (write-string "> "))
 #+end_src
 
@@ -57,7 +57,7 @@ It is even possible to take it one step further and rename the import from
 (def prompt proc [] seq
   [let! cwd (fs.get-current-directory)]
   (write-line cwd)
-  (data.string.delete cwd)
+  (delete cwd)
   (write-string "> "))
 #+end_src
 
@@ -75,13 +75,13 @@ start by importing some functions that will be useful later.
  (platform.filesystem :as fs)
  platform.memory
 
- (data.pointer :only (get set local))
- (data.list :only (mk-list push elt))
- (data.string :only (subview nth-byte)))
+ (data.pointer :values (get set local))
+ (data.list :values (push elt))
+ (data.string :values (subview len (elt :as str-elt))))
 #+end_src
 
 Our algorithm will run as follows:
-- Initialize the compoents (list of strings we want to return) to an empty list
+- Initialize the components (list of strings we want to return) to an empty list
 - Initialize the start of the *current word* to the start of the string
 
 Then, we will loop over each character in the string, and:
@@ -113,7 +113,7 @@ exceed their capacity.
 #+begin_src relic
 (def split-on proc [str delimiter] seq
   [let! start (local 0)]
-  [let! components (local (list.mk-list 0 8))]
+  [let! components (local (list.init 0 8))]
 
   ;; Rest of the function goes here...
   )
@@ -135,10 +135,10 @@ of.
 #+begin_src relic
 (def split-on proc [str delimiter] seq
   [let! start (local 0)]
-  [let! components (local (list.mk-list 0 8))]
+  [let! components (local (list.init 0 8))]
 
-  (loop [for i from 0 below str.memsize]
-    (when (= (nth-byte i str) delimiter) seq
+  (loop [for i from 0 below (len str)]
+    (when (= (str-elt i str) delimiter) seq
 
       ;; Push the subcommant 
       (push (subview (get start) i str) components)
@@ -155,17 +155,17 @@ value in the components pointer, which we can do with the =get= function.
 #+begin_src relic
 (def split-on proc [str delimiter] seq
   [let! start (local 0)]
-  [let! components (local (list.mk-list 0 8))]
+  [let! components (local (list.init 0 8))]
 
-  (loop [for i from 0 below str.memsize]
-    (when (= (nth-byte i str) delimiter) seq
+  (loop [for i from 0 below (len str)]
+    (when (= (str-elt i str) delimiter) seq
 
       ;; Push the subcommant 
       (push (subview (get start) i str) components)
       ;; Set the start of the next word to the character after the current one
       (set start (+ i 1))))
 
-  (push (subview (get start) str.memsize str) components)
+  (push (subview (get start) (len str) str) components)
   (get components))
 #+end_src
 
@@ -177,8 +177,8 @@ a. Note that in Relic, there is no difference between a character and a
 function, so =#a= is the same as the number literal =97=. For some 'special'
 characters, we refer to them by name, so space is =#space=. 
 
-Once we are done with them, we can free the memory associated with the
-underlying list with =memory.free=.
+Once we are done with them, we need to free the memory associated with the
+underlying list. The =list= module provides the =de-init= proc for this purpose.
 
 #+begin_src relic
 (def iter proc [str] seq
@@ -188,8 +188,8 @@ underlying list with =memory.free=.
     (write-line (elt i commands)))
 
   [let! should-exit (if (= str "exit") :false :true)]
-  (memory.free commands.data)
-  (string.delete str)
+  (list.de-init commandsata)
+  (delete str)
   should-exit)
 #+end_src
 
@@ -244,7 +244,7 @@ into a =repl=, or a *.rl* file and play around with running different variations
     (write-string "i: ")
     (write-line (to-string i))
 
-    (if (u64.< i 10)
+    (if (< i 10)
         (go-to loop-continue (+ i 1))
         (go-to loop-exit))]
 
@@ -261,9 +261,9 @@ by =set-current-directory= for later.
 #+begin_src  relic
 (def cd proc [args] labels
   (seq
-    (when (u64.< args.len 1)
+    (when (< args.len 1)
       (go-to early-exit "error: cd requires an argument; none was provided"))
-    (when (u64.> args.len 2)
+    (when (> args.len 2)
       (go-to early-exit "error: cd requires exactly one argument; too many were provided"))
 
     (write-string "changing dir to: ")
@@ -299,8 +299,8 @@ the literal =:true=, and you will get an error otherwise.
    [(= "echo" command-name) (echo commands)]
    [:true (unrecognized command-name)])
 
-  (string.delete str)
-  (memory.free commands.data)
+  (delete str)
+  (list.de-init commands)
   (get should-continue))
 #+end_src
 

@@ -1,0 +1,27 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Dev
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* The Dev Module
+The dev module is a special module in that it is NOT intended to be used by
+users, but instead during the developement of Pico (the Relic compiler). You
+will NOT have access to this module unless you are running a debug build.
+
+* The Dev Term Former
+The dev module contains only one term former, the =dev= term former. At current,
+it can be used both to print intermediate compiler data-structures or to insert
+breakpoints durint development.
+
+The dev term former is used as follows:
+#+begin_src relic
+(dev [dev-clause]+ expr)
+#+end_src
+
+Where dev-clause is just a list of symbols under the following rules
+- The first symbol is the /action/ to take, either *print* (for printing
+  intermediate data-structures) or *break* (for inserting a debug break).
+
+- The latter symbols are a list of one (or more) /targets/ for the action,
+  either *abstract*, *typecheck* or *codegen*.

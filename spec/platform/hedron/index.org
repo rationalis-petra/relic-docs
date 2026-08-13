@@ -12,13 +12,24 @@
 + BindingDescription :: Type
 + IndexFormat :: Type
 + InputFormat :: Type
-+ DecriptorType :: Type
++ DescriptorType :: Type
+#+begin_src relic
+(def DescriptorType Enum :combined-image-sampler :uniform-buffer :storage-buffer)
+#+end_src
+
 + StageType :: Type
 + DescriptorBinding :: Type
 + AttributeDescription :: Type
++ PushConstantRange :: Type
++ PipelineInfo :: Type
 
 ** Data
 + BufferSort :: Type
+#+begin_src relic
+(def DescriptorType Enum 
+    :vertex :index :uniform :storage :transfer-source :transfer-destination)
+
+#+end_src
 + Buffer :: Type
 + Image :: Type
 + ImageFormat :: Type
@@ -35,6 +46,14 @@
 + Fence :: Type
 
 * Functions
++ init : Proc [Window] (Result Unit Unit) ::
+  Initializes the hedron moudlue, returning =:ok :unit= on success, and
+  =:error :unit= on failure.
+
++ de-init : Proc [Window] Surface ::
+  De-initializes (tears-down) the hedron moudlue, returning =:ok :unit= on success, and
+  =:error :unit= on failure.
+
 + create-window-surface :: Proc [Window] Surface
 + resize-window-surface :: Proc [Surface (Pair U32 U32)] Unit
 + destroy-window-surface :: Proc [Surface] Unit
@@ -44,11 +63,7 @@
 
 + create-pipeline ::
   #+begin_src relic
-  Proc [(List (Struct [.type (Enum :uniform-buffer)] [.stage-type (Enum :vertex-shader)]))
-        (List (Struct [.binding U32] [.stride U32] [.input-rate (Enum :vertex :instance)]))
-        (List (Struct [.binding U32] [.location U32] [.format (Enum :float-1 :float-2 :float-3)] [.offset U32]))
-        (List ShaderModule)
-        Surface] Pipeline
+  Proc [PipelineInfo] Pipeline
   #+end_src
 
 + destroy-pipeline :: Proc [Pipeline] Unit
@@ -57,7 +72,7 @@
 ** Data and Buffers  
 + create-buffer ::
 #+begin_src relic
-Proc [InputRate U64] Buffer
+Proc [BufferSort U64] Buffer
 #+end_src
   Creates a buffer on the device, 
   - buffer-type : indicate HOW data is to be fed into shaders, with
@@ -84,6 +99,8 @@ Proc [InputRate U64] Buffer
 + command-begin-renderpass :: Proc [CommandBuffer Surface U32] Unit
 + command-end-renderpass :: Proc [CommandBuffer] Unit
 + command-bind-pipeline :: Proc [CommandBuffer Pipeline] Unit
++ command-push-constants :: Proc [CommandBuffer Pipeline ShaderStage U32 U32 Address] Unit
+
 + command-bind-vertex-buffer :: Proc [CommandBuffer Buffer] Unit
 + command-bind-index-buffer :: Proc [CommandBuffer Buffer (Enum ::u16 ::u32)] Unit
 + command-set-surface :: Proc [CommandBuffer Surface] Unit

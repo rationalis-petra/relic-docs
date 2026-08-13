@@ -3,11 +3,11 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-12-25 Thu 10:01 -->
+<!-- 2026-08-13 Thu 17:55 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>System.Hedron</title>
-<meta name="author" content="Connor Redfern" />
+<meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
   #content { max-width: 60em; margin: auto; }
@@ -201,9 +201,9 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org60c4f95" class="outline-2">
-<h2 id="org60c4f95">Types</h2>
-<div class="outline-text-2" id="text-org60c4f95">
+<div id="outline-container-org0c7599b" class="outline-2">
+<h2 id="org0c7599b">Types</h2>
+<div class="outline-text-2" id="text-org0c7599b">
 <dl class="org-dl">
 <dt>Surface</dt><dd>Type</dd>
 <dt>ShaderModule</dt><dd>Type</dd>
@@ -212,26 +212,43 @@
 <dt>BindingDescription</dt><dd>Type</dd>
 <dt>IndexFormat</dt><dd>Type</dd>
 <dt>InputFormat</dt><dd>Type</dd>
-<dt>DecriptorType</dt><dd>Type</dd>
+<dt>DescriptorType</dt><dd>Type</dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">DescriptorType</span> <span style="color: #9d81ba;">Enum</span> <span style="color: #7CF083;">:combined-image-sampler</span> <span style="color: #7CF083;">:uniform-buffer</span> <span style="color: #7CF083;">:storage-buffer</span>)
+</pre>
+</div>
+
+<dl class="org-dl">
 <dt>StageType</dt><dd>Type</dd>
 <dt>DescriptorBinding</dt><dd>Type</dd>
 <dt>AttributeDescription</dt><dd>Type</dd>
+<dt>PushConstantRange</dt><dd>Type</dd>
+<dt>PipelineInfo</dt><dd>Type</dd>
 </dl>
 </div>
-<div id="outline-container-org9e44006" class="outline-3">
-<h3 id="org9e44006">Data</h3>
-<div class="outline-text-3" id="text-org9e44006">
+<div id="outline-container-org24476ca" class="outline-3">
+<h3 id="org24476ca">Data</h3>
+<div class="outline-text-3" id="text-org24476ca">
 <dl class="org-dl">
 <dt>BufferSort</dt><dd>Type</dd>
+</dl>
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">DescriptorType</span> <span style="color: #9d81ba;">Enum</span> 
+    <span style="color: #7CF083;">:vertex</span> <span style="color: #7CF083;">:index</span> <span style="color: #7CF083;">:uniform</span> <span style="color: #7CF083;">:storage</span> <span style="color: #7CF083;">:transfer-source</span> <span style="color: #7CF083;">:transfer-destination</span>)
+
+</pre>
+</div>
+<dl class="org-dl">
 <dt>Buffer</dt><dd>Type</dd>
 <dt>Image</dt><dd>Type</dd>
 <dt>ImageFormat</dt><dd>Type</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgc6a985a" class="outline-3">
-<h3 id="orgc6a985a">Command Buffers</h3>
-<div class="outline-text-3" id="text-orgc6a985a">
+<div id="outline-container-orgd6a55a5" class="outline-3">
+<h3 id="orgd6a55a5">Command Buffers</h3>
+<div class="outline-text-3" id="text-orgd6a55a5">
 <dl class="org-dl">
 <dt>PipelineStage</dt><dd>Type</dd>
 
@@ -241,9 +258,9 @@
 </dl>
 </div>
 </div>
-<div id="outline-container-orgef0386a" class="outline-3">
-<h3 id="orgef0386a">Synchronisation</h3>
-<div class="outline-text-3" id="text-orgef0386a">
+<div id="outline-container-org963255f" class="outline-3">
+<h3 id="org963255f">Synchronisation</h3>
+<div class="outline-text-3" id="text-org963255f">
 <dl class="org-dl">
 <dt>Semaphore</dt><dd>Type</dd>
 <dt>Fence</dt><dd>Type</dd>
@@ -251,10 +268,16 @@
 </div>
 </div>
 </div>
-<div id="outline-container-org3d57473" class="outline-2">
-<h2 id="org3d57473">Functions</h2>
-<div class="outline-text-2" id="text-org3d57473">
+<div id="outline-container-org8c583cd" class="outline-2">
+<h2 id="org8c583cd">Functions</h2>
+<div class="outline-text-2" id="text-org8c583cd">
 <dl class="org-dl">
+<dt>init : Proc [Window] (Result Unit Unit)</dt><dd>Initializes the hedron moudlue, returning <code>:ok :unit</code> on success, and
+<code>:error :unit</code> on failure.</dd>
+
+<dt>de-init : Proc [Window] Surface</dt><dd>De-initializes (tears-down) the hedron moudlue, returning <code>:ok :unit</code> on success, and
+<code>:error :unit</code> on failure.</dd>
+
 <dt>create-window-surface</dt><dd>Proc [Window] Surface</dd>
 <dt>resize-window-surface</dt><dd>Proc [Surface (Pair U32 U32)] Unit</dd>
 <dt>destroy-window-surface</dt><dd>Proc [Surface] Unit</dd>
@@ -263,25 +286,21 @@
 <dt>destroy-shader-module</dt><dd>Proc [ShaderModule] Unit</dd>
 
 <dt>create-pipeline</dt><dd><div class="org-src-container">
-<pre class="src src-relic">  <span style="color: #b294bb;">Proc</span> [(<span style="color: #81a2be;">List</span> (<span style="color: #b294bb;">Struct</span> [<span style="color: #f0c674;">.type</span> (<span style="color: #b294bb;">Enum</span> <span style="color: #f0c674;">:uniform-buffer</span>)] [<span style="color: #f0c674;">.stage-type</span> (<span style="color: #b294bb;">Enum</span> <span style="color: #f0c674;">:vertex-shader</span>)]))
-        (<span style="color: #81a2be;">List</span> (<span style="color: #b294bb;">Struct</span> [<span style="color: #f0c674;">.binding</span> <span style="color: #81a2be;">U32</span>] [<span style="color: #f0c674;">.stride</span> <span style="color: #81a2be;">U32</span>] [<span style="color: #f0c674;">.input-rate</span> (<span style="color: #b294bb;">Enum</span> <span style="color: #f0c674;">:vertex</span> <span style="color: #f0c674;">:instance</span>)]))
-        (<span style="color: #81a2be;">List</span> (<span style="color: #b294bb;">Struct</span> [<span style="color: #f0c674;">.binding</span> <span style="color: #81a2be;">U32</span>] [<span style="color: #f0c674;">.location</span> <span style="color: #81a2be;">U32</span>] [<span style="color: #f0c674;">.format</span> (<span style="color: #b294bb;">Enum</span> <span style="color: #f0c674;">:float-1</span> <span style="color: #f0c674;">:float-2</span> <span style="color: #f0c674;">:float-3</span>)] [<span style="color: #f0c674;">.offset</span> <span style="color: #81a2be;">U32</span>]))
-        (<span style="color: #81a2be;">List</span> <span style="color: #81a2be;">ShaderModule</span>)
-        <span style="color: #81a2be;">Surface</span>] <span style="color: #81a2be;">Pipeline</span>
+<pre class="src src-relic">  <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">PipelineInfo</span>] <span style="color: #62D2DB;">Pipeline</span>
 </pre>
 </div></dd>
 
 <dt>destroy-pipeline</dt><dd>Proc [Pipeline] Unit</dd>
 </dl>
 </div>
-<div id="outline-container-org3335a98" class="outline-3">
-<h3 id="org3335a98">Data and Buffers</h3>
-<div class="outline-text-3" id="text-org3335a98">
+<div id="outline-container-org101d3ed" class="outline-3">
+<h3 id="org101d3ed">Data and Buffers</h3>
+<div class="outline-text-3" id="text-org101d3ed">
 <dl class="org-dl">
 <dt>create-buffer</dt><dd></dd>
 </dl>
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #b294bb;">Proc</span> [<span style="color: #81a2be;">InputRate</span> <span style="color: #81a2be;">U64</span>] <span style="color: #81a2be;">Buffer</span>
+<pre class="src src-relic"><span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">BufferSort</span> <span style="color: #62D2DB;">U64</span>] <span style="color: #62D2DB;">Buffer</span>
 </pre>
 </div>
 <p>
@@ -302,9 +321,9 @@ for a single invocation.</li>
 </dl>
 </div>
 </div>
-<div id="outline-container-org2972dd6" class="outline-3">
-<h3 id="org2972dd6">Commands</h3>
-<div class="outline-text-3" id="text-org2972dd6">
+<div id="outline-container-orgd759105" class="outline-3">
+<h3 id="orgd759105">Commands</h3>
+<div class="outline-text-3" id="text-orgd759105">
 <dl class="org-dl">
 <dt>create-command-pool</dt><dd>Proc [] CommandPool</dd>
 <dt>destroy-command-pool</dt><dd>Proc [CommandPool] Unit</dd>
@@ -319,6 +338,8 @@ for a single invocation.</li>
 <dt>command-begin-renderpass</dt><dd>Proc [CommandBuffer Surface U32] Unit</dd>
 <dt>command-end-renderpass</dt><dd>Proc [CommandBuffer] Unit</dd>
 <dt>command-bind-pipeline</dt><dd>Proc [CommandBuffer Pipeline] Unit</dd>
+<dt>command-push-constants</dt><dd>Proc [CommandBuffer Pipeline ShaderStage U32 U32 Address] Unit</dd>
+
 <dt>command-bind-vertex-buffer</dt><dd>Proc [CommandBuffer Buffer] Unit</dd>
 <dt>command-bind-index-buffer</dt><dd>Proc [CommandBuffer Buffer (Enum ::u16 ::u32)] Unit</dd>
 <dt>command-set-surface</dt><dd>Proc [CommandBuffer Surface] Unit</dd>
@@ -327,9 +348,9 @@ for a single invocation.</li>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgbd00ad1" class="outline-3">
-<h3 id="orgbd00ad1">Syncrhonisation</h3>
-<div class="outline-text-3" id="text-orgbd00ad1">
+<div id="outline-container-org73d6b56" class="outline-3">
+<h3 id="org73d6b56">Syncrhonisation</h3>
+<div class="outline-text-3" id="text-org73d6b56">
 <dl class="org-dl">
 <dt>create-semaphore</dt><dd>Proc [] Semaphore</dd>
 <dt>destroy-semaphore</dt><dd>Proc [Semaphore] Unit</dd>
@@ -345,8 +366,8 @@ for a single invocation.</li>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: Connor Redfern</p>
-<p class="date">Created: 2025-12-25 Thu 10:01</p>
+<p class="author">Author: Connor Fynn Redfern</p>
+<p class="date">Created: 2026-08-13 Thu 17:55</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

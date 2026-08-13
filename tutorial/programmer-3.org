@@ -81,9 +81,10 @@ library/executable is as follows
   (file "commands"))
 #+end_src
 
-Now that we have the project structure set up, the next step is to rewrite our
-single =shell.rl= into the two files, =commands.rl= and =main.rl=. We will start
-with =commands.rl=. Start by copying the three 'command functions
+Now that the project structure set up, the next step is to rewrite our single
+=shell.rl= into the two files, =commands.rl= and =main.rl=. We will start with
+=commands.rl=. Start by copying the three command functions into the
+=commands.rl= file.
 
 #+begin_src relic
 (def unrecognized proc [cmd] seq
@@ -112,8 +113,8 @@ with =commands.rl=. Start by copying the three 'command functions
 #+end_src
 
 To convert from a module file to a script file is relatively easy: all we need
-to do is add a =modlue= header at the top of the file. The module header will be
-where we coalesce all imports to the module, as well as specifying what the
+to do is add a =module= header at the top of the file. The module header will be
+where  all imports to the module, as well as specifying what the
 module exports.
 
 Looking at the code, we can cut down out the original for =shell.rl= and depend
@@ -128,7 +129,7 @@ Our module header thus looks like:
   (import
     (platform.filesystem :as fs)
 
-    (data.list :only (elt)))
+    (data.list :values (elt)))
   (export unrecognized echo cd))
 #+end_src
 
@@ -147,14 +148,12 @@ So, our full module header becomes:
 #+begin_src relic
 (module commands
   (import
-   (core :all)
-   (extra :all)
-   (num :all)
+   (prelude :all)
 
    (platform.filesystem :as fs)
    (platform.terminal :all)
 
-   (data.list :only (elt)))
+   (data.list :values (elt)))
 
  (export :all))
 #+end_src
@@ -181,20 +180,15 @@ The full header for =main.rl= is thus:
 #+begin_src relic
 (module shell
   (import
-   (core :all)
-   (extra :all)
-   (data :all)
-   (num :all)
-   (abs.equality :all)
-   (abs.numeric :all)
+   (prelude :all)
 
    platform.memory
    (platform.filesystem :as fs)
    (platform.terminal :all)
 
-   (data.pointer :only (get set local))
-   (data.list :only (mk-list push elt))
-   (data.string :only (subview nth-byte))
+   (data.pointer :values (get set local))
+   (data.list :values (push elt))
+   (data.string :instances :values (subview len (elt :as str-elt)))
 
    (commands :all))
   (export main))
@@ -209,5 +203,21 @@ is planned. Once this feature drops, =altas build shell= will produce a ~*.exe~
 file from your shell program.
 
 * Allocators
+#+begin_src relic
+(seq
+  ;; Initialize the arena
+  [let! arena (allocators.make-arena (use memory.current-allocator) 16384)]
+
+  (bind [memory.current-allocator (allocators.adapt-arena arena)] seq
+    (allocators.reset-arena arena))
+
+  ;; Deinitialize the arena
+  (allocators.destroy-arena arena))
+#+end_src
+
 
 * Enums and Error Handling
+TODO: 
+
+#+begin_src relic
+#+end_src

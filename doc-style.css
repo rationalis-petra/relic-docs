@@ -4,6 +4,9 @@
     --fg-primary: #a8a7ab;
     --bg-primary: #212025;
 
+    --fg-intense: #929096;
+    --bg-intense: #111015;
+
     --fg-muted: #929096;
     --bg-muted: #393740;
 
@@ -54,7 +57,7 @@ a {
 }
 
 pre {
-    background-color: var(--bg-muted);
+    background-color: var(--bg-intense);
     font-family: JuliaMono;
     font-size: 12px;
 }

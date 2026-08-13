@@ -1,4 +1,4 @@
-#+html_head: <link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
 #+title: Extra
 #+options: num:nil toc:nil
 
@@ -16,7 +16,6 @@
   (write-line (to-string i))
   (write-line (to-string j)))
   #+end_src
-
 
   #+begin_src relic
 ;; Print 0 to 9, but terminates early if i hits early-end

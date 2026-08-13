@@ -22,8 +22,10 @@
   with =current-allocator=.
 
 * Functions
-+ mk-list :: All [A] (Proc [U64] (List A))
-  =(mk-list cap)= Will create a new list with memory pre-allocated for 'cap' elements.
++ init :: All [A] (Proc [U64 U64] (List A))
+  =(init len cap)= Will create a new list with memory pre-allocated for 'cap'
+  elements and the list length set to 'len'. Keep in mind that if len ≠ 0, then
+  you ought to initialize 'len' elements. 
   
 + free-list :: All [A] (Proc [(List A)] Unit)
   =(free-list list)= Will free the memory associated with the list.

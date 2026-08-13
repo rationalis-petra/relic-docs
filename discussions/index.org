@@ -3,7 +3,10 @@
 #+options: num:nil toc:nil
 
 * About
-This 'discussions' section of the Relic documentation 
+This 'discussions' section of the Relic documentation. Discussions are deeper
+dives into specific aspects of the design and implementation of the Relic
+language. They are less task-focused than tutorials or cookbooks, but unilke the
+specification, they go much deeper into the /whys/ of a particular feature. 
 
-
++ [[file:packages-modules-imports.org][Packages, Modules and Imports]]
 + [[file:memory-and-mutability.org][Memeory and Mutability]]

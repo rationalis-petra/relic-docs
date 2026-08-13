@@ -5,19 +5,28 @@
 [[file:../index.org][up]]
 
 * Types
-+ Slice :: Kind [Type] Type
++ Slice : Kind [Type] Type ::
   The 'Slice' type represents a block of memory containing some number of contiguous
-  elements 
+  elements.
+
+  #+begin_src relic
+(def Slice Named Slice Family [Type] Struct [.addr Address] [.len U64])
+  #+end_src
 
 * Functions
-+ null :: All [A] (Ptr A)
+** Core
++ null : All [A] (Ptr A) ::
   Null will create a new null pointer of type =A=. Note that because it takes no
   arguments, it is more likely you will need to provide the type of
   the pointer, e.g. =(null {I64})=
 
-+ new :: All [A] Proc [U64] (Slice A) 
++ new : All [A] Proc [U64] (Slice A) ::
   =(new {A} len)= Creates a new slice, with space allocated for 'len' elements
   of type 'A'. All memory is uninitialized.
+
++ copy : All [A] Proc [(Slice A)] (Slice A) ::
+  =(copy slice}= Will create a new slice, with memory allocated from
+  =current-allocator=, whose memory is directly copied fromthe provided slice.
 
 + delete :: All [A] Unit
   =(delete slice)= Will free the underlying memory owned by the slice.
@@ -27,3 +36,16 @@
 
 + eset :: All [A] Proc [U64 A (Slice A)] A
   =(elt i x slice)= sets the value at index 'i' of the slice to the value of 'x'.
+
+** Utility
++ subview : (All [A] Proc [U64 U64 (Slice A)] (Slice A)) ::
+  =(subview start end slice)= will return a new slice whose memory points to a
+  subview of the provided slice. The first element =(elt 0)= of the new slice
+  will be =(elt start)= of the old slice. The last element of the new slice will
+  be =(elt (- end 1))= of the old slice.
+
++ join (All [A] Proc [(Slice A) (Slice A)] (Slice A)) ::
+  =(join s1 s2)= will return a new slice, whose memory is allocated from
+  =current-allocator=, and whose contents are precisely the concatenation of s1
+  and s2.
+

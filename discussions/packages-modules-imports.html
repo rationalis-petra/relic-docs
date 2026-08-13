@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-08 Sun 22:11 -->
+<!-- 2026-07-22 Wed 10:40 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Debug</title>
+<title>Discussion: Packages, Modules and Imports</title>
 <meta name="author" content="Connor Fynn Redfern" />
 <meta name="generator" content="Org Mode" />
 <style type="text/css">
@@ -193,48 +193,15 @@
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { }
 </style>
-<link rel="stylesheet" href="../../doc-style.css" type="text/css"/>
+<link rel="stylesheet" href="../doc-style.css" type="text/css"/>
 </head>
 <body>
 <div id="content" class="content">
-<h1 class="title">Debug</h1>
-<div id="outline-container-org3b5dad4" class="outline-2">
-<h2 id="org3b5dad4">Functions</h2>
-<div class="outline-text-2" id="text-org3b5dad4">
-<dl class="org-dl">
-<dt>describe</dt><dd><p>
-Term Former
-This term former is used to produce a (string) description of a module,
-intended for debugging usage by, e.g. writing the string to the repl.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-relic">user &gt; (write-string (debug<span style="color: #7CF083;">.describe</span> data<span style="color: #7CF083;">.pointer</span>))
-<span style="color: #62D2DB;">Module</span><span style="color: #7CF083;">:</span>  pointer
-&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
-null <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>
-get <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">A</span>
-^ <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">A</span>
-set <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>) <span style="color: #62D2DB;">A</span>] <span style="color: #62D2DB;">Unit</span>
-new <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">A</span>] (<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)
-local <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">A</span>] (<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)
-delete <span style="color: #7CF083;">:</span> <span style="color: #9d81ba;">All</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Proc</span> [(<span style="color: #62D2DB;">Ptr</span> <span style="color: #62D2DB;">A</span>)] <span style="color: #62D2DB;">Unit</span>
-&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
-</pre>
-</div></dd>
-
-<dt>debug-break</dt><dd>Proc [] Unit
-If there are any debuggers attached to a running program, execution will stop
-when this function is hit, as if they had hit a set breakpoint. Note that if a
-debugger is NOT attached then, depending on the system, this may instead cause
-the program to crash.</dd>
-</dl>
-</div>
-</div>
+<h1 class="title">Discussion: Packages, Modules and Imports</h1>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-08 Sun 22:11</p>
+<p class="date">Created: 2026-07-22 Wed 10:40</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

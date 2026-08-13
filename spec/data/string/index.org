@@ -10,27 +10,48 @@
   bytes with  and a length. Strings do NOT have a null-terminator, which means
   that care must be taken when intefacing with C libraries.
 
+  The string module also includes some utility functions for handling raw UFT-8
+  bytes.
+
 * Functions 
-+ nth-byte : Proc [U64 String] U8 ::
-  Get the nth byte of the underlying memory of the string. Not guaranteed to be
-  the nth character if the string contains non-ascii characters.
-
-+ subview : Proc [U64 U64 String] String ::
-  The function =(slice start end str)= Return a new string which is a substring
-  of the original string, starting at the =start= byte, and ending at the byte
-  *before* end. This means that =(slice 0 str.memsize str)= will return the
-  original string.
-
+** String Functions 
 + from-ascii : Proc [(List U8)] String ::
   Converts a list of ASCII bytes into a string, allocating new memory for the
   string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
   null-terminator is pushed onto the end of the string.
 
-+ delete : Proc [String] Unit ::
-  Free the underlying memory of the string, assuming it is allocated with =current-allocator=.
++ len : Proc [String] U64 ::
+  Returns the length of the string (in characters).
 
-+ = : Proc [String String] Bool ::
++ join : Proc [String String] String ::
+  Produces a new string which is the concatenation of the two target strings.
+  Memory is allocated from the =current-allocator=.
+
++ subview : Proc [U64 U64 String] String ::
+  The function =(slice start end str)= Return a new string which is a substring
+  of the original string, starting at the =start= character, and ending at the byte
+  *before* end. This means that =(slice 0 (len str) str)= will return the
+  original string.
+
+
+** Instances 
++ string-eq : (Eq String) ::   
   Return true if the two strings are equal, and false otherwise.
 
-+ != : Proc [String String] Bool ::
-  Return true if the two strings are *not* equal, and false otherwise.
++ string-delete : (Delete String) ::
+  Free the underlying memory of the string, assuming it is allocated with =current-allocator=.
+
+** Unicode Functions 
++ num-utf8-bytes : Proc [U8] U8 ::
+  Given a byte that is the (valid) first byte of a UTF-8 encoded character,
+  return the number of bytes that the entire character. 
+
++ decode-utf8-point Proc [(Slice U8)] U32 ::
+  Given a slice of bytes which represent a UTF-8 encoded character, return the
+  32-bit unicode codepoint representing that character.  
+
+** Low Level Access
++ nth-byte : Proc [U64 String] U8 ::
+  Get the nth byte of the underlying memory of the string. As strings are uft-8
+  encoded, the nth byte will not be the nth character if the string contains
+  non-ascii characters. 

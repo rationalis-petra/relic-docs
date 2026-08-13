@@ -1,0 +1,18 @@
+#+html_head: <link rel="stylesheet" href="../doc-style.css" type="text/css"/>
+#+title: Discussion: Packages, Modules and Imports
+#+options: num:nil toc:nil
+
+* Modules, Packages
+In basically all programming languages, as programs grow larger, it is
+eventually desirable to do two things:
+- Split a large program across multiple files, so it is easier to find relevant
+  definitions and for multiple people to modify the code simultaneously.
+- Integrate projects or libraries that have been developed by others into your
+  own code. 
+
+In Relic, we accomplish the former with /modules/, and the latter with
+/packages/. 
+
+
+
+* 

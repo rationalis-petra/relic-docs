@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-07-03 Fri 21:03 -->
+<!-- 2026-08-08 Sat 22:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.String</title>
@@ -201,44 +201,84 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org679d83a" class="outline-2">
-<h2 id="org679d83a">Types</h2>
-<div class="outline-text-2" id="text-org679d83a">
+<div id="outline-container-org876ebb7" class="outline-2">
+<h2 id="org876ebb7">Types</h2>
+<div class="outline-text-2" id="text-org876ebb7">
 <dl class="org-dl">
-<dt>String : Type</dt><dd>The String type stores string data as a struct containing of a block of UTF-8
+<dt>String : Type</dt><dd><p>
+The String type stores string data as a struct containing of a block of UTF-8
 bytes with  and a length. Strings do NOT have a null-terminator, which means
-that care must be taken when intefacing with C libraries.</dd>
+that care must be taken when intefacing with C libraries.
+</p>
+
+<p>
+The string module also includes some utility functions for handling raw UFT-8
+bytes.
+</p></dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgace8deb" class="outline-2">
-<h2 id="orgace8deb">Functions</h2>
-<div class="outline-text-2" id="text-orgace8deb">
+<div id="outline-container-orgc9d9ade" class="outline-2">
+<h2 id="orgc9d9ade">Functions</h2>
+<div class="outline-text-2" id="text-orgc9d9ade">
+</div>
+<div id="outline-container-org827cfd6" class="outline-3">
+<h3 id="org827cfd6">String Functions</h3>
+<div class="outline-text-3" id="text-org827cfd6">
 <dl class="org-dl">
-<dt>nth-byte : Proc [U64 String] U8</dt><dd>Get the nth byte of the underlying memory of the string. Not guaranteed to be
-the nth character if the string contains non-ascii characters.</dd>
-
-<dt>subview : Proc [U64 U64 String] String</dt><dd>The function <code>(slice start end str)</code> Return a new string which is a substring
-of the original string, starting at the <code>start</code> byte, and ending at the byte
-<b>before</b> end. This means that <code>(slice 0 str.memsize str)</code> will return the
-original string.</dd>
-
 <dt>from-ascii : Proc [(List U8)] String</dt><dd>Converts a list of ASCII bytes into a string, allocating new memory for the
 string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
 null-terminator is pushed onto the end of the string.</dd>
 
-<dt>delete : Proc [String] Unit</dt><dd>Free the underlying memory of the string, assuming it is allocated with <code>current-allocator</code>.</dd>
+<dt>len : Proc [String] U64</dt><dd>Returns the length of the string (in characters).</dd>
 
-<dt>= : Proc [String String] Bool</dt><dd>Return true if the two strings are equal, and false otherwise.</dd>
+<dt>join : Proc [String String] String</dt><dd>Produces a new string which is the concatenation of the two target strings.
+Memory is allocated from the <code>current-allocator</code>.</dd>
 
-<dt>!= : Proc [String String] Bool</dt><dd>Return true if the two strings are <b>not</b> equal, and false otherwise.</dd>
+<dt>subview : Proc [U64 U64 String] String</dt><dd>The function <code>(slice start end str)</code> Return a new string which is a substring
+of the original string, starting at the <code>start</code> character, and ending at the byte
+<b>before</b> end. This means that <code>(slice 0 (len str) str)</code> will return the
+original string.</dd>
 </dl>
+</div>
+</div>
+<div id="outline-container-org0eeb5d3" class="outline-3">
+<h3 id="org0eeb5d3">Instances</h3>
+<div class="outline-text-3" id="text-org0eeb5d3">
+<dl class="org-dl">
+<dt>string-eq : (Eq String)</dt><dd>Return true if the two strings are equal, and false otherwise.</dd>
+
+<dt>string-delete : (Delete String)</dt><dd>Free the underlying memory of the string, assuming it is allocated with <code>current-allocator</code>.</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-orgdbf0e2a" class="outline-3">
+<h3 id="orgdbf0e2a">Unicode Functions</h3>
+<div class="outline-text-3" id="text-orgdbf0e2a">
+<dl class="org-dl">
+<dt>num-utf8-bytes : Proc [U8] U8</dt><dd>Given a byte that is the (valid) first byte of a UTF-8 encoded character,
+return the number of bytes that the entire character.</dd>
+
+<dt>decode-utf8-point Proc [(Slice U8)] U32</dt><dd>Given a slice of bytes which represent a UTF-8 encoded character, return the
+32-bit unicode codepoint representing that character.</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-org67e4055" class="outline-3">
+<h3 id="org67e4055">Low Level Access</h3>
+<div class="outline-text-3" id="text-org67e4055">
+<dl class="org-dl">
+<dt>nth-byte : Proc [U64 String] U8</dt><dd>Get the nth byte of the underlying memory of the string. As strings are uft-8
+encoded, the nth byte will not be the nth character if the string contains
+non-ascii characters.</dd>
+</dl>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-07-03 Fri 21:03</p>
+<p class="date">Created: 2026-08-08 Sat 22:17</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
