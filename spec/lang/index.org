@@ -4,7 +4,8 @@
 
 [[file:../index.org][up]]
 
-+ [[file:relic/index.org][Relic]] :: 
++ [[file:relic/index.org][Relic]] :: The 'Relic' module re-exports components from the extra and kernel
+  modules to give a 'sensible' base to start with when starting a new module.
 
 + [[file:extra/index.org][Extra]] :: Language sugar such as =loop= and =when=.
 

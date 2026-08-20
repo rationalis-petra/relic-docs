@@ -1,0 +1,11 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Relic
+#+options: num:nil toc:nil
+
+* About
+The 'Relic' module re-exports components from many other modules to
+give a 'sensible' base to start on when starting a new module.
+
+See:
+- [[file:../../core/kernel/index.org][Kernel]] module
+- [[file:../extra/index.org][Extra]] module

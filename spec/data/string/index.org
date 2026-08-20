@@ -55,3 +55,12 @@
   Get the nth byte of the underlying memory of the string. As strings are uft-8
   encoded, the nth byte will not be the nth character if the string contains
   non-ascii characters. 
+
+* Instances
+** string-eq : instance (Eq String) ::
+Implementation of equality for strings. Does a simple byte-for-byte equality,
+assuming that these strings have been ingested via, e.g. =from-ascii=
+
+** string-delete : instance (Delete String) ::
+Implementation of delete for strings. Simply frees the memory associated with
+the string, assuming it was allocated by the current allocator.

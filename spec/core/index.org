@@ -7,6 +7,10 @@
 + [[file:kernel/index.org][Kernel]] :: Fundamental parts of the language. Includes native types, type
   constructors, reflection utilities etc.
 
++ [[file:prim/index.org][Prim]] :: Operations on primitive types
+
++ [[file:foreign/index.org][Foreign]] :: Foreign Function Interface
+
 + [[file:foreign/index.org][Foreign]] :: Foreign Function Interface
 
 + [[file:debug/index.org][Debug]] :: Debug Assistants. 

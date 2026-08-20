@@ -1,0 +1,19 @@
+#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
+#+title: Core.Prim
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
++ [[file:array/index.org][Array]] :: Array module
+
++ [[file:bool/index.org][Bool]] :: Boolean Module  
+
++ [[file:address/index.org][Address]] :: Address Module
+
++ [[file:sint/index.org][(I8 I16 I32 I64)]] :: There are modules for 8, 16, 32 and 64-bit signed
+  integers.
+
++ [[file:uint/index.org][(U8 U16 U32 U64)]] :: There are modules for 8, 16, 32 and 64-bit unsigned
+  integers.
+
++ [[file:float/index.org][(F32 F64)]] :: Floating point numbers.

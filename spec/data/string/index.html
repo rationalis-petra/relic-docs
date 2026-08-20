@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-08 Sat 22:17 -->
+<!-- 2026-08-19 Wed 16:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.String</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org876ebb7" class="outline-2">
-<h2 id="org876ebb7">Types</h2>
-<div class="outline-text-2" id="text-org876ebb7">
+<div id="outline-container-org0ba94f4" class="outline-2">
+<h2 id="org0ba94f4">Types</h2>
+<div class="outline-text-2" id="text-org0ba94f4">
 <dl class="org-dl">
 <dt>String : Type</dt><dd><p>
 The String type stores string data as a struct containing of a block of UTF-8
@@ -218,13 +218,13 @@ bytes.
 </dl>
 </div>
 </div>
-<div id="outline-container-orgc9d9ade" class="outline-2">
-<h2 id="orgc9d9ade">Functions</h2>
-<div class="outline-text-2" id="text-orgc9d9ade">
+<div id="outline-container-orgaaeb671" class="outline-2">
+<h2 id="orgaaeb671">Functions</h2>
+<div class="outline-text-2" id="text-orgaaeb671">
 </div>
-<div id="outline-container-org827cfd6" class="outline-3">
-<h3 id="org827cfd6">String Functions</h3>
-<div class="outline-text-3" id="text-org827cfd6">
+<div id="outline-container-orgdc121b7" class="outline-3">
+<h3 id="orgdc121b7">String Functions</h3>
+<div class="outline-text-3" id="text-orgdc121b7">
 <dl class="org-dl">
 <dt>from-ascii : Proc [(List U8)] String</dt><dd>Converts a list of ASCII bytes into a string, allocating new memory for the
 string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
@@ -242,9 +242,9 @@ original string.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org0eeb5d3" class="outline-3">
-<h3 id="org0eeb5d3">Instances</h3>
-<div class="outline-text-3" id="text-org0eeb5d3">
+<div id="outline-container-orgd551e5f" class="outline-3">
+<h3 id="orgd551e5f">Instances</h3>
+<div class="outline-text-3" id="text-orgd551e5f">
 <dl class="org-dl">
 <dt>string-eq : (Eq String)</dt><dd>Return true if the two strings are equal, and false otherwise.</dd>
 
@@ -252,9 +252,9 @@ original string.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgdbf0e2a" class="outline-3">
-<h3 id="orgdbf0e2a">Unicode Functions</h3>
-<div class="outline-text-3" id="text-orgdbf0e2a">
+<div id="outline-container-orgc894fcd" class="outline-3">
+<h3 id="orgc894fcd">Unicode Functions</h3>
+<div class="outline-text-3" id="text-orgc894fcd">
 <dl class="org-dl">
 <dt>num-utf8-bytes : Proc [U8] U8</dt><dd>Given a byte that is the (valid) first byte of a UTF-8 encoded character,
 return the number of bytes that the entire character.</dd>
@@ -264,9 +264,9 @@ return the number of bytes that the entire character.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org67e4055" class="outline-3">
-<h3 id="org67e4055">Low Level Access</h3>
-<div class="outline-text-3" id="text-org67e4055">
+<div id="outline-container-org92a1c56" class="outline-3">
+<h3 id="org92a1c56">Low Level Access</h3>
+<div class="outline-text-3" id="text-org92a1c56">
 <dl class="org-dl">
 <dt>nth-byte : Proc [U64 String] U8</dt><dd>Get the nth byte of the underlying memory of the string. As strings are uft-8
 encoded, the nth byte will not be the nth character if the string contains
@@ -278,7 +278,7 @@ non-ascii characters.</dd>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-08-08 Sat 22:17</p>
+<p class="date">Created: 2026-08-19 Wed 16:12</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

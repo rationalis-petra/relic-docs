@@ -49,3 +49,5 @@
   =current-allocator=, and whose contents are precisely the concatenation of s1
   and s2.
 
+
+* Instances

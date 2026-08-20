@@ -4,9 +4,11 @@
 
 [[file:../index.org][up]]
 
-+ [[file:lang/index.org][Lang]] :: The kernel, together with a range of utility macros providing common
++ [[file:lang/index.org][Lang]] :: The language module exposes sets of primitives 
   language constructs such as loops, conditionals, etc.
-  constructors, reflection utilities etc.
+
++ [[file:prelude/index.org][Prelude]] :: The Prelude module does not (by itself) have any special definitions, but
+  it does import other modules. It provides a useful starting point for a set of imports.
 
 + [[file:core/index.org][Core]] :: Fundamental parts of the language. Includes native types, type
   constructors, reflection utilities etc.
@@ -14,7 +16,7 @@
 + [[file:abs/index.org][Abs]] :: Abstractions. The modules in this module define and provide
   implementations for various traits, such as =Num= and =Show=.
 
-+ [[file:num/index.org][Num]] :: Numbers and Booleans. 
++ [[file:num/index.org][Num]] :: Primitive types and operations: numbers, booleans, addresses, arrays.
 
 + [[file:data/index.org][Data]] :: Data-structures and their interfaces.
 
@@ -23,6 +25,3 @@
   and more.
 
 + [[file:meta/index.org][Meta]] :: Metaprogramming
-
-+ [[file:prelude/index.org][Prelude]] :: The Prelude module does not (by itself) have any special definitions, but
-  it does import other modules.

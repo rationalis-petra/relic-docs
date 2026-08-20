@@ -1,5 +1,5 @@
-#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
-#+title: Num.Bool
+#+html_head: <link rel="stylesheet" href="../../../../doc-style.css" type="text/css"/>
+#+title: Core.Prim.Bool
 #+options: num:nil toc:nil
 
 [[file:../index.org][up]]

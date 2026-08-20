@@ -1,0 +1,11 @@
+#+html_head: <link rel="stylesheet" href="../../../../doc-style.css" type="text/css"/>
+#+title: Core.Prim.(F32 F64)
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ F32 :: Kind 
++ F64 :: Kind 
+
+* Functions

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-10 Mon 22:29 -->
+<!-- 2026-08-19 Wed 16:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.List</title>
@@ -201,25 +201,25 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org28bf7ea" class="outline-2">
-<h2 id="org28bf7ea">Types</h2>
-<div class="outline-text-2" id="text-org28bf7ea">
+<div id="outline-container-org782296d" class="outline-2">
+<h2 id="org782296d">Types</h2>
+<div class="outline-text-2" id="text-org782296d">
 <dl class="org-dl">
 <dt>List</dt><dd>Kind [Type] Type</dd>
 </dl>
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">List</span> <span style="color: #9d81ba;">Family</span> [<span style="color: #62D2DB;">A</span>] <span style="color: #9d81ba;">Named</span> <span style="color: #62D2DB;">List</span> <span style="color: #9d81ba;">Struct</span>
-  [<span style="color: #7CF083;">.data</span> <span style="color: #62D2DB;">Address</span>]
-  [<span style="color: #7CF083;">.len</span> <span style="color: #62D2DB;">U64</span>]
-  [<span style="color: #7CF083;">.capacity</span> <span style="color: #62D2DB;">U64</span>]
-  [<span style="color: #7CF083;">.gpa</span> <span style="color: #62D2DB;">Allocator</span>])
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> <span style="color: #eed891;">List</span> <span style="color: #feb193;">Family</span> [<span style="color: #eed891;">A</span>] <span style="color: #feb193;">Named</span> <span style="color: #eed891;">List</span> <span style="color: #feb193;">Struct</span>
+  [<span style="color: #cea2ca;">.data</span> <span style="color: #eed891;">Address</span>]
+  [<span style="color: #cea2ca;">.len</span> <span style="color: #eed891;">U64</span>]
+  [<span style="color: #cea2ca;">.capacity</span> <span style="color: #eed891;">U64</span>]
+  [<span style="color: #cea2ca;">.gpa</span> <span style="color: #eed891;">Allocator</span>])
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-orgb91c270" class="outline-2">
-<h2 id="orgb91c270">Macros</h2>
-<div class="outline-text-2" id="text-orgb91c270">
+<div id="outline-container-orgfce0bd7" class="outline-2">
+<h2 id="orgfce0bd7">Macros</h2>
+<div class="outline-text-2" id="text-orgfce0bd7">
 <dl class="org-dl">
 <dt>list</dt><dd>A basic macro for creating literal lists. Use as <code>(list elt1 elt2 elt3)</code>.
 For example, <code>(list 1 2 3 4 5)</code> will generate a list containing the elements
@@ -228,15 +228,17 @@ with <code>current-allocator</code>.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org7e1d298" class="outline-2">
-<h2 id="org7e1d298">Functions</h2>
-<div class="outline-text-2" id="text-org7e1d298">
+<div id="outline-container-org29be563" class="outline-2">
+<h2 id="org29be563">Functions</h2>
+<div class="outline-text-2" id="text-org29be563">
 <dl class="org-dl">
-<dt>init</dt><dd>All [A] (Proc [U64] (List A))
-<code>(init cap)</code> Will create a new list with memory pre-allocated for 'cap' elements.</dd>
+<dt>init</dt><dd>All [A] (Proc [U64 U64] (List A))
+<code>(init len cap)</code> Will create a new list with memory pre-allocated for 'cap'
+elements and the list length set to 'len'. Keep in mind that if len ≠ 0, then
+you ought to initialize 'len' elements.</dd>
 
-<dt>free-list</dt><dd>All [A] (Proc [(List A)] Unit)
-<code>(free-list list)</code> Will free the memory associated with the list.</dd>
+<dt>de-init</dt><dd>All [A] (Proc [(List A)] Unit)
+<code>(de-init list)</code> Will free the memory associated with the list.</dd>
 
 <dt>elt</dt><dd>All [A] (Proc [U64 (List A)] A)
 <code>(elt i list)</code> Returns the 'i'th element of the list.</dd>
@@ -261,10 +263,22 @@ decreasing the length by one and returning the value popped.</dd>
 </dl>
 </div>
 </div>
+<div id="outline-container-org08f8a0e" class="outline-2">
+<h2 id="org08f8a0e">Instances</h2>
+<div class="outline-text-2" id="text-org08f8a0e">
+<dl class="org-dl">
+<dt>list-eq : instance [A] {(Eq A)} (Eq (List A))</dt><dd>An equality instance for lists, returning <code>true</code> if all elements of the list
+are equal, and <code>false</code> otherwise.</dd>
+
+<dt>list-delete : instance [A] {(Eq A)} (Delete (List A))</dt><dd>A delete instance for lists, first calling <code>delete</code> on all elements of the list,
+then releasing the list's memory.</dd>
+</dl>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-08-10 Mon 22:29</p>
+<p class="date">Created: 2026-08-19 Wed 16:11</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

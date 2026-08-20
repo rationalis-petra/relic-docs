@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-03 Mon 17:50 -->
+<!-- 2026-08-19 Wed 14:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Relic Spec - Libraries</title>
@@ -203,9 +203,11 @@
 </p>
 
 <dl class="org-dl">
-<dt><a href="lang/index.html">Lang</a></dt><dd>The kernel, together with a range of utility macros providing common
-language constructs such as loops, conditionals, etc.
-constructors, reflection utilities etc.</dd>
+<dt><a href="lang/index.html">Lang</a></dt><dd>The language module exposes sets of primitives 
+language constructs such as loops, conditionals, etc.</dd>
+
+<dt><a href="prelude/index.html">Prelude</a></dt><dd>The Prelude module does not (by itself) have any special definitions, but
+it does import other modules. It provides a useful starting point for a set of imports.</dd>
 
 <dt><a href="core/index.html">Core</a></dt><dd>Fundamental parts of the language. Includes native types, type
 constructors, reflection utilities etc.</dd>
@@ -213,7 +215,7 @@ constructors, reflection utilities etc.</dd>
 <dt><a href="abs/index.html">Abs</a></dt><dd>Abstractions. The modules in this module define and provide
 implementations for various traits, such as <code>Num</code> and <code>Show</code>.</dd>
 
-<dt><a href="num/index.html">Num</a></dt><dd>Numbers and Booleans.</dd>
+<dt><a href="prim/index.html">Prim</a></dt><dd>Numbers and Booleans.</dd>
 
 <dt><a href="data/index.html">Data</a></dt><dd>Data-structures and their interfaces.</dd>
 
@@ -222,14 +224,11 @@ input/output, memory management, windowing, machine word size + architecture
 and more.</dd>
 
 <dt><a href="meta/index.html">Meta</a></dt><dd>Metaprogramming</dd>
-
-<dt><a href="prelude/index.html">Prelude</a></dt><dd>The Prelude module does not (by itself) have any special definitions, but
-it does import other modules.</dd>
 </dl>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-08-03 Mon 17:50</p>
+<p class="date">Created: 2026-08-19 Wed 14:17</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

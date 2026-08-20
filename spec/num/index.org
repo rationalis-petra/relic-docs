@@ -2,12 +2,8 @@
 #+title: Num
 #+options: num:nil toc:nil
 
-+ [[file:bool/index.org][Bool]] :: Boolean Module  
+[[file:../index.org][up]]
 
-+ [[file:sint/index.org][(I8 I16 I32 I64)]] :: There are modules for 8, 16, 32 and 64-bit signed
-  integers.
+The Num Module contains implementations of various numeric abstractions for the
+primitive numerics.
 
-+ [[file:uint/index.org][(U8 U16 U32 U64)]] :: There are modules for 8, 16, 32 and 64-bit unsigned
-  integers.
-
-+ [[file:float/index.org][(F32 F64)]] :: Floating point numbers.

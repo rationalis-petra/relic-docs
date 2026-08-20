@@ -27,8 +27,8 @@
   elements and the list length set to 'len'. Keep in mind that if len ≠ 0, then
   you ought to initialize 'len' elements. 
   
-+ free-list :: All [A] (Proc [(List A)] Unit)
-  =(free-list list)= Will free the memory associated with the list.
++ de-init :: All [A] (Proc [(List A)] Unit)
+  =(de-init list)= Will free the memory associated with the list.
 
 + elt :: All [A] (Proc [U64 (List A)] A)
   =(elt i list)= Returns the 'i'th element of the list.
@@ -50,3 +50,12 @@
 + pop :: All [A] (Proc [(Ptr List A)] A)
   =(pop x ptr)= Will pop the value at the end of the list pointed to by 'ptr',
   decreasing the length by one and returning the value popped.
+
+* Instances
++ list-eq : instance [A] {(Eq A)} (Eq (List A)) ::
+  An equality instance for lists, returning =true= if all elements of the list
+  are equal, and =false= otherwise.
+
++ list-delete : instance [A] {(Eq A)} (Delete (List A)) ::
+  A delete instance for lists, first calling =delete= on all elements of the list,
+  then releasing the list's memory.

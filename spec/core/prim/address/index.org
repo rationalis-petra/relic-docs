@@ -1,0 +1,23 @@
+#+html_head: <link rel="stylesheet" href="../../../../doc-style.css" type="text/css"/>
+#+title: Core.Prim.Address
+#+options: num:nil toc:nil
+
+[[file:../index.org][up]]
+
+* Types
++ Address :: Kind 
+
+* Functions
++ store : All [A] Proc [Address A] Unit ::
+  Given an address and a value, attempt to store the value at that address. May
+  crash or produce undefined behaviour if address is invalid. 
+
++ load : All [A] Proc [Address] A ::
+  Given an address, attempt to load the value at that address as a value of type
+  A. May crash or produce undefined behaviour if address is invalid. 
+
++ address-to-num : Proc [Addess] U64 ::
+  Given an address, convert it to an unsigned 64-bit integer.
+
++ num-to-address : Proc [U64] Address ::
+  Given an unsigned 64-bit integer, convert it to an address.

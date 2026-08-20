@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-07-30 Thu 11:39 -->
+<!-- 2026-08-19 Wed 13:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Extra</title>
@@ -198,9 +198,9 @@
 <body>
 <div id="content" class="content">
 <h1 class="title">Extra</h1>
-<div id="outline-container-orgb1f8400" class="outline-2">
-<h2 id="orgb1f8400">Macros</h2>
-<div class="outline-text-2" id="text-orgb1f8400">
+<div id="outline-container-orgda66962" class="outline-2">
+<h2 id="orgda66962">Macros</h2>
+<div class="outline-text-2" id="text-orgda66962">
 <dl class="org-dl">
 <dt>ann</dt><dd>Convenience macro for declaring types.</dd>
 
@@ -213,18 +213,18 @@ loops, using the same macro.
 Sample Usage 
 </p>
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Print 0 to 9 interleaved with 10 to 1 
-</span>(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> <span style="color: #0D9C94;">10</span>]
-      [<span style="color: #9d81ba;">for</span> j <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">10</span> <span style="color: #9d81ba;">above</span> <span style="color: #0D9C94;">0</span>]
+<pre class="src src-relic"><span style="color: #84686E;">;; </span><span style="color: #84686E;">Print 0 to 9 interleaved with 10 to 1 
+</span>(<span style="color: #c86d6d;">loop</span> [<span style="color: #c86d6d;">for</span> i <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">0</span> <span style="color: #c86d6d;">below</span> <span style="color: #cea2ca;">10</span>]
+      [<span style="color: #c86d6d;">for</span> j <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">10</span> <span style="color: #c86d6d;">above</span> <span style="color: #cea2ca;">0</span>]
   (write-line (to-string i))
   (write-line (to-string j)))
 </pre>
 </div>
 
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">Print 0 to 9, but terminates early if i hits early-end
-</span>(<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> <span style="color: #0D9C94;">10</span>]
-      [<span style="color: #9d81ba;">while</span> (!= i early-end)]
+<pre class="src src-relic"><span style="color: #84686E;">;; </span><span style="color: #84686E;">Print 0 to 9, but terminates early if i hits early-end
+</span>(<span style="color: #c86d6d;">loop</span> [<span style="color: #c86d6d;">for</span> i <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">0</span> <span style="color: #c86d6d;">below</span> <span style="color: #cea2ca;">10</span>]
+      [<span style="color: #c86d6d;">while</span> (!= i early-end)]
   (write-line (to-string i)))
 </pre>
 </div></dd>
@@ -239,8 +239,8 @@ Sample Usage
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(when (= (mod i <span style="color: #0D9C94;">2</span>) <span style="color: #0D9C94;">0</span>)
-  (write-line <span style="color: #f5c791;">"i is even!"</span>)
+<pre class="src src-relic">(when (= (mod i <span style="color: #cea2ca;">2</span>) <span style="color: #cea2ca;">0</span>)
+  (write-line <span style="color: #A1A0C5;">"i is even!"</span>)
 </pre>
 </div></dd>
 
@@ -249,22 +249,22 @@ A convenience macro for flattening deeply nested function calls.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #454459;">;; </span><span style="color: #454459;">ugly 
-</span>(+ (- (* y <span style="color: #0D9C94;">3</span>.<span style="color: #0D9C94;">14</span>) <span style="color: #0D9C94;">10</span>.<span style="color: #0D9C94;">0</span>) x)
+<pre class="src src-relic"><span style="color: #84686E;">;; </span><span style="color: #84686E;">ugly 
+</span>(+ (- (* y <span style="color: #cea2ca;">3</span>.<span style="color: #cea2ca;">14</span>) <span style="color: #cea2ca;">10</span>.<span style="color: #cea2ca;">0</span>) x)
 
-<span style="color: #454459;">;; </span><span style="color: #454459;">elegant
+<span style="color: #84686E;">;; </span><span style="color: #84686E;">elegant
 </span>(-&gt; y
-  (* <span style="color: #0D9C94;">3</span>.<span style="color: #0D9C94;">14</span>)
-  (- <span style="color: #0D9C94;">10</span>.<span style="color: #0D9C94;">0</span>)
+  (* <span style="color: #cea2ca;">3</span>.<span style="color: #cea2ca;">14</span>)
+  (- <span style="color: #cea2ca;">10</span>.<span style="color: #cea2ca;">0</span>)
   (+ x))
 </pre>
 </div></dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org726ff66" class="outline-2">
-<h2 id="org726ff66">Procedures</h2>
-<div class="outline-text-2" id="text-org726ff66">
+<div id="outline-container-org3b37a33" class="outline-2">
+<h2 id="org3b37a33">Procedures</h2>
+<div class="outline-text-2" id="text-org3b37a33">
 <dl class="org-dl">
 <dt>exit : Proc [] Unit</dt><dd>Exit the current process with exit code 0.</dd>
 
@@ -276,7 +276,7 @@ and print the string as a message to standard error.</dd>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-07-30 Thu 11:39</p>
+<p class="date">Created: 2026-08-19 Wed 13:58</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -5,35 +5,44 @@
 [[file:../index.org][up]]
 
 * Types
-+ Ptr :: Kind [Type] Type
-  
++ Ptr : Kind [Type] Type ::
+#+begin_src relic
+  Named Ptr Family [A] Address
+#+end_src
 
 * Functions
-+ null :: All [A] (Ptr A)
++ get : All [A] Proc [(Ptr A) A] :: 
+  Get the value at the address pointed to by the pointer.
+
++ ^ : All [A] Proc [(Ptr A) A] ::
+  '^' is an alias for 'get'.
+
++ set : All [A] Proc [(Ptr A)] ::
+  Set the value at the address pointed to by the pointer.
+
++ null : All [A] (Ptr A) ::
   Null will create a new null pointer of type =A=. Note that because it takes no
   arguments, it is more likely you will need to provide the type of
   the pointer, e.g. =(null {I64})=
 
-+ set :: All [A] Proc [(Ptr A)] 
-  Set the value at the address pointed to by the pointer.
-
-+ new :: All [A] Proc [A] (Ptr A) 
++ new : All [A] Proc [A] (Ptr A) ::
   Create a new pointer, pointing to the value provided to the procedure. The
   memory for this pointer is allocated from =current-allocator=.
 
-+ delete :: All [A] Proc [(Ptr A)] Unit
-  Release the memory associated with the pointer, 
++ de-init : All [A] Proc [(Ptr A)] Unit ::
+  Release the memory associated with the pointer, where
   memory for this pointer assumed have to be allocated from the
   =current-allocator=, which is used to free the memory.
 
-+ local :: All [A] Proc [A] (Ptr A) 
++ local : All [A] Proc [A] (Ptr A) ::
   Create a new pointer, pointing to the value provided to the procedure. The
   memory for this pointer is allocated from the stack, so it does not need to be
   deleted. Take care not to return a local =Ptr= from the function which created
   it, as the memory is no longer valid when the function returns.
 
-+ get :: All [A] Proc [(Ptr A) A]
-  Get the value at the address pointed to by the pointer.
-
-+ ^ :: All [A] Proc [(Ptr A) A]
-  '^' is an alias for 'get'.
+* Instances
++ delete-ptr : instance [A] {(Delete A)} (Delete (Ptr A)) ::
+  Delete instance for a pointer. Assuming that the member type has a delete
+  instance, this will first delete the value contained by the pointer, then
+  release the memory associated with the pointer, assuming that it was allocated
+  from the =current-allocator=.

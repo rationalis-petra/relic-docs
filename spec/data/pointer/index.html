@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-03-14 Sat 07:44 -->
+<!-- 2026-08-19 Wed 14:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.Pointer</title>
@@ -201,53 +201,61 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org4b617db" class="outline-2">
-<h2 id="org4b617db">Types</h2>
-<div class="outline-text-2" id="text-org4b617db">
+<div id="outline-container-org1b69c86" class="outline-2">
+<h2 id="org1b69c86">Types</h2>
+<div class="outline-text-2" id="text-org1b69c86">
 <dl class="org-dl">
-<dt>Ptr</dt><dd>Kind [Type] Type</dd>
+<dt>Ptr : Kind [Type] Type</dt><dd></dd>
 </dl>
+<div class="org-src-container">
+<pre class="src src-relic">  <span style="color: #feb193;">Named</span> <span style="color: #eed891;">Ptr</span> <span style="color: #feb193;">Family</span> [<span style="color: #eed891;">A</span>] <span style="color: #eed891;">Address</span>
+</pre>
 </div>
 </div>
-<div id="outline-container-org9ef258b" class="outline-2">
-<h2 id="org9ef258b">Functions</h2>
-<div class="outline-text-2" id="text-org9ef258b">
+</div>
+<div id="outline-container-orge57a030" class="outline-2">
+<h2 id="orge57a030">Functions</h2>
+<div class="outline-text-2" id="text-orge57a030">
 <dl class="org-dl">
-<dt>null</dt><dd>All [A] (Ptr A)
-Null will create a new null pointer of type <code>A</code>. Note that because it takes no
+<dt>get : All [A] Proc [(Ptr A) A]</dt><dd>Get the value at the address pointed to by the pointer.</dd>
+
+<dt>^ : All [A] Proc [(Ptr A) A]</dt><dd>'^' is an alias for 'get'.</dd>
+
+<dt>set : All [A] Proc [(Ptr A)]</dt><dd>Set the value at the address pointed to by the pointer.</dd>
+
+<dt>null : All [A] (Ptr A)</dt><dd>Null will create a new null pointer of type <code>A</code>. Note that because it takes no
 arguments, it is more likely you will need to provide the type of
 the pointer, e.g. <code>(null {I64})</code></dd>
 
-<dt>set</dt><dd>All [A] Proc [(Ptr A)] 
-Set the value at the address pointed to by the pointer.</dd>
-
-<dt>new</dt><dd>All [A] Proc [A] (Ptr A) 
-Create a new pointer, pointing to the value provided to the procedure. The
+<dt>new : All [A] Proc [A] (Ptr A)</dt><dd>Create a new pointer, pointing to the value provided to the procedure. The
 memory for this pointer is allocated from <code>current-allocator</code>.</dd>
 
-<dt>delete</dt><dd>All [A] Proc [(Ptr A)] Unit
-Release the memory associated with the pointer, 
+<dt>de-init : All [A] Proc [(Ptr A)] Unit</dt><dd>Release the memory associated with the pointer, where
 memory for this pointer assumed have to be allocated from the
 <code>current-allocator</code>, which is used to free the memory.</dd>
 
-<dt>local</dt><dd>All [A] Proc [A] (Ptr A) 
-Create a new pointer, pointing to the value provided to the procedure. The
+<dt>local : All [A] Proc [A] (Ptr A)</dt><dd>Create a new pointer, pointing to the value provided to the procedure. The
 memory for this pointer is allocated from the stack, so it does not need to be
 deleted. Take care not to return a local <code>Ptr</code> from the function which created
 it, as the memory is no longer valid when the function returns.</dd>
-
-<dt>get</dt><dd>All [A] Proc [(Ptr A) A]
-Get the value at the address pointed to by the pointer.</dd>
-
-<dt>^</dt><dd>All [A] Proc [(Ptr A) A]
-'^' is an alias for 'get'.</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-orgbf62b36" class="outline-2">
+<h2 id="orgbf62b36">Instances</h2>
+<div class="outline-text-2" id="text-orgbf62b36">
+<dl class="org-dl">
+<dt>delete-ptr : instance [A] {(Delete A)} (Delete (Ptr A))</dt><dd>Delete instance for a pointer. Assuming that the member type has a delete
+instance, this will first delete the value contained by the pointer, then
+release the memory associated with the pointer, assuming that it was allocated
+from the <code>current-allocator</code>.</dd>
 </dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-03-14 Sat 07:44</p>
+<p class="date">Created: 2026-08-19 Wed 14:37</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

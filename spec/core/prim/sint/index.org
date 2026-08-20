@@ -1,8 +1,11 @@
-#+html_head: <link rel="stylesheet" href="../../../doc-style.css" type="text/css"/>
-#+title: Num.(U8 U16 U32 U64)
+#+html_head: <link rel="stylesheet" href="../../../../doc-style.css" type="text/css"/>
+#+title: Core.Prim.(I8 I16 I32 I64)
 #+options: num:nil toc:nil
 
 [[file:../index.org][up]]
+
+* Types
+Modules: The 
 
 * Types
 
@@ -28,5 +31,3 @@
   the endianness of an integer for serialization/deserialization.
 
 + (to-string a) :: 
-
-
