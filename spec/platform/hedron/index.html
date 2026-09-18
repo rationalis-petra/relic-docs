@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-13 Thu 17:55 -->
+<!-- 2026-09-18 Fri 19:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>System.Hedron</title>
@@ -57,6 +57,7 @@
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
   pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-c:before { content: 'C'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -71,7 +72,7 @@
   pre.src-haskell:before { content: 'Haskell'; }
   pre.src-hledger:before { content: 'hledger'; }
   pre.src-java:before { content: 'Java'; }
-  pre.src-js:before { content: 'Javascript'; }
+  pre.src-js:before { content: 'JavaScript'; }
   pre.src-latex:before { content: 'LaTeX'; }
   pre.src-ledger:before { content: 'Ledger'; }
   pre.src-lisp:before { content: 'Lisp'; }
@@ -201,173 +202,412 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org0c7599b" class="outline-2">
-<h2 id="org0c7599b">Types</h2>
-<div class="outline-text-2" id="text-org0c7599b">
+<div id="outline-container-orge14c09d" class="outline-2">
+<h2 id="orge14c09d">Errors</h2>
+<div class="outline-text-2" id="text-orge14c09d">
 <dl class="org-dl">
-<dt>Surface</dt><dd>Type</dd>
-<dt>ShaderModule</dt><dd>Type</dd>
-<dt>Pipeline</dt><dd>Type</dd>
-<dt>InputRate</dt><dd>Type</dd>
-<dt>BindingDescription</dt><dd>Type</dd>
-<dt>IndexFormat</dt><dd>Type</dd>
-<dt>InputFormat</dt><dd>Type</dd>
-<dt>DescriptorType</dt><dd>Type</dd>
+<dt>ErrorCode : Type</dt><dd>This type is returned by functions which may encounter an error.</dd>
+
+<dt>view-error-string : (Proc [ErrorCode] String)</dt><dd>Produce a simple error message description.</dd>
 </dl>
+</div>
+</div>
+<div id="outline-container-org49f1540" class="outline-2">
+<h2 id="org49f1540">Context</h2>
+<div class="outline-text-2" id="text-org49f1540">
+<dl class="org-dl">
+<dt>Instance : Type</dt><dd>An instance represents global internal state needed by Hedron. From an API user
+perspective, instances have little use beyond creating devices and swapchains.</dd>
+
+<dt>create-instance : (Proc [] (Result Instance ErrorCode))</dt><dd>Create a new instance.</dd>
+
+<dt>destroy-instance : (Proc [Instance] Unit)</dt><dd>Cleanup: destroy an instance once it is no longer required.</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-org502a279" class="outline-2">
+<h2 id="org502a279">Devices</h2>
+<div class="outline-text-2" id="text-org502a279">
+<dl class="org-dl">
+<dt>PhysicalDevice : Type</dt><dd>A physical device represents an actual, physical device in the compute (as the
+name implies). The only thing you can do with a physical device, however, is
+get information about the device, such as whether it is a discrete graphics
+card. To do GPU operations, you need to create a logical device.</dd>
+
+<dt>LogicalDevice : Type</dt><dd>A logical device represents a handle into a physical device, with associated
+state, such as allocated memory etc.</dd>
+
+<dt>DeviceType : Type</dt><dd>DeviceType is a simple <code>Enum</code> type which specifies the type of a physical
+device. Possible values are:
+<ul class="org-ul">
+<li>other - The device does not match any other available types.</li>
+<li>integrated-gpu - The device is typically one embedded in or tightly coupled with the host.</li>
+<li>discrete-gpu - The device is typically a separate processor connected to the host via an interlink.</li>
+<li>virtual-gpu - The device is typically a virtual node in a virtualization environment.</li>
+<li>cpu - The device is typically running on the same processors as the host.</li>
+</ul></dd>
+
+<dt>DeviceInfo : Type</dt><dd>DeviceInfo is a <code>Struct</code> type with fields:
+<ul class="org-ul">
+<li>name : The device name, e.g. "NVIDIA RTX 3070"</li>
+<li>device-type : The device type - see device type (above)</li>
+<li>max_push_data_size : The maximum size of arguments that can be provided to a
+dispatch or draw call.</li>
+<li>texture_descriptor_size: The size of a texture desciptor on this device, in bytes.</li>
+<li>sampler_descriptor_size: The size of a sampler desciptor on this device, in bytes.</li>
+<li>timestamp_period_ns:</li>
+<li>sub_texel_precision_bits:</li>
+<li>texture_compression_bc:</li>
+<li>texture_compression_astc:</li>
+<li>storage_input_output16:</li>
+</ul></dd>
+
+<dt>current-device : Dynamic LogicalDevice</dt><dd>The current device is a dynamic variable which is used by many functions</dd>
+
+<dt>get-physical-devices : Proc [Instance] (Slice PhysicalDevice)</dt><dd>Retrieves a slice listing the physical devices available to the instance. The
+slice needs to be freed by the caller.</dd>
+
+<dt>create-logical-device : (Proc [PhysicalDevice Instance] (Result LogicalDevice ErrorCode))</dt><dd>Creates a new logical device for a given physical device and instance.</dd>
+
+<dt>destroy-logical-device : (Proc [LogicalDevice] Unit)</dt><dd>Cleanup. Destroys a logical device.</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-org3a7b936" class="outline-2">
+<h2 id="org3a7b936">Windowing &amp; Swapchain</h2>
+<div class="outline-text-2" id="text-org3a7b936">
+<dl class="org-dl">
+<dt>Surface : Type</dt><dd>A surface is a handle to a window that is usable by hedron as a render target.</dd>
+
+<dt>Swapchain : Type</dt><dd>When rendering to a surface, the GPU cannot necessarily directly write to data
+representing the surface's pixels. Instead, the swapchain maintains a list of
+images (RenderViews), and the GPU renders one of these images. When the GPU is
+complete we signal to the window system that the image is ready to display
+(present) to the screen. We then request the next image in the list. The
+swapchain is responsible for handling these images and the synchronization
+with the window system.</dd>
+
+<dt>RenderView : Type</dt><dd>Represents an image that can be rendered/drawn to by the GPU. This may be a
+swapchain image or a texture.</dd>
+
+<dt>create-surface : Proc [Window Instance] (Result Surface ErrorCode)</dt><dd>Creates a surface that can be rendered to from a system window.</dd>
+
+<dt>destroy-surface : Proc [Surface] Unit</dt><dd>Destroys a vulkan surface. Necessary cleanup either when the surface is no
+longer needed.</dd>
+
+<dt>create-swapchain : Proc [LogicalDevice Surface] (Result Swapchain ErrorCode)</dt><dd>Create a swapchain from a surface. Only one swapchain should be created per surface.</dd>
+
+<dt>destroy-swapchain : Proc [Swapchain] Unit</dt><dd>Destroy the swapchain associated with a surface. Necessary cleanup when the
+swapchain is no longer needed.</dd>
+
+<dt>next-frame : Proc [Swapchain] RenderView</dt><dd>Retrieve the next frame from the swapchain. Not that, with the exception of
+the first frame, next frame must be called only after <code>present</code> (below), i.e.
+you application will have <code>(next-fame sc)</code> &hellip;. <code>(present sc)</code> &hellip; <code>(next-fame
+  sc)</code> etc.</dd>
+
+<dt>resize-notify : Proc [Swapchain (Struct [.width U32] [.height U32])] Unit</dt><dd>When receiving a resize window event, the swapchain must be notified that the
+window has resized.</dd>
+
+<dt>present : Proc [Swapchain] Unit</dt><dd>After a command buffer which draws to the current frame (RenderView) has been
+submitted (see commands), even when the image has finished rendering, it will
+not be presented to the user. Instead, you must call <code>present</code> to display the
+image.</dd>
+</dl>
+</div>
+</div>
+<div id="outline-container-org3b4aa54" class="outline-2">
+<h2 id="org3b4aa54">Memory</h2>
+<div class="outline-text-2" id="text-org3b4aa54">
+<p>
+These are functions for managing device memory, i.e. the memory of an attached
+device. These functions are intended to be called infrequently - client
+applications are intended to create a small number of heaps, i.e. large chunks
+of reserved memory. These heaps then ought to sub-divided, distributing the
+memory as needed to variour resources. 
+</p>
+
+<dl class="org-dl">
+<dt>HeapType : Type</dt><dd>By making different guarantees about heap memory, we get different use-cases
+and performance characteristics. The heap type is an enumeration with the
+following values:
+<ul class="org-ul">
+<li><code>:default</code> : The default is memory primarily optimized for CPU -&gt; GPU
+transfer. Writes from the CPU are visible to the GPU and vice-versa, but if
+the CPU tries to read memory that has been written by the GPU, will
+result in a cache miss, meaning that CPU reads are slower.</li>
+
+<li><code>:writeback</code> : Like default but optimized for GPU -&gt; CPU transfer CPU writes
+are the same speed, and GPU writes may be slower, but CPU reads are fast.</li>
+
+<li><code>:device</code> : Memory optimized for internal GPU use. There is no overhead when
+the GPU reads/writes (associated with needing to ensure the memory is
+coherent with the CPU side), with the tradeoff being that memory must be
+explicitly copied between the CPU &amp; GPU.</li>
+
+<li><code>:texture-descriptor</code>: Memory reserved for texture descriptors. Texture
+descriptors can be written <code>write-texture-descriptor</code> under 'textures', and
+set with <code>set-texture-descriptor-heap</code> under 'commands'.</li>
+
+<li><code>:sampler-descriptor</code>: Memory reserved for sampler descriptors. Texture
+descriptors can be written <code>write-sampler-descriptor</code> under 'textures', and
+set with <code>set-texture-sampler-heap</code> under 'commands'.</li>
+</ul></dd>
+
+<dt>HeapOwner : Type</dt><dd>The heap owner is an abstract handle to internal data stored by hedron about
+the heap.</dd>
+
+<dt>DeviceAddress : Type</dt><dd><p>
+Represents an address on the hedron device (GPU). Definition:
+</p>
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">DescriptorType</span> <span style="color: #9d81ba;">Enum</span> <span style="color: #7CF083;">:combined-image-sampler</span> <span style="color: #7CF083;">:uniform-buffer</span> <span style="color: #7CF083;">:storage-buffer</span>)
-</pre>
-</div>
-
-<dl class="org-dl">
-<dt>StageType</dt><dd>Type</dd>
-<dt>DescriptorBinding</dt><dd>Type</dd>
-<dt>AttributeDescription</dt><dd>Type</dd>
-<dt>PushConstantRange</dt><dd>Type</dd>
-<dt>PipelineInfo</dt><dd>Type</dd>
-</dl>
-</div>
-<div id="outline-container-org24476ca" class="outline-3">
-<h3 id="org24476ca">Data</h3>
-<div class="outline-text-3" id="text-org24476ca">
-<dl class="org-dl">
-<dt>BufferSort</dt><dd>Type</dd>
-</dl>
-<div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> <span style="color: #62D2DB;">DescriptorType</span> <span style="color: #9d81ba;">Enum</span> 
-    <span style="color: #7CF083;">:vertex</span> <span style="color: #7CF083;">:index</span> <span style="color: #7CF083;">:uniform</span> <span style="color: #7CF083;">:storage</span> <span style="color: #7CF083;">:transfer-source</span> <span style="color: #7CF083;">:transfer-destination</span>)
-
-</pre>
-</div>
-<dl class="org-dl">
-<dt>Buffer</dt><dd>Type</dd>
-<dt>Image</dt><dd>Type</dd>
-<dt>ImageFormat</dt><dd>Type</dd>
-</dl>
-</div>
-</div>
-<div id="outline-container-orgd6a55a5" class="outline-3">
-<h3 id="orgd6a55a5">Command Buffers</h3>
-<div class="outline-text-3" id="text-orgd6a55a5">
-<dl class="org-dl">
-<dt>PipelineStage</dt><dd>Type</dd>
-
-<dt>CommandPool</dt><dd>Type</dd>
-<dt>CommandBuffer</dt><dd>Type</dd>
-<dt>CommandBufferUsage</dt><dd>Type</dd>
-</dl>
-</div>
-</div>
-<div id="outline-container-org963255f" class="outline-3">
-<h3 id="org963255f">Synchronisation</h3>
-<div class="outline-text-3" id="text-org963255f">
-<dl class="org-dl">
-<dt>Semaphore</dt><dd>Type</dd>
-<dt>Fence</dt><dd>Type</dd>
-</dl>
-</div>
-</div>
-</div>
-<div id="outline-container-org8c583cd" class="outline-2">
-<h2 id="org8c583cd">Functions</h2>
-<div class="outline-text-2" id="text-org8c583cd">
-<dl class="org-dl">
-<dt>init : Proc [Window] (Result Unit Unit)</dt><dd>Initializes the hedron moudlue, returning <code>:ok :unit</code> on success, and
-<code>:error :unit</code> on failure.</dd>
-
-<dt>de-init : Proc [Window] Surface</dt><dd>De-initializes (tears-down) the hedron moudlue, returning <code>:ok :unit</code> on success, and
-<code>:error :unit</code> on failure.</dd>
-
-<dt>create-window-surface</dt><dd>Proc [Window] Surface</dd>
-<dt>resize-window-surface</dt><dd>Proc [Surface (Pair U32 U32)] Unit</dd>
-<dt>destroy-window-surface</dt><dd>Proc [Surface] Unit</dd>
-<dt>num-swapchain-images</dt><dd>Proc [Surface] U32</dd>
-<dt>create-shader-module</dt><dd>Proc [(List U8)] ShaderModule</dd>
-<dt>destroy-shader-module</dt><dd>Proc [ShaderModule] Unit</dd>
-
-<dt>create-pipeline</dt><dd><div class="org-src-container">
-<pre class="src src-relic">  <span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">PipelineInfo</span>] <span style="color: #62D2DB;">Pipeline</span>
-</pre>
+<pre class="src src-relic"><code>(<span style="color: #feb193;">Distinct</span> <span style="color: #eed891;">DeviceAddress</span> <span style="color: #eed891;">Address</span>)
+</code></pre>
 </div></dd>
 
-<dt>destroy-pipeline</dt><dd>Proc [Pipeline] Unit</dd>
-</dl>
-</div>
-<div id="outline-container-org101d3ed" class="outline-3">
-<h3 id="org101d3ed">Data and Buffers</h3>
-<div class="outline-text-3" id="text-org101d3ed">
-<dl class="org-dl">
-<dt>create-buffer</dt><dd></dd>
-</dl>
+<dt>DeviceRange : Type</dt><dd><p>
+Device range represents a contiguous block of memory on the heap. It is a
+simple struct consisting of a device address paired with the size (in bytes)
+of the block. Definition:
+</p>
+
 <div class="org-src-container">
-<pre class="src src-relic"><span style="color: #9d81ba;">Proc</span> [<span style="color: #62D2DB;">BufferSort</span> <span style="color: #62D2DB;">U64</span>] <span style="color: #62D2DB;">Buffer</span>
-</pre>
-</div>
-<p>
-Creates a buffer on the device, 
+<pre class="src src-relic"><code>(<span style="color: #feb193;">Named</span> <span style="color: #eed891;">DeviceRange</span> <span style="color: #feb193;">Struct</span>
+  [<span style="color: #cea2ca;">.address</span> <span style="color: #eed891;">DeviceAddress</span>]
+  [<span style="color: #cea2ca;">.memsize</span> <span style="color: #eed891;">U64</span>])
+</code></pre>
+</div></dd>
+
+<dt>SharedRange : Type</dt><dd><p>
+The shared range represents a contiguous block of memory that is shared
+between the CPU and GPU: writes on the cpu to the 'host' address will be seen
+on the GPU at the 'device' address.
+</p>
+<div class="org-src-container">
+<pre class="src src-relic"><code>(<span style="color: #feb193;">Named</span> <span style="color: #eed891;">SharedRange</span> <span style="color: #feb193;">Struct</span>
+  [<span style="color: #cea2ca;">.host</span>    <span style="color: #eed891;">Address</span>]
+  [<span style="color: #cea2ca;">.device</span>  <span style="color: #eed891;">DeviceAddress</span>]
+  [<span style="color: #cea2ca;">.memsize</span> <span style="color: #eed891;">U64</span>])
+</code></pre>
+</div></dd>
+
+<dt>DeviceHeap : Type</dt><dd>The DeviceHeap simply pairs a SharedRange with an owner</dd>
+
+<dt>create-device-heap : Proc [U64 U64 HeapType] DeviceHeap</dt><dd><p>
+Creates a new device heap, with arguments being:
 </p>
 <ul class="org-ul">
-<li>buffer-type : indicate HOW data is to be fed into shaders, with
-vertex indicating that it stores vertices, index indicating that it is
-indexing <i>into</i> the vertex buffer, Uniform indicates that this is global
-for a single invocation.</li>
+<li>size : total number of bytes to allocate.</li>
+<li>align : alignment of the start address of the heap.</li>
+<li>heap-type : see <code>HeapType</code> above.</li>
 </ul>
 
-<dl class="org-dl">
-<dt>destroy-buffer</dt><dd>Proc [Buffer] Unit</dd>
-<dt>set-buffer-data</dt><dd>Proc [Buffer Address] Unit</dd>
+<p>
+Note: If allocating a heap with type <code>:device</code>, the host address of the heap's
+shared range will be NULL.
+</p></dd>
 
-<dt>create-image</dt><dd>Proc []</dd>
+<dt>destroy-device-heap : Proc [DeviceHeap] Unit</dt><dd>Releases the memory associated with a device heap.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgd759105" class="outline-3">
-<h3 id="orgd759105">Commands</h3>
-<div class="outline-text-3" id="text-orgd759105">
+<div id="outline-container-org910fdc6" class="outline-2">
+<h2 id="org910fdc6">Textures</h2>
+<div class="outline-text-2" id="text-org910fdc6">
 <dl class="org-dl">
-<dt>create-command-pool</dt><dd>Proc [] CommandPool</dd>
-<dt>destroy-command-pool</dt><dd>Proc [CommandPool] Unit</dd>
-<dt>create-command-buffer</dt><dd>Proc [CommandPool] CommandBuffer</dd>
-<dt>free-command-buffer</dt><dd>Proc [CommandPool CommandBuffer] Unit</dd>
+<dt>Format : Type</dt><dd></dd>
 
-<dt>queue-submit</dt><dd>Proc [CommandBuffer (Maybe Fence) (List (Pair PipelineStage Semaphore)) (List Semaphore)] Unit</dd>
-<dt>queue-present</dt><dd>Proc [Surface Semaphore U32] Unit</dd>
-<dt>command-begin</dt><dd>Proc [CommandBuffer CommandBufferUsage] Unit</dd>
-<dt>command-end</dt><dd>Proc [CommandBuffer] Unit</dd>
-<dt>reset-command-buffer</dt><dd>Proc [CommandBuffer] Unit</dd>
-<dt>command-begin-renderpass</dt><dd>Proc [CommandBuffer Surface U32] Unit</dd>
-<dt>command-end-renderpass</dt><dd>Proc [CommandBuffer] Unit</dd>
-<dt>command-bind-pipeline</dt><dd>Proc [CommandBuffer Pipeline] Unit</dd>
-<dt>command-push-constants</dt><dd>Proc [CommandBuffer Pipeline ShaderStage U32 U32 Address] Unit</dd>
 
-<dt>command-bind-vertex-buffer</dt><dd>Proc [CommandBuffer Buffer] Unit</dd>
-<dt>command-bind-index-buffer</dt><dd>Proc [CommandBuffer Buffer (Enum ::u16 ::u32)] Unit</dd>
-<dt>command-set-surface</dt><dd>Proc [CommandBuffer Surface] Unit</dd>
-<dt>command-draw</dt><dd>Proc [CommandBuffer U32 U32 U32 U32] Unit</dd>
-<dt>command-draw-indexed</dt><dd>Proc [CommandBuffer U32 U32 U32 I32 U32] Unit</dd>
+<dt>CompareOp : Type</dt><dd>Values: <code>:never</code>, <code>:&lt;</code>, <code>:=</code>, <code>:&lt;=</code>, <code>:&gt;</code>, <code>:!=</code>, <code>:&gt;=</code>, <code>:always</code></dd>
+
+<dt>TextureShape : Type</dt><dd>Values: <code>:one-d</code>, <code>:two-d</code>, <code>:three-d</code>, <code>:cube</code>, <code>:two-d-array</code>, <code>:cube-array</code></dd>
+
+<dt>TextureUsage : Type</dt><dd>Flags:
+<ul class="org-ul">
+<li><code>:sampled</code>: Texture can be sampled, i.e. read from.</li>
+<li><code>:storage</code>: Texture can be written to.</li>
+<li><code>:colour-attachment</code>: Texture can rendered to via draw, taking colour data from
+the rendered output.</li>
+<li><code>:depth-attachment</code>: Texture can rendered to via draw, taking depth data from
+the rendered output.</li>
+<li><code>:transfer-source</code>: Can copy data into texture as a bulk operation.</li>
+<li><code>:transfer-destination</code>: Can copy data out of a texture as a bulk operation.</li>
+</ul></dd>
+
+<dt>Texture : Type</dt><dd>Opaque handle into a texture type</dd>
+
+<dt>TextureHeapOwner : Type</dt><dd>Opaque handle into internal information about a texture heap, needed by hedron
+to cleanup a texture heap.</dd>
+
+<dt>TextureHeap : Type</dt><dd></dd>
+
+
+<dt>TextureDescription : Type</dt><dd></dd>
+
+
+<dt>TextureCopyDescription : Type</dt><dd></dd>
+
+
+<dt>TextureDescriptorType : Type</dt><dd></dd>
+
+
+<dt>TextureAspect : Type</dt><dd></dd>
+
+
+<dt>TextureDescriptorDescription : Type</dt><dd></dd>
+
+
+<dt>AddressMode : Type</dt><dd></dd>
+
+
+<dt>Filter : Type</dt><dd></dd>
+
+<dt>SamplerDescription : Type</dt><dd></dd>
+
+<dt>RenderViewDescription : Type</dt><dd></dd>
+
+
+<dt>create-texture-heap : Proc [U64] TextureHeap</dt><dd></dd>
+
+<dt>destory-texture-heap : Proc [TextureHeap] Unit</dt><dd></dd>
+
+<dt>create-render-view : Proc [Texture RenderViewDescription] RenderView</dt><dd></dd>
+
+<dt>destroy-render_view : Proc [RenderView] Unit</dt><dd></dd>
+
+<dt>texture-size-align : Proc [TextureDescription] (Struct [.size U64] [.align U64])</dt><dd></dd>
+
+<dt>create-texture : Proc [TextureDescription TextureHeap U64] Texture</dt><dd></dd>
+
+<dt>destroy-texture : Proc [Texture] Unit</dt><dd></dd>
+
+<dt>write-texture-descriptor : Proc [Address Texture TextureDescriptorType TextureDescriptorDescription] Unit</dt><dd></dd>
+
+<dt>write-sampler-descriptor : Proc [Address SamplerDescription] Unit</dt><dd></dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org73d6b56" class="outline-3">
-<h3 id="org73d6b56">Syncrhonisation</h3>
-<div class="outline-text-3" id="text-org73d6b56">
+<div id="outline-container-org68e8d2e" class="outline-2">
+<h2 id="org68e8d2e">Pipeline</h2>
+<div class="outline-text-2" id="text-org68e8d2e">
 <dl class="org-dl">
-<dt>create-semaphore</dt><dd>Proc [] Semaphore</dd>
-<dt>destroy-semaphore</dt><dd>Proc [Semaphore] Unit</dd>
-<dt>create-fence</dt><dd>Proc [] Fence</dd>
-<dt>destroy-fence</dt><dd>Proc [Fence] Unit</dd>
-<dt>wait-for-fence</dt><dd>Proc [Fence] Unit</dd>
-<dt>reset-fence</dt><dd>Proc [Fence] Unit</dd>
-<dt>wait-for-device</dt><dd>Proc [] Unit</dd>
-<dt>acquire-next-image</dt><dd>Proc [Surface Semaphore] (Enum [::image U32] ::resized)</dd>
+<dt>Cull : Type</dt><dd></dd>
+
+<dt>BlendOp : Type</dt><dd></dd>
+
+<dt>BlendFactor : Type</dt><dd></dd>
+
+<dt>BlendComponentState : Type</dt><dd></dd>
+
+<dt>BlendState : Type</dt><dd></dd>
+
+<dt>ColourTarget : Type</dt><dd></dd>
+
+<dt>DepthBias : Type</dt><dd></dd>
+
+<dt>RasterDescription : Type</dt><dd><div class="org-src-container">
+<pre class="src src-relic"><code>(<span style="color: #feb193;">Named</span> <span style="color: #eed891;">RasterDescription</span> <span style="color: #feb193;">Struct</span> 
+  [<span style="color: #cea2ca;">.cull</span> <span style="color: #eed891;">Cull</span>]
+  [<span style="color: #cea2ca;">.depth-format</span> <span style="color: #eed891;">Maybe</span> <span style="color: #eed891;">Format</span>]
+  [<span style="color: #cea2ca;">.depth-bias</span> <span style="color: #eed891;">Maybe</span> <span style="color: #eed891;">DepthBias</span>]
+  [<span style="color: #cea2ca;">.stencil-format</span> <span style="color: #eed891;">Maybe</span> <span style="color: #eed891;">Format</span>]
+  [<span style="color: #cea2ca;">.colour-targets</span> <span style="color: #eed891;">Slice</span> <span style="color: #eed891;">ColourTarget</span>])
+</code></pre>
+</div></dd>
+
+<dt>Pipeline : Type</dt><dd></dd>
+
+
+<dt>create-compute-pipeline : Proc [(Slice U32)] Pipeline)</dt><dd></dd>
+
+
+<dt>FirstStageIR : Type</dt><dd></dd>
+
+<dt>create-graphics-pipeline : Proc [(Enum 64 [:vertex-ir (Slice U32)] [:meshlet-ir (Slice U32)]) (Slice U32) RasterDescription] Pipeline</dt><dd></dd>
+
+<dt>destroy-pipeline : Proc [Pipeline] Unit</dt><dd></dd>
+
+
+<dt>Semaphore : Type</dt><dd></dd>
+
+<dt>create-semaphore : Proc [U64] Semaphore</dt><dd></dd>
+
+<dt>wait-semaphore : Proc [Semaphore U64] Unit</dt><dd></dd>
+
+<dt>destroy-semaphore : Proc [Semaphore] Unit</dt><dd></dd>
 </dl>
 </div>
+</div>
+<div id="outline-container-org10e8446" class="outline-2">
+<h2 id="org10e8446">Commands</h2>
+<div class="outline-text-2" id="text-org10e8446">
+<dl class="org-dl">
+<dt>CommandBuffer : Type</dt><dd></dd>
+
+<dt>start-recording : (Proc [] CommandBuffer)</dt><dd></dd>
+
+<dt>submit-commands : (Proc [(Slice CommandBuffer) Semaphore U64] Unit)</dt><dd></dd>
+
+
+<dt>Stage : Type</dt><dd></dd>
+
+<dt>Access : Type</dt><dd></dd>
+
+<dt>LoadOp : Type</dt><dd></dd>
+
+<dt>StoreOp : Type</dt><dd></dd>
+
+<dt>ColourAttachment : Type</dt><dd></dd>
+
+<dt>DepthAttachment : Type</dt><dd></dd>
+
+<dt>StencilAttachment : Type</dt><dd></dd>
+
+<dt>RenderDescription : Type</dt><dd><div class="org-src-container">
+<pre class="src src-relic"><code>(<span style="color: #feb193;">Named</span> <span style="color: #eed891;">RenderDescription</span> <span style="color: #feb193;">Struct</span> 
+  [<span style="color: #cea2ca;">.colours</span> <span style="color: #eed891;">Slice</span> <span style="color: #eed891;">ColourAttachment</span>]
+  [<span style="color: #cea2ca;">.depth</span> <span style="color: #eed891;">Maybe</span> <span style="color: #eed891;">DepthAttachment</span>]
+  [<span style="color: #cea2ca;">.stencil</span> <span style="color: #eed891;">Maybe</span> <span style="color: #eed891;">StencilAttachment</span>])
+</code></pre>
+</div></dd>
+<dt>IndexType : Type</dt><dd></dd>
+
+
+<dt>barrier : (Proc [CommandBuffer Stage Access Stage Access] Unit)</dt><dd></dd>
+
+<dt>set-pipeline : (Proc [CommandBuffer Pipeline] Unit)</dt><dd></dd>
+
+<dt>set-sampler-descriptor-heap : (Proc [CommandBuffer DeviceRange] Unit)</dt><dd></dd>
+
+<dt>set-texture-descriptor-heap : (Proc [CommandBuffer DeviceRange] Unit)</dt><dd></dd>
+
+<dt>copy-memory : (Proc [CommandBuffer DeviceRange DeviceRange] Unit)</dt><dd></dd>
+
+<dt>copy-memory-to-texture : (Proc [CommandBuffer DeviceRange Texture TextureCopyDescription] Unit)</dt><dd></dd>
+
+<dt>copy-texture-to-memory : (Proc [CommandBuffer Texture DeviceRange TextureCopyDescription] Unit)</dt><dd></dd>
+
+<dt>dispatch : (All [A] Proc [CommandBuffer A (Tile [3] U32)] Unit)</dt><dd></dd>
+
+<dt>dispatch-indirect : (All [A] Proc [CommandBuffer A DeviceRange] Unit)</dt><dd></dd>
+
+<dt>draw : (All [A] Proc [CommandBuffer A U32 U32 U32 U32] Unit)</dt><dd></dd>
+
+<dt>draw-indexed : (All [A] Proc [CommandBuffer A DeviceRange IndexType U32 U32 U32 U32 U32] Unit)</dt><dd></dd>
+
+<dt>draw-indirect : (All [A] Proc [CommandBuffer A DeviceRange U32 U32] Unit)</dt><dd></dd>
+
+<dt>draw-indexed-indirect : (All [A] Proc [CommandBuffer A DeviceRange IndexType DeviceRange U32 U32] Unit)</dt><dd></dd>
+
+<dt>start-render-pass : (Proc [CommandBuffer RenderDescription] Unit)</dt><dd></dd>
+
+<dt>end-render-pass : (Proc [CommandBuffer] Unit)</dt><dd></dd>
+</dl>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-08-13 Thu 17:55</p>
+<p class="date">Created: 2026-09-18 Fri 19:44</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

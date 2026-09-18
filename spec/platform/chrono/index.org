@@ -12,11 +12,8 @@
   ;; TODO: determine public API for datetime
   #+end_src
 
-+ Seconds :: Simple time type with broad accuracy, used 
-
-  #+begin_src relic
-  Distinct Named Seconds F64
-  #+end_src
++ Duration :: Simple time type with broad accuracy, used by 'regular' timers.
+  Useful for frametime, clocks, etc.
 
 + Timer :: An opaque type
 
@@ -38,14 +35,14 @@
   #+begin_src relic
   Proc [] DateTime
   #+end_src
-+ start-timer :: Create a new timer, which will begin counting how long has passed
++ start-timer : Proc [] Timer :: Create a new timer, which will begin counting how long has passed
 
-  #+begin_src relic 
-  Proc [] Timer
-  #+end_src
++ time-elapsed : Proc [Timer] Duration :: Return the time elapsed (in seconds) since the timer was started.
 
-+ time-elapsed :: Return the time elapsed (in seconds) since the timer was started.
-  
-  #+begin_src relic
-  Proc [Timer] Seconds
-  #+end_src
+** Get Durations as Units
+
++ microseconds : Proc [Duration] F64 ::
++ milliseconds : Proc [Duration] F64 ::
++ seconds : Proc [Duration] F64 ::
++ minutes : Proc [Duration] F64 ::
++ hours : Proc [Duration] F64 ::

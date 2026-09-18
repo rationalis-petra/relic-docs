@@ -4,116 +4,317 @@
 
 [[file:../index.org][up]]
 
-* Types
-+ Surface :: Type
-+ ShaderModule :: Type
-+ Pipeline :: Type
-+ InputRate :: Type
-+ BindingDescription :: Type
-+ IndexFormat :: Type
-+ InputFormat :: Type
-+ DescriptorType :: Type
-#+begin_src relic
-(def DescriptorType Enum :combined-image-sampler :uniform-buffer :storage-buffer)
-#+end_src
+* Errors
++ ErrorCode : Type ::
+  This type is returned by functions which may encounter an error.   
 
-+ StageType :: Type
-+ DescriptorBinding :: Type
-+ AttributeDescription :: Type
-+ PushConstantRange :: Type
-+ PipelineInfo :: Type
++ view-error-string : (Proc [ErrorCode] String) ::
+  Produce a simple error message description.
 
-** Data
-+ BufferSort :: Type
-#+begin_src relic
-(def DescriptorType Enum 
-    :vertex :index :uniform :storage :transfer-source :transfer-destination)
+* Context
++ Instance : Type ::
+  An instance represents global internal state needed by Hedron. From an API user
+  perspective, instances have little use beyond creating devices and swapchains.
 
-#+end_src
-+ Buffer :: Type
-+ Image :: Type
-+ ImageFormat :: Type
++ create-instance : (Proc [] (Result Instance ErrorCode)) ::
+  Create a new instance. 
 
-** Command Buffers
-+ PipelineStage :: Type
++ destroy-instance : (Proc [Instance] Unit) ::
+  Cleanup: destroy an instance once it is no longer required.
 
-+ CommandPool :: Type
-+ CommandBuffer :: Type
-+ CommandBufferUsage :: Type
+* Devices
++ PhysicalDevice : Type ::
+  A physical device represents an actual, physical device in the compute (as the
+  name implies). The only thing you can do with a physical device, however, is
+  get information about the device, such as whether it is a discrete graphics
+  card. To do GPU operations, you need to create a logical device.
+  
++ LogicalDevice : Type ::
+  A logical device represents a handle into a physical device, with associated
+  state, such as allocated memory etc.
 
-** Synchronisation
-+ Semaphore :: Type
-+ Fence :: Type
++ DeviceType : Type ::
+  DeviceType is a simple =Enum= type which specifies the type of a physical
+  device. Possible values are:
+  + other - The device does not match any other available types.
+  + integrated-gpu - The device is typically one embedded in or tightly coupled with the host.
+  + discrete-gpu - The device is typically a separate processor connected to the host via an interlink.
+  + virtual-gpu - The device is typically a virtual node in a virtualization environment.
+  + cpu - The device is typically running on the same processors as the host.
 
-* Functions
-+ init : Proc [Window] (Result Unit Unit) ::
-  Initializes the hedron moudlue, returning =:ok :unit= on success, and
-  =:error :unit= on failure.
++ DeviceInfo : Type ::
+  DeviceInfo is a =Struct= type with fields:
+  + name : The device name, e.g. "NVIDIA RTX 3070"
+  + device-type : The device type - see device type (above)
+  + max_push_data_size : The maximum size of arguments that can be provided to a
+    dispatch or draw call.
+  + texture_descriptor_size: The size of a texture desciptor on this device, in bytes.
+  + sampler_descriptor_size: The size of a sampler desciptor on this device, in bytes.
+  + timestamp_period_ns: 
+  + sub_texel_precision_bits:
+  + texture_compression_bc:
+  + texture_compression_astc:
+  + storage_input_output16:
 
-+ de-init : Proc [Window] Surface ::
-  De-initializes (tears-down) the hedron moudlue, returning =:ok :unit= on success, and
-  =:error :unit= on failure.
++ current-device : Dynamic LogicalDevice ::
+  The current device is a dynamic variable which is used by many functions
 
-+ create-window-surface :: Proc [Window] Surface
-+ resize-window-surface :: Proc [Surface (Pair U32 U32)] Unit
-+ destroy-window-surface :: Proc [Surface] Unit
-+ num-swapchain-images :: Proc [Surface] U32
-+ create-shader-module :: Proc [(List U8)] ShaderModule
-+ destroy-shader-module :: Proc [ShaderModule] Unit
++ get-physical-devices : Proc [Instance] (Slice PhysicalDevice) ::
+  Retrieves a slice listing the physical devices available to the instance. The
+  slice needs to be freed by the caller.
 
-+ create-pipeline ::
++ create-logical-device : (Proc [PhysicalDevice Instance] (Result LogicalDevice ErrorCode)) ::
+  Creates a new logical device for a given physical device and instance.
+
++ destroy-logical-device : (Proc [LogicalDevice] Unit) ::
+  Cleanup. Destroys a logical device.
+
+* Windowing & Swapchain
++ Surface : Type ::
+  A surface is a handle to a window that is usable by hedron as a render target.
+
++ Swapchain : Type ::
+  When rendering to a surface, the GPU cannot necessarily directly write to data
+  representing the surface's pixels. Instead, the swapchain maintains a list of
+  images (RenderViews), and the GPU renders one of these images. When the GPU is
+  complete we signal to the window system that the image is ready to display
+  (present) to the screen. We then request the next image in the list. The
+  swapchain is responsible for handling these images and the synchronization
+  with the window system. 
+
++ RenderView : Type ::
+  Represents an image that can be rendered/drawn to by the GPU. This may be a
+  swapchain image or a texture.
+
++ create-surface : Proc [Window Instance] (Result Surface ErrorCode) ::
+  Creates a surface that can be rendered to from a system window.
+
++ destroy-surface : Proc [Surface] Unit ::
+  Destroys a vulkan surface. Necessary cleanup either when the surface is no
+  longer needed.
+
++ create-swapchain : Proc [LogicalDevice Surface] (Result Swapchain ErrorCode) ::
+  Create a swapchain from a surface. Only one swapchain should be created per surface.
+
++ destroy-swapchain : Proc [Swapchain] Unit ::
+  Destroy the swapchain associated with a surface. Necessary cleanup when the
+  swapchain is no longer needed.
+
++ next-frame : Proc [Swapchain] RenderView ::
+  Retrieve the next frame from the swapchain. Not that, with the exception of
+  the first frame, next frame must be called only after =present= (below), i.e.
+  you application will have =(next-fame sc)= .... =(present sc)= ... =(next-fame
+  sc)= etc.
+
++ resize-notify : Proc [Swapchain (Struct [.width U32] [.height U32])] Unit ::
+  When receiving a resize window event, the swapchain must be notified that the
+  window has resized. 
+
++ present : Proc [Swapchain] Unit ::
+  After a command buffer which draws to the current frame (RenderView) has been
+  submitted (see commands), even when the image has finished rendering, it will
+  not be presented to the user. Instead, you must call =present= to display the
+  image.
+
+* Memory 
+These are functions for managing device memory, i.e. the memory of an attached
+device. These functions are intended to be called infrequently - client
+applications are intended to create a small number of heaps, i.e. large chunks
+of reserved memory. These heaps then ought to sub-divided, distributing the
+memory as needed to variour resources. 
+
++ HeapType : Type ::
+  By making different guarantees about heap memory, we get different use-cases
+  and performance characteristics. The heap type is an enumeration with the
+  following values:
+  + =:default= : The default is memory primarily optimized for CPU -> GPU
+    transfer. Writes from the CPU are visible to the GPU and vice-versa, but if
+    the CPU tries to read memory that has been written by the GPU, will
+    result in a cache miss, meaning that CPU reads are slower.
+
+  + =:writeback= : Like default but optimized for GPU -> CPU transfer CPU writes
+    are the same speed, and GPU writes may be slower, but CPU reads are fast.
+   
+  + =:device= : Memory optimized for internal GPU use. There is no overhead when
+    the GPU reads/writes (associated with needing to ensure the memory is
+    coherent with the CPU side), with the tradeoff being that memory must be
+    explicitly copied between the CPU & GPU.
+
+  + =:texture-descriptor=: Memory reserved for texture descriptors. Texture
+    descriptors can be written =write-texture-descriptor= under 'textures', and
+    set with =set-texture-descriptor-heap= under 'commands'. 
+
+  + =:sampler-descriptor=: Memory reserved for sampler descriptors. Texture
+    descriptors can be written =write-sampler-descriptor= under 'textures', and
+    set with =set-texture-sampler-heap= under 'commands'. 
+
++ HeapOwner : Type ::
+  The heap owner is an abstract handle to internal data stored by hedron about
+  the heap.
+
++ DeviceAddress : Type ::
+  Represents an address on the hedron device (GPU). Definition:
   #+begin_src relic
-  Proc [PipelineInfo] Pipeline
+(Distinct DeviceAddress Address)
   #+end_src
 
-+ destroy-pipeline :: Proc [Pipeline] Unit
++ DeviceRange : Type ::
+  Device range represents a contiguous block of memory on the heap. It is a
+  simple struct consisting of a device address paired with the size (in bytes)
+  of the block. Definition:
 
+  #+begin_src relic
+(Named DeviceRange Struct
+  [.address DeviceAddress]
+  [.memsize U64])
+  #+end_src
+
++ SharedRange : Type ::
+  The shared range represents a contiguous block of memory that is shared
+  between the CPU and GPU: writes on the cpu to the 'host' address will be seen
+  on the GPU at the 'device' address.
+  #+begin_src relic
+(Named SharedRange Struct
+  [.host    Address]
+  [.device  DeviceAddress]
+  [.memsize U64])
+  #+end_src
+
++ DeviceHeap : Type ::
+  The DeviceHeap simply pairs a SharedRange with an owner
+
++ create-device-heap : Proc [U64 U64 HeapType] DeviceHeap ::
+  Creates a new device heap, with arguments being:
+  + size : total number of bytes to allocate.
+  + align : alignment of the start address of the heap.
+  + heap-type : see =HeapType= above.
+
+  Note: If allocating a heap with type =:device=, the host address of the heap's
+  shared range will be NULL.
+
++ destroy-device-heap : Proc [DeviceHeap] Unit ::
+  Releases the memory associated with a device heap.
+
+* Textures
+# TODO: many of the descriptions here are skeletons and need more detail.
++ Format : Type ::
+
++ CompareOp : Type ::
+  Values: ~:never~, ~:<~, ~:=~, ~:<=~, ~:>~, ~:!=~, ~:>=~, ~:always~
+
++ TextureShape : Type ::
+  Values: ~:one-d~, ~:two-d~, ~:three-d~, ~:cube~, ~:two-d-array~, ~:cube-array~
+
++ TextureUsage : Type ::
+  Flags:
+  + ~:sampled~: Texture can be sampled, i.e. read from.
+  + ~:storage~: Texture can be written to.
+  + ~:colour-attachment~: Texture can rendered to via draw, taking colour data from
+    the rendered output.
+  + ~:depth-attachment~: Texture can rendered to via draw, taking depth data from
+    the rendered output.
+  + ~:transfer-source~: Can copy data into texture as a bulk operation.
+  + ~:transfer-destination~: Can copy data out of a texture as a bulk operation.
+
++ Texture : Type ::
+  Opaque handle into a texture type
+
++ TextureHeapOwner : Type ::
+  Opaque handle into internal information about a texture heap, needed by hedron
+  to cleanup a texture heap. 
+
++ TextureHeap : Type ::
+
++ TextureDescription : Type ::
+
++ TextureCopyDescription : Type ::
+
++ TextureDescriptorType : Type ::
+
++ TextureAspect : Type ::
+
++ TextureDescriptorDescription : Type ::
   
-** Data and Buffers  
-+ create-buffer ::
-#+begin_src relic
-Proc [BufferSort U64] Buffer
-#+end_src
-  Creates a buffer on the device, 
-  - buffer-type : indicate HOW data is to be fed into shaders, with
-    vertex indicating that it stores vertices, index indicating that it is
-    indexing /into/ the vertex buffer, Uniform indicates that this is global
-    for a single invocation.
++ AddressMode : Type ::
 
-+ destroy-buffer :: Proc [Buffer] Unit
-+ set-buffer-data :: Proc [Buffer Address] Unit
++ Filter : Type ::
++ SamplerDescription : Type ::
++ RenderViewDescription : Type ::
 
-+ create-image :: Proc []  
++ create-texture-heap : Proc [U64] TextureHeap ::
++ destory-texture-heap : Proc [TextureHeap] Unit ::
++ create-render-view : Proc [Texture RenderViewDescription] RenderView ::
++ destroy-render_view : Proc [RenderView] Unit ::
++ texture-size-align : Proc [TextureDescription] (Struct [.size U64] [.align U64]) ::
++ create-texture : Proc [TextureDescription TextureHeap U64] Texture ::
++ destroy-texture : Proc [Texture] Unit ::
++ write-texture-descriptor : Proc [Address Texture TextureDescriptorType TextureDescriptorDescription] Unit ::
++ write-sampler-descriptor : Proc [Address SamplerDescription] Unit ::
 
-** Commands  
-+ create-command-pool :: Proc [] CommandPool
-+ destroy-command-pool :: Proc [CommandPool] Unit
-+ create-command-buffer :: Proc [CommandPool] CommandBuffer
-+ free-command-buffer :: Proc [CommandPool CommandBuffer] Unit
+* Pipeline
++ Cull : Type ::
++ BlendOp : Type ::
++ BlendFactor : Type ::
++ BlendComponentState : Type ::
++ BlendState : Type ::
++ ColourTarget : Type ::
++ DepthBias : Type ::
++ RasterDescription : Type ::
+  #+begin_src relic
+(Named RasterDescription Struct 
+  [.cull Cull]
+  [.depth-format Maybe Format]
+  [.depth-bias Maybe DepthBias]
+  [.stencil-format Maybe Format]
+  [.colour-targets Slice ColourTarget])
+  #+end_src
+  
++ Pipeline : Type ::
 
-+ queue-submit :: Proc [CommandBuffer (Maybe Fence) (List (Pair PipelineStage Semaphore)) (List Semaphore)] Unit
-+ queue-present :: Proc [Surface Semaphore U32] Unit
-+ command-begin :: Proc [CommandBuffer CommandBufferUsage] Unit
-+ command-end :: Proc [CommandBuffer] Unit
-+ reset-command-buffer :: Proc [CommandBuffer] Unit
-+ command-begin-renderpass :: Proc [CommandBuffer Surface U32] Unit
-+ command-end-renderpass :: Proc [CommandBuffer] Unit
-+ command-bind-pipeline :: Proc [CommandBuffer Pipeline] Unit
-+ command-push-constants :: Proc [CommandBuffer Pipeline ShaderStage U32 U32 Address] Unit
++ create-compute-pipeline : Proc [(Slice U32)] Pipeline) ::
 
-+ command-bind-vertex-buffer :: Proc [CommandBuffer Buffer] Unit
-+ command-bind-index-buffer :: Proc [CommandBuffer Buffer (Enum ::u16 ::u32)] Unit
-+ command-set-surface :: Proc [CommandBuffer Surface] Unit
-+ command-draw :: Proc [CommandBuffer U32 U32 U32 U32] Unit
-+ command-draw-indexed :: Proc [CommandBuffer U32 U32 U32 I32 U32] Unit
++ FirstStageIR : Type ::
++ create-graphics-pipeline : Proc [(Enum 64 [:vertex-ir (Slice U32)] [:meshlet-ir (Slice U32)]) (Slice U32) RasterDescription] Pipeline ::
++ destroy-pipeline : Proc [Pipeline] Unit ::
 
-** Syncrhonisation  
-+ create-semaphore :: Proc [] Semaphore
-+ destroy-semaphore :: Proc [Semaphore] Unit
-+ create-fence :: Proc [] Fence
-+ destroy-fence :: Proc [Fence] Unit
-+ wait-for-fence :: Proc [Fence] Unit
-+ reset-fence :: Proc [Fence] Unit
-+ wait-for-device :: Proc [] Unit
-+ acquire-next-image :: Proc [Surface Semaphore] (Enum [::image U32] ::resized)
++ Semaphore : Type ::
++ create-semaphore : Proc [U64] Semaphore ::
++ wait-semaphore : Proc [Semaphore U64] Unit ::
++ destroy-semaphore : Proc [Semaphore] Unit ::
 
+* Commands
++ CommandBuffer : Type ::
++ start-recording : (Proc [] CommandBuffer) ::
++ submit-commands : (Proc [(Slice CommandBuffer) Semaphore U64] Unit) ::
+
++ Stage : Type ::
++ Access : Type ::
++ LoadOp : Type ::
++ StoreOp : Type ::
++ ColourAttachment : Type ::
++ DepthAttachment : Type ::
++ StencilAttachment : Type ::
++ RenderDescription : Type ::
+  #+begin_src relic
+(Named RenderDescription Struct 
+  [.colours Slice ColourAttachment]
+  [.depth Maybe DepthAttachment]
+  [.stencil Maybe StencilAttachment])
+  #+end_src
++ IndexType : Type ::
+
++ barrier : (Proc [CommandBuffer Stage Access Stage Access] Unit) ::
++ set-pipeline : (Proc [CommandBuffer Pipeline] Unit) ::
++ set-sampler-descriptor-heap : (Proc [CommandBuffer DeviceRange] Unit) ::
++ set-texture-descriptor-heap : (Proc [CommandBuffer DeviceRange] Unit) ::
++ copy-memory : (Proc [CommandBuffer DeviceRange DeviceRange] Unit) ::
++ copy-memory-to-texture : (Proc [CommandBuffer DeviceRange Texture TextureCopyDescription] Unit) ::
++ copy-texture-to-memory : (Proc [CommandBuffer Texture DeviceRange TextureCopyDescription] Unit) ::
++ dispatch : (All [A] Proc [CommandBuffer A (Tile [3] U32)] Unit) ::
++ dispatch-indirect : (All [A] Proc [CommandBuffer A DeviceRange] Unit) ::
++ draw : (All [A] Proc [CommandBuffer A U32 U32 U32 U32] Unit) ::
++ draw-indexed : (All [A] Proc [CommandBuffer A DeviceRange IndexType U32 U32 U32 U32 U32] Unit) ::
++ draw-indirect : (All [A] Proc [CommandBuffer A DeviceRange U32 U32] Unit) ::
++ draw-indexed-indirect : (All [A] Proc [CommandBuffer A DeviceRange IndexType DeviceRange U32 U32] Unit) ::
++ start-render-pass : (Proc [CommandBuffer RenderDescription] Unit) ::
++ end-render-pass : (Proc [CommandBuffer] Unit) ::

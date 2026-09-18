@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-19 Wed 16:12 -->
+<!-- 2026-08-20 Thu 22:47 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Data.String</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="../index.html">up</a>
 </p>
-<div id="outline-container-org0ba94f4" class="outline-2">
-<h2 id="org0ba94f4">Types</h2>
-<div class="outline-text-2" id="text-org0ba94f4">
+<div id="outline-container-org409e3c7" class="outline-2">
+<h2 id="org409e3c7">Types</h2>
+<div class="outline-text-2" id="text-org409e3c7">
 <dl class="org-dl">
 <dt>String : Type</dt><dd><p>
 The String type stores string data as a struct containing of a block of UTF-8
@@ -218,13 +218,13 @@ bytes.
 </dl>
 </div>
 </div>
-<div id="outline-container-orgaaeb671" class="outline-2">
-<h2 id="orgaaeb671">Functions</h2>
-<div class="outline-text-2" id="text-orgaaeb671">
+<div id="outline-container-org2faea8c" class="outline-2">
+<h2 id="org2faea8c">Functions</h2>
+<div class="outline-text-2" id="text-org2faea8c">
 </div>
-<div id="outline-container-orgdc121b7" class="outline-3">
-<h3 id="orgdc121b7">String Functions</h3>
-<div class="outline-text-3" id="text-orgdc121b7">
+<div id="outline-container-orgff2b28f" class="outline-3">
+<h3 id="orgff2b28f">String Functions</h3>
+<div class="outline-text-3" id="text-orgff2b28f">
 <dl class="org-dl">
 <dt>from-ascii : Proc [(List U8)] String</dt><dd>Converts a list of ASCII bytes into a string, allocating new memory for the
 string bytes. Note that the bytes are assumed to NOT be null-terminated, so a
@@ -235,16 +235,16 @@ null-terminator is pushed onto the end of the string.</dd>
 <dt>join : Proc [String String] String</dt><dd>Produces a new string which is the concatenation of the two target strings.
 Memory is allocated from the <code>current-allocator</code>.</dd>
 
-<dt>subview : Proc [U64 U64 String] String</dt><dd>The function <code>(slice start end str)</code> Return a new string which is a substring
+<dt>subview : Proc [U64 U64 String] String</dt><dd>The function <code>(subview start end str)</code> Return a new string which is a substring
 of the original string, starting at the <code>start</code> character, and ending at the byte
-<b>before</b> end. This means that <code>(slice 0 (len str) str)</code> will return the
-original string.</dd>
+<b>before</b> end. <code>subview</code> does not allocate any memory. This means that
+<code>(subview 0 (len str) str)</code> will return the original string.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgd551e5f" class="outline-3">
-<h3 id="orgd551e5f">Instances</h3>
-<div class="outline-text-3" id="text-orgd551e5f">
+<div id="outline-container-orgd849b33" class="outline-3">
+<h3 id="orgd849b33">Instances</h3>
+<div class="outline-text-3" id="text-orgd849b33">
 <dl class="org-dl">
 <dt>string-eq : (Eq String)</dt><dd>Return true if the two strings are equal, and false otherwise.</dd>
 
@@ -252,9 +252,9 @@ original string.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-orgc894fcd" class="outline-3">
-<h3 id="orgc894fcd">Unicode Functions</h3>
-<div class="outline-text-3" id="text-orgc894fcd">
+<div id="outline-container-org8270ba6" class="outline-3">
+<h3 id="org8270ba6">Unicode Functions</h3>
+<div class="outline-text-3" id="text-org8270ba6">
 <dl class="org-dl">
 <dt>num-utf8-bytes : Proc [U8] U8</dt><dd>Given a byte that is the (valid) first byte of a UTF-8 encoded character,
 return the number of bytes that the entire character.</dd>
@@ -264,9 +264,9 @@ return the number of bytes that the entire character.</dd>
 </dl>
 </div>
 </div>
-<div id="outline-container-org92a1c56" class="outline-3">
-<h3 id="org92a1c56">Low Level Access</h3>
-<div class="outline-text-3" id="text-org92a1c56">
+<div id="outline-container-org77b206b" class="outline-3">
+<h3 id="org77b206b">Low Level Access</h3>
+<div class="outline-text-3" id="text-org77b206b">
 <dl class="org-dl">
 <dt>nth-byte : Proc [U64 String] U8</dt><dd>Get the nth byte of the underlying memory of the string. As strings are uft-8
 encoded, the nth byte will not be the nth character if the string contains
@@ -275,10 +275,33 @@ non-ascii characters.</dd>
 </div>
 </div>
 </div>
+<div id="outline-container-org6389476" class="outline-2">
+<h2 id="org6389476">Instances</h2>
+<div class="outline-text-2" id="text-org6389476">
+</div>
+<div id="outline-container-orge82757e" class="outline-3">
+<h3 id="orge82757e">string-eq : instance (Eq String) ::</h3>
+<div class="outline-text-3" id="text-orge82757e">
+<p>
+Implementation of equality for strings. Does a simple byte-for-byte equality,
+assuming that these strings have been ingested via, e.g. <code>from-ascii</code>
+</p>
+</div>
+</div>
+<div id="outline-container-org28e7e3f" class="outline-3">
+<h3 id="org28e7e3f">string-delete : instance (Delete String) ::</h3>
+<div class="outline-text-3" id="text-org28e7e3f">
+<p>
+Implementation of delete for strings. Simply frees the memory associated with
+the string, assuming it was allocated by the current allocator.
+</p>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-08-19 Wed 16:12</p>
+<p class="date">Created: 2026-08-20 Thu 22:47</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

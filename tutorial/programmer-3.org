@@ -216,6 +216,12 @@ file from your shell program.
 #+end_src
 
 
+* Specifying Types
+TODO: 
+
+#+begin_src relic
+#+end_src
+
 * Enums and Error Handling
 TODO: 
 

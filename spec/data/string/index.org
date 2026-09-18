@@ -28,10 +28,10 @@
   Memory is allocated from the =current-allocator=.
 
 + subview : Proc [U64 U64 String] String ::
-  The function =(slice start end str)= Return a new string which is a substring
+  The function =(subview start end str)= Return a new string which is a substring
   of the original string, starting at the =start= character, and ending at the byte
-  *before* end. This means that =(slice 0 (len str) str)= will return the
-  original string.
+  *before* end. =subview= does not allocate any memory. This means that
+  =(subview 0 (len str) str)= will return the original string.
 
 
 ** Instances 

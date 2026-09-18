@@ -92,21 +92,22 @@
   however, if =p= is not a procedure but is rather a macro or term-former, then
   then =apply= will produce a type error.
 
-+ array :: Create a new array value, i.e. collection of values of the same type
-  laid out contiguously in memory. Arrays may be multidimensional. 
++ tile :: Create a new tile value, i.e. collection of values of the same type
+  laid out contiguously in memory. Tiles may be multidimensional, and are
+  intended primarily to constrain code such that SIMD codegeneration is much easier. 
 
   Format: =(array {n m ...}? [[a b c] [d e f] ...])= 
  
   Sample usage:
   #+begin_src relic 
-;; 1D array, with dimension
-(array {4} [3 7 1 9])
+;; 1D tile, with explicit dimension
+(tile {4} [3 7 1 9])
 
-;; 1D array, without dimension
-(array [#a #b #c])
+;; 1D tile, without explicit dimension
+(tile [#a #b #c])
 
-;; 2D array, leftmost number in dimension is size of outermost array
-(array {3 2} [[1 2] [3 4] [5 6]])
+;; 2D tile, leftmost number in dimension is size of outermost range
+(tile {3 2} [[1 2] [3 4] [5 6]])
   #+end_src
 
 + struct :: Create a new structured value, heterogenously associating names with values

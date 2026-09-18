@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-11 Tue 08:46 -->
+<!-- 2026-08-19 Wed 13:53 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #3: Administrative Duties</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="programmer-2.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-4.html">Next</a>
 </p>
-<div id="outline-container-org879e5a4" class="outline-2">
-<h2 id="org879e5a4">Next Steps</h2>
-<div class="outline-text-2" id="text-org879e5a4">
+<div id="outline-container-org4091d8b" class="outline-2">
+<h2 id="org4091d8b">Next Steps</h2>
+<div class="outline-text-2" id="text-org4091d8b">
 <p>
 Thus far, the primary focus of these tutorials has been on introducing new
 features to our shell. We will now take a step back and do some housekeeping on
@@ -216,9 +216,9 @@ this project, divided into three distinct phases:
 </ul>
 </div>
 </div>
-<div id="outline-container-org966ddcb" class="outline-2">
-<h2 id="org966ddcb">Modules and Atlas</h2>
-<div class="outline-text-2" id="text-org966ddcb">
+<div id="outline-container-org275341f" class="outline-2">
+<h2 id="org275341f">Modules and Atlas</h2>
+<div class="outline-text-2" id="text-org275341f">
 <p>
 We will start our cleanup with the files themselves, by refactoring our project
 to be modular, and make use of the built-in build system for Relic: <b>atlas</b>.
@@ -247,10 +247,10 @@ dependency, <code>base</code>, which is relic's name for the standard library.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-atlas">(<span style="color: #9d81ba;">lang</span> atlas 0.0.1)
+<pre class="src src-atlas">(<span style="color: #c86d6d;">lang</span> atlas 0.0.1)
 
-(<span style="color: #9d81ba;">package</span> (<span style="color: #0bc9cf;">name</span> shell)
-  (<span style="color: #0bc9cf;">dependencies</span> base))
+(<span style="color: #c86d6d;">package</span> (<span style="color: #A1DDD7;">name</span> shell)
+  (<span style="color: #A1DDD7;">dependencies</span> base))
 </pre>
 </div>
 
@@ -282,17 +282,17 @@ entry-point function returns, the program exits/finishes.</dd>
 </dl>
 
 <div class="org-src-container">
-<pre class="src src-atlas">(<span style="color: #9d81ba;">executable</span>
-  (<span style="color: #0bc9cf;">name</span> shell)
+<pre class="src src-atlas">(<span style="color: #c86d6d;">executable</span>
+  (<span style="color: #A1DDD7;">name</span> shell)
 
-  (<span style="color: #0bc9cf;">file</span> <span style="color: #f5c791;">"main"</span>)
-  (<span style="color: #0bc9cf;">entry-point</span> main)
+  (<span style="color: #A1DDD7;">file</span> <span style="color: #A1A0C5;">"main"</span>)
+  (<span style="color: #A1DDD7;">entry-point</span> main)
 
-  (<span style="color: #0bc9cf;">dependencies</span> commands))
+  (<span style="color: #A1DDD7;">dependencies</span> commands))
 
-(<span style="color: #9d81ba;">library</span> 
-  (<span style="color: #0bc9cf;">name</span> commands)
-  (<span style="color: #0bc9cf;">file</span> <span style="color: #f5c791;">"commands"</span>))
+(<span style="color: #c86d6d;">library</span> 
+  (<span style="color: #A1DDD7;">name</span> commands)
+  (<span style="color: #A1DDD7;">file</span> <span style="color: #A1A0C5;">"commands"</span>))
 </pre>
 </div>
 
@@ -304,26 +304,26 @@ Now that the project structure set up, the next step is to rewrite our single
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> unrecognized <span style="color: #9d81ba;">proc</span> [cmd] <span style="color: #9d81ba;">seq</span>
-  (write-string "<span style="color: #62D2DB;">Unrecognized</span> command<span style="color: #7CF083;">:</span> ")
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> unrecognized <span style="color: #c86d6d;">proc</span> [cmd] <span style="color: #c86d6d;">seq</span>
+  (write-string <span style="color: #A1A0C5;">"Unrecognized command: "</span>)
   (write-line cmd))
 
-(<span style="color: #9d81ba;">def</span> echo <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">seq</span>
-  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">below</span> args<span style="color: #7CF083;">.len</span>]
+(<span style="color: #c86d6d;">def</span> echo <span style="color: #c86d6d;">proc</span> [args] <span style="color: #c86d6d;">seq</span>
+  (<span style="color: #c86d6d;">loop</span> [<span style="color: #c86d6d;">for</span> i <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">1</span> <span style="color: #c86d6d;">below</span> args<span style="color: #cea2ca;">.len</span>]
     (write-string (elt i args))
-    (write-string " "))
-  (write-string "\n"))
+    (write-string <span style="color: #A1A0C5;">" "</span>))
+  (write-string <span style="color: #A1A0C5;">"\n"</span>))
 
-(<span style="color: #9d81ba;">def</span> cd <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">labels</span>
-  (<span style="color: #9d81ba;">seq</span>
-    (when (u64<span style="color: #7CF083;">.</span>&lt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">1</span>)
-      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> "error<span style="color: #7CF083;">:</span> cd requires an argument; none was provided"))
-    (when (u64<span style="color: #7CF083;">.</span>&gt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">2</span>)
-      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> "error<span style="color: #7CF083;">:</span> cd requires exactly one argument; too many were provided"))
+(<span style="color: #c86d6d;">def</span> cd <span style="color: #c86d6d;">proc</span> [args] <span style="color: #c86d6d;">labels</span>
+  (<span style="color: #c86d6d;">seq</span>
+    (when (u64<span style="color: #cea2ca;">.</span>&lt; args<span style="color: #cea2ca;">.len</span> <span style="color: #cea2ca;">1</span>)
+      (<span style="color: #c86d6d;">go-to</span> <span style="color: #A1DDD7;">early-exit</span> <span style="color: #A1A0C5;">"error: cd requires an argument; none was provided"</span>))
+    (when (u64<span style="color: #cea2ca;">.</span>&gt; args<span style="color: #cea2ca;">.len</span> <span style="color: #cea2ca;">2</span>)
+      (<span style="color: #c86d6d;">go-to</span> <span style="color: #A1DDD7;">early-exit</span> <span style="color: #A1A0C5;">"error: cd requires exactly one argument; too many were provided"</span>))
 
-    (write-string "changing dir to<span style="color: #7CF083;">:</span> ")
-    (write-line (elt <span style="color: #0D9C94;">1</span> args))
-    (fs<span style="color: #7CF083;">.set-current-directory</span> (elt <span style="color: #0D9C94;">1</span> args)))
+    (write-string <span style="color: #A1A0C5;">"changing dir to: "</span>)
+    (write-line (elt <span style="color: #cea2ca;">1</span> args))
+    (fs<span style="color: #cea2ca;">.set-current-directory</span> (elt <span style="color: #cea2ca;">1</span> args)))
 
   [early-exit [reason]
    (write-line reason)])
@@ -351,12 +351,12 @@ Our module header thus looks like:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> commands
-  (<span style="color: #9d81ba;">import</span>
-    (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
+<pre class="src src-relic">(<span style="color: #c86d6d;">module</span> commands
+  (<span style="color: #c86d6d;">import</span>
+    (platform<span style="color: #cea2ca;">.filesystem</span> <span style="color: #cea2ca;">:as</span> fs)
 
-    (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:values</span> (elt)))
-  (<span style="color: #9d81ba;">export</span> unrecognized echo cd))
+    (data<span style="color: #cea2ca;">.list</span> <span style="color: #cea2ca;">:values</span> (elt)))
+  (<span style="color: #c86d6d;">export</span> unrecognized echo cd))
 </pre>
 </div>
 
@@ -379,16 +379,16 @@ So, our full module header becomes:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> commands
-  (<span style="color: #9d81ba;">import</span>
-   (prelude :<span style="color: #9d81ba;">all</span>)
+<pre class="src src-relic">(<span style="color: #c86d6d;">module</span> commands
+  (<span style="color: #c86d6d;">import</span>
+   (prelude :<span style="color: #c86d6d;">all</span>)
 
-   (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
-   (platform<span style="color: #7CF083;">.terminal</span> :<span style="color: #9d81ba;">all</span>)
+   (platform<span style="color: #cea2ca;">.filesystem</span> <span style="color: #cea2ca;">:as</span> fs)
+   (platform<span style="color: #cea2ca;">.terminal</span> :<span style="color: #c86d6d;">all</span>)
 
-   (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:values</span> (elt)))
+   (data<span style="color: #cea2ca;">.list</span> <span style="color: #cea2ca;">:values</span> (elt)))
 
- (<span style="color: #9d81ba;">export</span> :<span style="color: #9d81ba;">all</span>))
+ (<span style="color: #c86d6d;">export</span> :<span style="color: #c86d6d;">all</span>))
 </pre>
 </div>
 
@@ -420,20 +420,20 @@ The full header for <code>main.rl</code> is thus:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">module</span> shell
-  (<span style="color: #9d81ba;">import</span>
-   (prelude :<span style="color: #9d81ba;">all</span>)
+<pre class="src src-relic">(<span style="color: #c86d6d;">module</span> shell
+  (<span style="color: #c86d6d;">import</span>
+   (prelude :<span style="color: #c86d6d;">all</span>)
 
-   platform<span style="color: #7CF083;">.memory</span>
-   (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
-   (platform<span style="color: #7CF083;">.terminal</span> :<span style="color: #9d81ba;">all</span>)
+   platform<span style="color: #cea2ca;">.memory</span>
+   (platform<span style="color: #cea2ca;">.filesystem</span> <span style="color: #cea2ca;">:as</span> fs)
+   (platform<span style="color: #cea2ca;">.terminal</span> :<span style="color: #c86d6d;">all</span>)
 
-   (data<span style="color: #7CF083;">.pointer</span> <span style="color: #7CF083;">:values</span> (get set local))
-   (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:values</span> (push elt))
-   (data<span style="color: #7CF083;">.string</span> <span style="color: #7CF083;">:instances</span> <span style="color: #7CF083;">:values</span> (subview len (elt <span style="color: #7CF083;">:as</span> str-elt)))
+   (data<span style="color: #cea2ca;">.pointer</span> <span style="color: #cea2ca;">:values</span> (get set local))
+   (data<span style="color: #cea2ca;">.list</span> <span style="color: #cea2ca;">:values</span> (push elt))
+   (data<span style="color: #cea2ca;">.string</span> <span style="color: #cea2ca;">:instances</span> <span style="color: #cea2ca;">:values</span> (subview len (elt <span style="color: #cea2ca;">:as</span> str-elt)))
 
-   (commands :<span style="color: #9d81ba;">all</span>))
-  (<span style="color: #9d81ba;">export</span> main))
+   (commands :<span style="color: #c86d6d;">all</span>))
+  (<span style="color: #c86d6d;">export</span> main))
 </pre>
 </div>
 
@@ -450,17 +450,40 @@ file from your shell program.
 </p>
 </div>
 </div>
-<div id="outline-container-org3407e53" class="outline-2">
-<h2 id="org3407e53">Allocators</h2>
-</div>
+<div id="outline-container-org9d3077b" class="outline-2">
+<h2 id="org9d3077b">Allocators</h2>
+<div class="outline-text-2" id="text-org9d3077b">
+<div class="org-src-container">
+<pre class="src src-relic">(<span style="color: #c86d6d;">seq</span>
+  <span style="color: #84686E;">;; </span><span style="color: #84686E;">Initialize the arena
+</span>  [<span style="color: #c86d6d;">let</span>! arena (allocators<span style="color: #cea2ca;">.make-arena</span> (<span style="color: #c86d6d;">use</span> memory<span style="color: #cea2ca;">.current-allocator</span>) <span style="color: #cea2ca;">16384</span>)]
 
-<div id="outline-container-org740ecd0" class="outline-2">
-<h2 id="org740ecd0">Enums and Error Handling</h2>
+  (<span style="color: #c86d6d;">bind</span> [memory<span style="color: #cea2ca;">.current-allocator</span> (allocators<span style="color: #cea2ca;">.adapt-arena</span> arena)] <span style="color: #c86d6d;">seq</span>
+    (allocators<span style="color: #cea2ca;">.reset-arena</span> arena))
+
+  <span style="color: #84686E;">;; </span><span style="color: #84686E;">Deinitialize the arena
+</span>  (allocators<span style="color: #cea2ca;">.destroy-arena</span> arena))
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgeb8e6f8" class="outline-2">
+<h2 id="orgeb8e6f8">Enums and Error Handling</h2>
+<div class="outline-text-2" id="text-orgeb8e6f8">
+<p>
+TODO: 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-relic">
+</pre>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-08-11 Tue 08:46</p>
+<p class="date">Created: 2026-08-19 Wed 13:53</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

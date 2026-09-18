@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2026-08-11 Tue 08:46 -->
+<!-- 2026-08-19 Wed 13:53 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Tutorial #2: Introducing Commands</title>
@@ -201,9 +201,9 @@
 <p>
 <a href="programmer-1.html">Prev</a>  <a href="../index.html">Up</a>  <a href="programmer-3.html">Next</a>
 </p>
-<div id="outline-container-org3a28486" class="outline-2">
-<h2 id="org3a28486">Current Directory</h2>
-<div class="outline-text-2" id="text-org3a28486">
+<div id="outline-container-org31555fa" class="outline-2">
+<h2 id="org31555fa">Current Directory</h2>
+<div class="outline-text-2" id="text-org31555fa">
 <p>
 Here, we will focus on adding some simple features to our shell. First up, it is
 common for a shell to print the name of the current directory before the prompt.
@@ -215,11 +215,11 @@ user.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> prompt <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! cwd (platform<span style="color: #7CF083;">.filesystem.get-current-directory</span>)]
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> prompt <span style="color: #c86d6d;">proc</span> [] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! cwd (platform<span style="color: #cea2ca;">.filesystem.get-current-directory</span>)]
   (write-line cwd)
   (delete cwd)
-  (write-string "&gt; "))
+  (write-string <span style="color: #A1A0C5;">"&gt; "</span>))
 </pre>
 </div>
 
@@ -227,9 +227,9 @@ user.
 Inside our main function, we then can rewrite the loop.
 </p>
 <div class="org-src-container">
-<pre class="src src-relic">  (<span style="color: #9d81ba;">loop</span> 
+<pre class="src src-relic">  (<span style="color: #c86d6d;">loop</span> 
     (prompt)
-    [<span style="color: #9d81ba;">while</span> (iter (read-line))])
+    [<span style="color: #c86d6d;">while</span> (iter (read-line))])
 </pre>
 </div>
 
@@ -241,15 +241,15 @@ refer to <code>filesystem.get-current-directory</code>.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">import</span> platform<span style="color: #7CF083;">.filesystem</span>)
+<pre class="src src-relic">(<span style="color: #c86d6d;">import</span> platform<span style="color: #cea2ca;">.filesystem</span>)
 
-<span style="color: #454459;">;;</span><span style="color: #454459;">....
+<span style="color: #84686E;">;;</span><span style="color: #84686E;">....
 </span> 
-(<span style="color: #9d81ba;">def</span> prompt <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! cwd (filesystem<span style="color: #7CF083;">.get-current-directory</span>)]
+(<span style="color: #c86d6d;">def</span> prompt <span style="color: #c86d6d;">proc</span> [] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! cwd (filesystem<span style="color: #cea2ca;">.get-current-directory</span>)]
   (write-line cwd)
   (delete cwd)
-  (write-string "&gt; "))
+  (write-string <span style="color: #A1A0C5;">"&gt; "</span>))
 </pre>
 </div>
 
@@ -260,22 +260,22 @@ It is even possible to take it one step further and rename the import from
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">import</span> (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs))
+<pre class="src src-relic">(<span style="color: #c86d6d;">import</span> (platform<span style="color: #cea2ca;">.filesystem</span> <span style="color: #cea2ca;">:as</span> fs))
 
-<span style="color: #454459;">;; </span><span style="color: #454459;">....
+<span style="color: #84686E;">;; </span><span style="color: #84686E;">....
 </span> 
-(<span style="color: #9d81ba;">def</span> prompt <span style="color: #9d81ba;">proc</span> [] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! cwd (fs<span style="color: #7CF083;">.get-current-directory</span>)]
+(<span style="color: #c86d6d;">def</span> prompt <span style="color: #c86d6d;">proc</span> [] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! cwd (fs<span style="color: #cea2ca;">.get-current-directory</span>)]
   (write-line cwd)
   (delete cwd)
-  (write-string "&gt; "))
+  (write-string <span style="color: #A1A0C5;">"&gt; "</span>))
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org37911b6" class="outline-2">
-<h2 id="org37911b6">Commands</h2>
-<div class="outline-text-2" id="text-org37911b6">
+<div id="outline-container-org170aa51" class="outline-2">
+<h2 id="org170aa51">Commands</h2>
+<div class="outline-text-2" id="text-org170aa51">
 <p>
 Of cource, once we display the current directory, we will want a way to change it.
 This can be done in relic using <code>set-current-directory</code>, but before we can do
@@ -289,13 +289,13 @@ start by importing some functions that will be useful later.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">import</span>
- (platform<span style="color: #7CF083;">.filesystem</span> <span style="color: #7CF083;">:as</span> fs)
- platform<span style="color: #7CF083;">.memory</span>
+<pre class="src src-relic">(<span style="color: #c86d6d;">import</span>
+ (platform<span style="color: #cea2ca;">.filesystem</span> <span style="color: #cea2ca;">:as</span> fs)
+ platform<span style="color: #cea2ca;">.memory</span>
 
- (data<span style="color: #7CF083;">.pointer</span> <span style="color: #7CF083;">:values</span> (get set local))
- (data<span style="color: #7CF083;">.list</span> <span style="color: #7CF083;">:values</span> (push elt))
- (data<span style="color: #7CF083;">.string</span> <span style="color: #7CF083;">:values</span> (subview len (elt <span style="color: #7CF083;">:as</span> str-elt))))
+ (data<span style="color: #cea2ca;">.pointer</span> <span style="color: #cea2ca;">:values</span> (get set local))
+ (data<span style="color: #cea2ca;">.list</span> <span style="color: #cea2ca;">:values</span> (push elt))
+ (data<span style="color: #cea2ca;">.string</span> <span style="color: #cea2ca;">:values</span> (subview len (elt <span style="color: #cea2ca;">:as</span> str-elt))))
 </pre>
 </div>
 
@@ -348,11 +348,11 @@ exceed their capacity.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> split-on <span style="color: #9d81ba;">proc</span> [str delimiter] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! start (local <span style="color: #0D9C94;">0</span>)]
-  [<span style="color: #9d81ba;">let</span>! components (local (list<span style="color: #7CF083;">.init</span> <span style="color: #0D9C94;">0</span> <span style="color: #0D9C94;">8</span>))]
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> split-on <span style="color: #c86d6d;">proc</span> [str delimiter] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! start (local <span style="color: #cea2ca;">0</span>)]
+  [<span style="color: #c86d6d;">let</span>! components (local (list<span style="color: #cea2ca;">.init</span> <span style="color: #cea2ca;">0</span> <span style="color: #cea2ca;">8</span>))]
 
-  <span style="color: #454459;">;; </span><span style="color: #454459;">Rest of the function goes here...
+  <span style="color: #84686E;">;; </span><span style="color: #84686E;">Rest of the function goes here...
 </span>  )
 </pre>
 </div>
@@ -375,18 +375,18 @@ of.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> split-on <span style="color: #9d81ba;">proc</span> [str delimiter] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! start (local <span style="color: #0D9C94;">0</span>)]
-  [<span style="color: #9d81ba;">let</span>! components (local (list<span style="color: #7CF083;">.init</span> <span style="color: #0D9C94;">0</span> <span style="color: #0D9C94;">8</span>))]
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> split-on <span style="color: #c86d6d;">proc</span> [str delimiter] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! start (local <span style="color: #cea2ca;">0</span>)]
+  [<span style="color: #c86d6d;">let</span>! components (local (list<span style="color: #cea2ca;">.init</span> <span style="color: #cea2ca;">0</span> <span style="color: #cea2ca;">8</span>))]
 
-  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> (len str)]
-    (when (= (str-elt i str) delimiter) <span style="color: #9d81ba;">seq</span>
+  (<span style="color: #c86d6d;">loop</span> [<span style="color: #c86d6d;">for</span> i <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">0</span> <span style="color: #c86d6d;">below</span> (len str)]
+    (when (= (str-elt i str) delimiter) <span style="color: #c86d6d;">seq</span>
 
-      <span style="color: #454459;">;; </span><span style="color: #454459;">Push the subcommant 
+      <span style="color: #84686E;">;; </span><span style="color: #84686E;">Push the subcommant 
 </span>      (push (subview (get start) i str) components)
-      <span style="color: #454459;">;; </span><span style="color: #454459;">Set the start of the next womd to the character after the current one
-</span>      (set start (+ i <span style="color: #0D9C94;">1</span>))))
-  <span style="color: #454459;">;; </span><span style="color: #454459;">Rest of the function goes here...
+      <span style="color: #84686E;">;; </span><span style="color: #84686E;">Set the start of the next womd to the character after the current one
+</span>      (set start (+ i <span style="color: #cea2ca;">1</span>))))
+  <span style="color: #84686E;">;; </span><span style="color: #84686E;">Rest of the function goes here...
 </span>  )
 </pre>
 </div>
@@ -398,17 +398,17 @@ value in the components pointer, which we can do with the <code>get</code> funct
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> split-on <span style="color: #9d81ba;">proc</span> [str delimiter] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! start (local <span style="color: #0D9C94;">0</span>)]
-  [<span style="color: #9d81ba;">let</span>! components (local (list<span style="color: #7CF083;">.init</span> <span style="color: #0D9C94;">0</span> <span style="color: #0D9C94;">8</span>))]
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> split-on <span style="color: #c86d6d;">proc</span> [str delimiter] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! start (local <span style="color: #cea2ca;">0</span>)]
+  [<span style="color: #c86d6d;">let</span>! components (local (list<span style="color: #cea2ca;">.init</span> <span style="color: #cea2ca;">0</span> <span style="color: #cea2ca;">8</span>))]
 
-  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> (len str)]
-    (when (= (str-elt i str) delimiter) <span style="color: #9d81ba;">seq</span>
+  (<span style="color: #c86d6d;">loop</span> [<span style="color: #c86d6d;">for</span> i <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">0</span> <span style="color: #c86d6d;">below</span> (len str)]
+    (when (= (str-elt i str) delimiter) <span style="color: #c86d6d;">seq</span>
 
-      <span style="color: #454459;">;; </span><span style="color: #454459;">Push the subcommant 
+      <span style="color: #84686E;">;; </span><span style="color: #84686E;">Push the subcommant 
 </span>      (push (subview (get start) i str) components)
-      <span style="color: #454459;">;; </span><span style="color: #454459;">Set the start of the next word to the character after the current one
-</span>      (set start (+ i <span style="color: #0D9C94;">1</span>))))
+      <span style="color: #84686E;">;; </span><span style="color: #84686E;">Set the start of the next word to the character after the current one
+</span>      (set start (+ i <span style="color: #cea2ca;">1</span>))))
 
   (push (subview (get start) (len str) str) components)
   (get components))
@@ -426,28 +426,28 @@ characters, we refer to them by name, so space is <code>#space</code>.
 </p>
 
 <p>
-Once we are done with them, we can free the memory associated with the
-underlying list with <code>memory.free</code>.
+Once we are done with them, we need to free the memory associated with the
+underlying list. The <code>list</code> module provides the <code>de-init</code> proc for this purpose.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> iter <span style="color: #9d81ba;">proc</span> [str] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! commands (split-on str #space)]
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> iter <span style="color: #c86d6d;">proc</span> [str] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! commands (split-on str #space)]
 
-  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">0</span> <span style="color: #9d81ba;">below</span> commands<span style="color: #7CF083;">.len</span>]
+  (<span style="color: #c86d6d;">loop</span> [<span style="color: #c86d6d;">for</span> i <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">0</span> <span style="color: #c86d6d;">below</span> commands<span style="color: #cea2ca;">.len</span>]
     (write-line (elt i commands)))
 
-  [<span style="color: #9d81ba;">let</span>! should-exit (<span style="color: #9d81ba;">if</span> (= str "exit") <span style="color: #7CF083;">:false</span> <span style="color: #7CF083;">:true</span>)]
-  (memory<span style="color: #7CF083;">.free</span> commands<span style="color: #7CF083;">.data</span>)
+  [<span style="color: #c86d6d;">let</span>! should-exit (<span style="color: #c86d6d;">if</span> (= str <span style="color: #A1A0C5;">"exit"</span>) <span style="color: #cea2ca;">:false</span> <span style="color: #cea2ca;">:true</span>)]
+  (list<span style="color: #cea2ca;">.de-init</span> commandsata)
   (delete str)
   should-exit)
 </pre>
 </div>
 </div>
 </div>
-<div id="outline-container-org4a5c1b9" class="outline-2">
-<h2 id="org4a5c1b9">Advanced Control Flow</h2>
-<div class="outline-text-2" id="text-org4a5c1b9">
+<div id="outline-container-org6796b40" class="outline-2">
+<h2 id="org6796b40">Advanced Control Flow</h2>
+<div class="outline-text-2" id="text-org6796b40">
 <p>
 Now that we have the command components, we will want to implement some
 commands. We wil start with <code>cd</code> to set the current working directory, as
@@ -456,15 +456,15 @@ function to print errors if we receive a command that isn't recognized:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> unrecognized <span style="color: #9d81ba;">proc</span> [cmd] <span style="color: #9d81ba;">seq</span>
-  (write-string "<span style="color: #62D2DB;">Unrecognized</span> command<span style="color: #7CF083;">:</span> ")
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> unrecognized <span style="color: #c86d6d;">proc</span> [cmd] <span style="color: #c86d6d;">seq</span>
+  (write-string <span style="color: #A1A0C5;">"Unrecognized command: "</span>)
   (write-line cmd))
 
-(<span style="color: #9d81ba;">def</span> echo <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">seq</span>
-  (<span style="color: #9d81ba;">loop</span> [<span style="color: #9d81ba;">for</span> i <span style="color: #9d81ba;">from</span> <span style="color: #0D9C94;">1</span> <span style="color: #9d81ba;">below</span> args<span style="color: #7CF083;">.len</span>]
+(<span style="color: #c86d6d;">def</span> echo <span style="color: #c86d6d;">proc</span> [args] <span style="color: #c86d6d;">seq</span>
+  (<span style="color: #c86d6d;">loop</span> [<span style="color: #c86d6d;">for</span> i <span style="color: #c86d6d;">from</span> <span style="color: #cea2ca;">1</span> <span style="color: #c86d6d;">below</span> args<span style="color: #cea2ca;">.len</span>]
     (write-string (elt i args))
-    (write-string " "))
-  (write-string "\n"))
+    (write-string <span style="color: #A1A0C5;">" "</span>))
+  (write-string <span style="color: #A1A0C5;">"\n"</span>))
 </pre>
 </div>
 
@@ -479,11 +479,11 @@ The general layout of a <code>labels</code> form is as follows:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">labels</span>
+<pre class="src src-relic">(<span style="color: #c86d6d;">labels</span>
   &lt;starting-expression&gt;
-  [label-1 [params<span style="color: #7CF083;">...</span>] &lt;body&gt;]
-  [label-2 [params<span style="color: #7CF083;">...</span>] &lt;body&gt;]
-  <span style="color: #7CF083;">...</span>)
+  [label-1 [params<span style="color: #cea2ca;">...</span>] &lt;body&gt;]
+  [label-2 [params<span style="color: #cea2ca;">...</span>] &lt;body&gt;]
+  <span style="color: #cea2ca;">...</span>)
 </pre>
 </div>
 
@@ -503,18 +503,18 @@ into a <code>repl</code>, or a <b>.rl</b> file and play around with running diff
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">labels</span>
-  (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop-continue</span> <span style="color: #0D9C94;">0</span>)
+<pre class="src src-relic">(<span style="color: #c86d6d;">labels</span>
+  (<span style="color: #c86d6d;">go-to</span> <span style="color: #A1DDD7;">loop-continue</span> <span style="color: #cea2ca;">0</span>)
 
-  [loop-continue [i] <span style="color: #9d81ba;">seq</span> 
-    (write-string "i<span style="color: #7CF083;">:</span> ")
+  [loop-continue [i] <span style="color: #c86d6d;">seq</span> 
+    (write-string <span style="color: #A1A0C5;">"i: "</span>)
     (write-line (to-string i))
 
-    (<span style="color: #9d81ba;">if</span> (&lt; i <span style="color: #0D9C94;">10</span>)
-        (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop-continue</span> (+ i <span style="color: #0D9C94;">1</span>))
-        (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">loop-exit</span>))]
+    (<span style="color: #c86d6d;">if</span> (&lt; i <span style="color: #cea2ca;">10</span>)
+        (<span style="color: #c86d6d;">go-to</span> <span style="color: #A1DDD7;">loop-continue</span> (+ i <span style="color: #cea2ca;">1</span>))
+        (<span style="color: #c86d6d;">go-to</span> <span style="color: #A1DDD7;">loop-exit</span>))]
 
-  [loop-exit (write-line "done")])
+  [loop-exit (write-line <span style="color: #A1A0C5;">"done"</span>)])
 </pre>
 </div>
 
@@ -528,16 +528,16 @@ by <code>set-current-directory</code> for later.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> cd <span style="color: #9d81ba;">proc</span> [args] <span style="color: #9d81ba;">labels</span>
-  (<span style="color: #9d81ba;">seq</span>
-    (when (&lt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">1</span>)
-      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> "error<span style="color: #7CF083;">:</span> cd requires an argument; none was provided"))
-    (when (&gt; args<span style="color: #7CF083;">.len</span> <span style="color: #0D9C94;">2</span>)
-      (<span style="color: #9d81ba;">go-to</span> <span style="color: #0bc9cf;">early-exit</span> "error<span style="color: #7CF083;">:</span> cd requires exactly one argument; too many were provided"))
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> cd <span style="color: #c86d6d;">proc</span> [args] <span style="color: #c86d6d;">labels</span>
+  (<span style="color: #c86d6d;">seq</span>
+    (when (&lt; args<span style="color: #cea2ca;">.len</span> <span style="color: #cea2ca;">1</span>)
+      (<span style="color: #c86d6d;">go-to</span> <span style="color: #A1DDD7;">early-exit</span> <span style="color: #A1A0C5;">"error: cd requires an argument; none was provided"</span>))
+    (when (&gt; args<span style="color: #cea2ca;">.len</span> <span style="color: #cea2ca;">2</span>)
+      (<span style="color: #c86d6d;">go-to</span> <span style="color: #A1DDD7;">early-exit</span> <span style="color: #A1A0C5;">"error: cd requires exactly one argument; too many were provided"</span>))
 
-    (write-string "changing dir to<span style="color: #7CF083;">:</span> ")
-    (write-line (elt <span style="color: #0D9C94;">1</span> args))
-    (filesystem<span style="color: #7CF083;">.set-current-directory</span> (elt <span style="color: #0D9C94;">1</span> args)))
+    (write-string <span style="color: #A1A0C5;">"changing dir to: "</span>)
+    (write-line (elt <span style="color: #cea2ca;">1</span> args))
+    (filesystem<span style="color: #cea2ca;">.set-current-directory</span> (elt <span style="color: #cea2ca;">1</span> args)))
 
   [early-exit [reason]
    (write-line reason)])
@@ -560,19 +560,19 @@ the literal <code>:true</code>, and you will get an error otherwise.
 </p>
 
 <div class="org-src-container">
-<pre class="src src-relic">(<span style="color: #9d81ba;">def</span> iter <span style="color: #9d81ba;">proc</span> [str] <span style="color: #9d81ba;">seq</span>
-  [<span style="color: #9d81ba;">let</span>! should-continue local <span style="color: #7CF083;">:true</span>]
-  [<span style="color: #9d81ba;">let</span>! commands (split-on str #space)]
-  [<span style="color: #9d81ba;">let</span>! command-name (elt <span style="color: #0D9C94;">0</span> commands)]
+<pre class="src src-relic">(<span style="color: #c86d6d;">def</span> iter <span style="color: #c86d6d;">proc</span> [str] <span style="color: #c86d6d;">seq</span>
+  [<span style="color: #c86d6d;">let</span>! should-continue local <span style="color: #cea2ca;">:true</span>]
+  [<span style="color: #c86d6d;">let</span>! commands (split-on str #space)]
+  [<span style="color: #c86d6d;">let</span>! command-name (elt <span style="color: #cea2ca;">0</span> commands)]
 
-  (<span style="color: #9d81ba;">cond</span>
-   [(= "exit" command-name) (set should-continue <span style="color: #7CF083;">:false</span>)]
-   [(= "cd" command-name) (cd commands)]
-   [(= "echo" command-name) (echo commands)]
-   [<span style="color: #7CF083;">:true</span> (unrecognized command-name)])
+  (<span style="color: #c86d6d;">cond</span>
+   [(= <span style="color: #A1A0C5;">"exit"</span> command-name) (set should-continue <span style="color: #cea2ca;">:false</span>)]
+   [(= <span style="color: #A1A0C5;">"cd"</span> command-name) (cd commands)]
+   [(= <span style="color: #A1A0C5;">"echo"</span> command-name) (echo commands)]
+   [<span style="color: #cea2ca;">:true</span> (unrecognized command-name)])
 
   (delete str)
-  (memory<span style="color: #7CF083;">.free</span> commands<span style="color: #7CF083;">.data</span>)
+  (list<span style="color: #cea2ca;">.de-init</span> commands)
   (get should-continue))
 </pre>
 </div>
@@ -581,7 +581,7 @@ the literal <code>:true</code>, and you will get an error otherwise.
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: Connor Fynn Redfern</p>
-<p class="date">Created: 2026-08-11 Tue 08:46</p>
+<p class="date">Created: 2026-08-19 Wed 13:53</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
